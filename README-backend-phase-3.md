@@ -211,7 +211,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
+  }
 
   User.init(
     {
@@ -223,10 +223,10 @@ module.exports = (sequelize, DataTypes) => {
           len: [4, 30],
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
+              throw new Error('Cannot be an email.');
             }
-          }
-        }
+          },
+        },
       },
       email: {
         type: DataTypes.STRING,
@@ -234,19 +234,20 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           len: [3, 256],
-          isEmail: true
-        }
+          isEmail: true,
+        },
       },
       hashedPassword: {
         type: DataTypes.STRING.BINARY,
         allowNull: false,
         validate: {
-          len: [60, 60]
-        }
-      }
-    }, {
+          len: [60, 60],
+        },
+      },
+    },
+    {
       sequelize,
-      modelName: 'User'
+      modelName: 'User',
     }
   );
   return User;
