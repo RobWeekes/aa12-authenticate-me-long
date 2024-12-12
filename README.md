@@ -2,7 +2,9 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c
+
+
 
 ## API Documentation
 

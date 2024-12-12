@@ -38,13 +38,13 @@ the database schema placeholder under `'Database Schema Design'` section of your
 The top of your `README.md` file should look something like this: 
 
 ```markdown
-# [title]
+# Authenticate Me Backend
 
 ## Database Schema Design
 
 ![db-schema]
 
-[db-schema]: ./images/example.png
+[db-schema]: ./images/authenticate-me-project.png
 
 ## API Documentation
 ```
