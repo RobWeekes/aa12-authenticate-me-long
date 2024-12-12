@@ -1,10 +1,10 @@
-# `<name of application here>`
+# `Authenticate Me Backend Project`
 
 ## Database Schema Design
 
 https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c
 
-
+[db-schema]: ./images/authenticate-me-project.png
 
 ## API Documentation
 
