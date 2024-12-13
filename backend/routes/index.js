@@ -2,11 +2,13 @@
 // backend/routes/index.js
 const express = require('express');
 const router = express.Router();
-// Import this file into the routes/index.js file 
+// Import this file into the routes/index.js file
 // and connect it to the router there.
 const apiRouter = require('./api');
 
+const { restoreUser } = require('../utils/auth.js');
 
+router.use(restoreUser);
 // router.get('/hello/world', function(req, res) {
 //   res.cookie('XSRF-TOKEN', req.csrfToken());
 //   res.send('Hello World!');
@@ -24,5 +26,16 @@ router.get("/api/csrf/restore", (req, res) => {
 
 
 router.use('/api', apiRouter);
+
+
+// GET /api/restore-user
+
+
+router.get(
+  '/restore-user',
+  (req, res) => {
+    return res.json(req.user);
+  }
+);
 
 module.exports = router;
