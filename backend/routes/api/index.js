@@ -6,44 +6,56 @@ const router = require('express').Router();
 const { restoreUser } = require('../../utils/auth.js');
 router.use(restoreUser);
 
-
-// test this setup by creating the following test route in the api router
-router.post('/test', function(req, res) {
-    res.json({ requestBody: req.body });
-});
+// Connect restoreUser middleware to the API router
+  // If current user session is valid, set req.user to the user in the database
+  // If current user session is not valid, set req.user to null
 
 
-// GET /api/set-token-cookie
-const { setTokenCookie } = require('../../utils/auth.js');
-const { User } = require('../../db/models');
-router.get('/set-token-cookie', async (_req, res) => {
-  const user = await User.findOne({
-    where: {
-      username: 'Demo-lition'
-    }
-  });
-  setTokenCookie(res, user);
-  return res.json({ user: user });
-});
+
+/////////////////////////////////////////////////
+//// CODE FOR TESTING USER AUTH ROUTES BELOW //// 
+
+// // Test this setup by creating the following test route in the api router
+// router.post('/test', function(req, res) {
+//     res.json({ requestBody: req.body });
+// });
 
 
-// GET /api/restore-user
-// test the restoreUser middleware and check whether or not the req.user key has been populated by the middleware properly.
-router.get('/restore-user', (req, res) => {
-    return res.json(req.user);
-});
+// // GET /api/set-token-cookie
+// const { setTokenCookie } = require('../../utils/auth.js');
+// const { User } = require('../../db/models');
+// router.get('/set-token-cookie', async (_req, res) => {
+//   const user = await User.findOne({
+//     where: {
+//       username: 'Demo-lition'
+//     }
+//   });
+//   setTokenCookie(res, user);
+//   return res.json({ user: user });
+// });
 
 
-// Lastly, test your requireAuth middleware
-// If there is no session user, the route will return an 
-// error. Otherwise it will return the session user's information.
+// // GET /api/restore-user
+// // test the restoreUser middleware and check whether or not the req.user key has been populated by the middleware properly.
+// router.get('/restore-user', (req, res) => {
+//     return res.json(req.user);
+// });
 
-// GET /api/require-auth
-const { requireAuth } = require('../../utils/auth.js');
-router.get('/require-auth', requireAuth,
-  (req, res) => {
-    return res.json(req.user);
-  }
-);
+
+// // Lastly, test your requireAuth middleware
+// // If there is no session user, the route will return an 
+// // error. Otherwise it will return the session user's information.
+
+// // GET /api/require-auth
+// const { requireAuth } = require('../../utils/auth.js');
+// router.get('/require-auth', requireAuth,
+//   (req, res) => {
+//     return res.json(req.user);
+//   }
+// );
+
+//// CODE FOR TESTING USER AUTH ROUTES ABOVE //// 
+/////////////////////////////////////////////////
+
 
 module.exports = router;
