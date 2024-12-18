@@ -28,6 +28,14 @@ module.exports = {
         type: Sequelize.STRING.BINARY,
         allowNull: false
       },
+      firstName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      lastName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -37,14 +45,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      firstName: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      lastName: {
-        allowNull: false,
-        type: Sequelize.STRING
       },
     }, options);
   },
