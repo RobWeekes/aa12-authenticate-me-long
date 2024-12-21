@@ -83,31 +83,38 @@ app.use((err, _req, _res, next) => {
     });
   });
 
-// REVIEWS
-// List of all reviews in the database
-app.get('/reviews', (req, res, next) => {
-  res.send('This route would return all of the reviews.');
-});
+// Error handler for Reviews
+// Error handler for Review not found
+if (!review) {
+  res.status(404).json({
+      message: "Review couldn't be found"
+  });
+}
 
-// One review by id
-app.get('/reviews/:reviewId', (req, res, next) => {
-  res.send('This route would return the review with the specified id.');
-});
+// Error handler for validation errors
+if (validationErrors) {
+  res.status(400).json({
+      message: "Bad Request",
+      errors: {
+          review: "Review text is required",
+          stars: "Stars must be an integer from 1 to 5"
+      }
+  });
+}
 
-// Add review
-app.post('/reviews', (req, res, next) => {
-  res.send('This route would add a new review.');
-})
+// Error handler for maximum images
+if (reviewImages.length >= 10) {
+  res.status(403).json({
+      message: "Maximum number of images for this resource was reached"
+  });
+}
 
-// Update review
-app.put('/reviews/:reviewsId', (req, res, next) => {
-  res.send('This route would update an existing review with the specified id.');
-})
-
-// Delete review
-app.delete('/reviews/:reviewId', (req, res, next) => {
-  res.send('This route would delete the review with the specified id.');
-})
+// Error handler for existing review
+if (existingReview) {
+  res.status(500).json({
+      message: "User already has a review for this spot"
+  });
+}
 
 // Root route - DO NOT MODIFY
 app.get('/', (req, res) => {
