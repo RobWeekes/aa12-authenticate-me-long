@@ -10,8 +10,12 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
-// develop spot routes here
+// spot paths start with '/spots' (handled by router in index.js)
 
+router.get('/path',
+    async (req, res) => {
+
+})
 
 
 

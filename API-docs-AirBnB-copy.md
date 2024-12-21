@@ -162,7 +162,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: /signup
+  * Route path: /users
   * Headers:
     * Content-Type: application/json
   * Body:

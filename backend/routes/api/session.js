@@ -22,6 +22,8 @@ const validateLogin = [
   handleValidationErrors
 ];
 
+// session paths start with '/session' (handled by router in index.js)
+
 // Log in
 router.post(
   "/",

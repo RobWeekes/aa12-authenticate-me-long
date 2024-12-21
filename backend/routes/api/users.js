@@ -29,6 +29,8 @@ const validateSignup = [
   handleValidationErrors
 ];
 
+// user paths start with '/users' (handled by router in index.js)
+
 // Sign up
 router.post(
     '/',
@@ -36,8 +38,8 @@ router.post(
     async (req, res) => {
       const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ email, username, hashedPassword, firstName, });
-  
+      const user = await User.create({ email, username, hashedPassword, firstName, lastName});
+
       const safeUser = {
         id: user.id,
         firstName: user.firstName,
@@ -45,9 +47,9 @@ router.post(
         email: user.email,
         username: user.username,
       };
-  
+
       await setTokenCookie(res, safeUser);
-  
+
       return res.json({
         user: safeUser
       });
