@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![db-schema](https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c)
+![](https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c)
 
 <!-- ![db-schema] -->
 
