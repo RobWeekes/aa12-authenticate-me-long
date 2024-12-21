@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Review.init({
     id: {
       allowNull: false,
+      autoIncrement: true,
+        primaryKey: true,
       type: DataTypes.INTEGER,
     },
     userId: {
@@ -26,8 +28,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.INTEGER,
     },
-    review: DataTypes.STRING,
-    stars: DataTypes.INTEGER
+    review: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    stars: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    validate: {
+      min: 1,
+      max: 5,
+    },
+  },
   }, {
     sequelize,
     modelName: 'Review',
