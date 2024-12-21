@@ -83,5 +83,39 @@ app.use((err, _req, _res, next) => {
     });
   });
 
+// REVIEWS
+// List of all reviews in the database
+app.get('/reviews', (req, res, next) => {
+  res.send('This route would return all of the reviews.');
+});
+
+// One review by id
+app.get('/reviews/:reviewId', (req, res, next) => {
+  res.send('This route would return the review with the specified id.');
+});
+
+// Add review
+app.post('/reviews', (req, res, next) => {
+  res.send('This route would add a new review.');
+})
+
+// Update review
+app.put('/reviews/:reviewsId', (req, res, next) => {
+  res.send('This route would update an existing review with the specified id.');
+})
+
+// Delete review
+app.delete('/reviews/:reviewId', (req, res, next) => {
+  res.send('This route would delete the review with the specified id.');
+})
+
+// Root route - DO NOT MODIFY
+app.get('/', (req, res) => {
+  res.json({
+      message: "API server is running"
+  });
+});
+// 
+
 // at the bottom export app
 module.exports = app;
