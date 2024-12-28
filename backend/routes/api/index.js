@@ -19,14 +19,9 @@ router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 // using new routers here \/
 router.use('/spots', spotsRouter);
-
-// router.use('/reviews/me', reviewsRouter);
-// router.use('/spots/:spotId/reviews', );
-// router.use('/reviews/:reviewId/images', );
-// router.use('/reviews/:reviewId', );
-// router.use('/reviews/:reviewId/images/:imageId', );
-
-
+// added reviews router needs to be properly connected in the API routes
+const reviewsRouter = require('./reviews.js');
+const reviewImagesRouter = require('./review-images.js');
 
 // // Will use this test route later for front end testing
 // router.post('/test', (req, res) => {

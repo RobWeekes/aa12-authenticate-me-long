@@ -4,41 +4,57 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Review, ReviewImage } = require('../../db/models');
+// const { User, Review, ReviewImage } = require('../../db/models');
+const { Review, User, Spot, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
 // added restoreUser middleware
-const { requireAuth } = require('../../utils/auth');
+// const { requireAuth } = require('../../utils/auth');
 // 
 
 // review paths start with '/reviews'(handled by router in index.js)
 // Get all reviews of current user
+// router.get('/current', requireAuth, async (req, res) => {
+//     const reviews = await Review.findAll({
+//         where: {
+//             userId: req.user.id
+//         },
+//         include: [
+//             {
+//                 model: User,
+//                 attributes: ['id', 'firstName', 'lastName']
+//             },
+//             {
+//                 model: Spot,
+//                 attributes: [
+//                     'id', 'ownerId', 'address', 'city', 'state',
+//                     'country', 'lat', 'lng', 'name', 'price', 'previewImage'
+//                 ]
+//             },
+//             {
+//                 model: ReviewImage,
+//                 attributes: ['id', 'url']
+//             }
+//         ]
+//     });
+
+//     res.json({ Reviews: reviews });
+// });
+// Get current user's reviews
 router.get('/current', requireAuth, async (req, res) => {
     const reviews = await Review.findAll({
-        where: {
-            userId: req.user.id
-        },
-        include: [
-            {
-                model: User,
-                attributes: ['id', 'firstName', 'lastName']
-            },
-            {
-                model: Spot,
-                attributes: [
-                    'id', 'ownerId', 'address', 'city', 'state',
-                    'country', 'lat', 'lng', 'name', 'price', 'previewImage'
-                ]
-            },
-            {
-                model: ReviewImage,
-                attributes: ['id', 'url']
-            }
-        ]
+      where: {
+        userId: req.user.id
+      },
+      include: [
+        { model: User },
+        { model: Spot },
+        { model: ReviewImage, as: 'ReviewImages' }
+      ]
     });
-
+  
     res.json({ Reviews: reviews });
-});
+  });
 // router.get('/me', requireAuth, async (req, res) => {
 //     const reviews = await Review.findAll({
 //         where: { userId: req.user.id }
@@ -107,26 +123,52 @@ router.post(
 // }
 
 // Add image to a review
-router.post('/reviews/:reviewId/images', requireAuth, async (req, res) => {
+// router.post('/reviews/:reviewId/images', requireAuth, async (req, res) => {
+//     const { url } = req.body;
+//     const newImage = await ReviewImage.create({
+//         reviewId: req.params.reviewId,
+//         url
+//     });
+//     return res.status(201).json(newImage);
+// });
+// to create review images
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
     const { url } = req.body;
+    const reviewId = req.params.reviewId;
+  
     const newImage = await ReviewImage.create({
-        reviewId: req.params.reviewId,
-        url
+      reviewId,
+      url
     });
-    return res.status(201).json(newImage);
-});
+  
+    res.status(201).json(newImage);
+  });
 // const reviewResponse = {
 //     id: reviews.id,
 //     url: reviews.url
 // }
 
 // Update review
-router.put('/reviews/:reviewsId', requireAuth, async (req, res) => {
+// router.put('/reviews/:reviewsId', requireAuth, async (req, res) => {
+//     const { review, stars } = req.body;
+//     const updatedReview = await Review.findByPk(req.params.reviewId);
+//     await updatedReview.update({ review, stars });
+//     return res.json(updatedReview);
+// });
+// Edit a review
+router.put('/:reviewId', requireAuth, async (req, res) => {
     const { review, stars } = req.body;
-    const updatedReview = await Review.findByPk(req.params.reviewId);
-    await updatedReview.update({ review, stars });
-    return res.json(updatedReview);
-});
+    const reviewId = req.params.reviewId;
+    
+    const reviewToUpdate = await Review.findByPk(reviewId);
+    
+    await reviewToUpdate.update({
+      review,
+      stars
+    });
+    
+    res.json(reviewToUpdate);
+  });
 //     const reviewResponse = {
 //         id: reviews.id,
 //         userId: reviews.userId,
