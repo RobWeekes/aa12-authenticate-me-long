@@ -20,11 +20,11 @@ router.use('/users', usersRouter);
 // using new routers here \/
 router.use('/spots', spotsRouter);
 
-router.use('/reviews/me', reviewsRouter);
-router.use('/spots/:spotId/reviews', );
-router.use('/reviews/:reviewId/images', );
-router.use('/reviews/:reviewId', );
-router.use('/reviews/:reviewId/images/:imageId', );
+// router.use('/reviews/me', reviewsRouter);
+// router.use('/spots/:spotId/reviews', );
+// router.use('/reviews/:reviewId/images', );
+// router.use('/reviews/:reviewId', );
+// router.use('/reviews/:reviewId/images/:imageId', );
 
 
 

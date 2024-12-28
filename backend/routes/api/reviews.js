@@ -7,25 +7,54 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User, Review, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
+// added restoreUser middleware
+const { requireAuth } = require('../../utils/auth');
+// 
 
 // review paths start with '/reviews'(handled by router in index.js)
 // Get all reviews of current user
-router.get('/me', requireAuth, async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
     const reviews = await Review.findAll({
-        where: { userId: req.user.id }
+        where: {
+            userId: req.user.id
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Spot,
+                attributes: [
+                    'id', 'ownerId', 'address', 'city', 'state',
+                    'country', 'lat', 'lng', 'name', 'price', 'previewImage'
+                ]
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
     });
-    return res.json({ Reviews: reviews });
-    // const reviewResponse = {
-    //     id: reviews.id,
-    //     userId: reviews.userId,
-    //     spotId: reviews.spotId, //req.params.spotId ?
-    //     review: reviews.review,
-    //     stars: reviews.stars,
-    //     createdAt: reviews.createdAt,
-    //     updatedAt: reviews.updatedAt
-    // }
-    // res.send('This route would return all of the reviews.');
+
+    res.json({ Reviews: reviews });
 });
+// router.get('/me', requireAuth, async (req, res) => {
+//     const reviews = await Review.findAll({
+//         where: { userId: req.user.id }
+//     });
+//     return res.json({ Reviews: reviews });
+// const reviewResponse = {
+//     id: reviews.id,
+//     userId: reviews.userId,
+//     spotId: reviews.spotId, //req.params.spotId ?
+//     review: reviews.review,
+//     stars: reviews.stars,
+//     createdAt: reviews.createdAt,
+//     updatedAt: reviews.updatedAt
+// }
+// res.send('This route would return all of the reviews.');
+// });
 
 // Get reviews by spot id
 router.get(
@@ -52,14 +81,19 @@ router.get(
 router.post(
     "/spots/:spotId/reviews", requireAuth,
     async (req, res) => {
+        const { user } = req;
+        const spotId = req.params.spotId;
         const { review, stars } = req.body;
         const newReview = await Review.create({
-            userId: req.user.id,
-            spotId: req.params.spotId,
+            userId: user.id,
+            spotId: spotId,
+            // userId: req.user.id,
+            // spotId: req.params.spotId,
             review,
             stars
         });
-        return res.status(201).json(newReview);
+        return res.json(newReview);
+        // return res.status(201).json(newReview);
     });
 
 // const reviewResponse = {
