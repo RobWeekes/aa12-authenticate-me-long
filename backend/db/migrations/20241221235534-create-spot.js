@@ -17,17 +17,45 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spotId: {
+      ownerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         unique: true,
       },
-      url: {
-        type: Sequelize.STRING(100),
+      address: {
+        type: Sequelize.STRING(60),
         allowNull: false,
       },
-      preview: {
+      city: {
         type: Sequelize.STRING(30),
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+      },
+      country: {
+        type: Sequelize.STRING(40),
+        allowNull: false,
+      },
+      lat: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      lng: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      name: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      price: {
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
       createdAt: {
