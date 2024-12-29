@@ -2,9 +2,7 @@
 
 ## Database Schema Design
 
-https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c
-
-[db-schema]: ./images/authenticate-me-project.png
+![](https://res.cloudinary.com/ddb0y4vlh/image/upload/v1734407368/AirBnB_database_schema_xctmdf.png)
 
 ## API Documentation
 

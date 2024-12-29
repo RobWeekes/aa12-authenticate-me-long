@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Spot.belongsTo(models.User, { foreignKey: 'ownerId' });
-      Spot.hasMany(models.SpotImage, { foreignKey: 'spotId', as: 'SpotImages' });
-      Spot.hasMany(models.Booking, { foreignKey: 'spotId', as: 'SpotBookings' });
+      // Spot.hasMany(models.SpotImage, { foreignKey: 'spotId', as: 'SpotImages' });
+      // Spot.hasMany(models.Booking, { foreignKey: 'spotId', as: 'SpotBookings' });
     }
   }
 
@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       ownerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
       address: {
         type: DataTypes.STRING,
