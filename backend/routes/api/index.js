@@ -13,15 +13,18 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 // declaring new router variables here \/
 const spotsRouter = require('./spots.js');
-
+const reviewsRouter = require('./reviews.js');
+const reviewImagesRouter = require('./review-images.js');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 // using new routers here \/
+// connect the spots router to the main API router
 router.use('/spots', spotsRouter);
-// added reviews router needs to be properly connected in the API routes
-const reviewsRouter = require('./reviews.js');
-const reviewImagesRouter = require('./review-images.js');
+// connect the reviews router to the main API router
+router.use('/reviews', reviewsRouter);
+// connect the review-images router to the main API router
+router.use('/review-images', reviewImagesRouter);
 
 // // Will use this test route later for front end testing
 // router.post('/test', (req, res) => {

@@ -93,7 +93,6 @@ router.get(
 // },
 
 // Create review for spot
-
 router.post(
     "/spots/:spotId/reviews", requireAuth,
     async (req, res) => {
