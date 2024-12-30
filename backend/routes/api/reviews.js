@@ -23,27 +23,44 @@ const validateReview = [
   handleValidationErrors
 ];
 
-// check if spot exists before creating a review
+// Check if spot exists before creating a review
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
-  // Check if spot exists first
-  const spot = await Spot.findByPk(req.params.spotId);
-  
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found"
+
+  const { spotId } = req.params;
+  const { review, stars } = req.body;
+  const userId = req.user.id; // Assuming user is authenticated and their ID is in req.user
+
+  try {
+    // First, check if the spot exists
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    // Check if the user already has a review for this spot
+    const existingReview = await Review.findOne({ where: { userId, spotId } });
+    if (existingReview) {
+      return res.status(500).json({
+        message: "User already has a review for this spot"
+      });
+    }
+
+    // Create the review
+    const newReview = await Review.create({
+      userId,
+      spotId,
+      review,
+      stars
+    });
+
+    // Return a successful response with the review data
+    return res.status(201).json(newReview);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "An error occurred while creating the review"
     });
   }
-
-  // Create review only if spot exists
-  const { review, stars } = req.body;
-  const newReview = await Review.create({
-    userId: req.user.id,
-    spotId: spot.id, // Use the found spot's id
-    review,
-    stars
-  });
-
-  return res.status(201).json(newReview);
 });
 
 // Get current user's reviews
@@ -51,15 +68,15 @@ router.get('/current', requireAuth, async (req, res) => {
   const reviews = await Review.findAll({
     where: { userId: req.user.id },
     include: [
-      { 
+      {
         model: User,
         attributes: ['id', 'firstName', 'lastName']
       },
-      { 
+      {
         model: Spot,
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
       },
-      { 
+      {
         model: ReviewImage,
         attributes: ['id', 'url']
       }
@@ -71,7 +88,7 @@ router.get('/current', requireAuth, async (req, res) => {
 // Add image to a review
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
   const review = await Review.findByPk(req.params.reviewId);
-  
+
   if (!review) {
     return res.status(404).json({ message: "Review couldn't be found" });
   }
@@ -105,7 +122,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 // Edit a review
 router.put('/:reviewId', requireAuth, validateReview, async (req, res) => {
   const review = await Review.findByPk(req.params.reviewId);
-  
+
   if (!review) {
     return res.status(404).json({ message: "Review couldn't be found" });
   }
@@ -121,7 +138,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res) => {
 // Delete a review
 router.delete('/:reviewId', requireAuth, async (req, res) => {
   const review = await Review.findByPk(req.params.reviewId);
-  
+
   if (!review) {
     return res.status(404).json({ message: "Review couldn't be found" });
   }
