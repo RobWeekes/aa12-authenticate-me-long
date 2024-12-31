@@ -4,7 +4,6 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-// const { User, Review, ReviewImage } = require('../../db/models');
 const { Review, User, Spot, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
@@ -23,44 +22,74 @@ const validateReview = [
   handleValidationErrors
 ];
 
-// Check if spot exists before creating a review
-router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+  const { spotId, userId, reviewId } = req.body;
 
-  const { spotId } = req.params;
-  const { review, stars } = req.body;
-  const userId = req.user.id; // Assuming user is authenticated and their ID is in req.user
+  // Check if the user already has a review for this spot
+  const existingReview = await Review.findOne({
+    where: {
+      spotId,
+      userId,
+    },
+  });
 
-  try {
-    // First, check if the spot exists
-    const spot = await Spot.findByPk(spotId);
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
+  if (existingReview) {
+    return res.status(500).json({
+      message: "User already has a review for this spot",
+    });
+  }
 
-    // Check if the user already has a review for this spot
-    const existingReview = await Review.findOne({ where: { userId, spotId } });
-    if (existingReview) {
-      return res.status(500).json({
-        message: "User already has a review for this spot"
+  // If reviewId is provided, check if the number of images for this review exceeds the limit
+  if (reviewId) {
+    // Check if the reviewId exists in the Review table
+    const review = await Review.findOne({
+      where: {
+        id: reviewId,
+      },
+    });
+
+    if (!review) {
+      return res.status(404).json({
+        message: "Review couldn't be found",
       });
     }
 
-    // Create the review
-    const newReview = await Review.create({
-      userId,
-      spotId,
-      review,
-      stars
+    // Check if the number of images for this review exceeds the limit
+    const reviewImages = await ReviewImage.findAll({
+      where: {
+        reviewId,
+      },
     });
 
-    // Return a successful response with the review data
-    return res.status(201).json(newReview);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "An error occurred while creating the review"
+    if (reviewImages.length >= 10) {
+      return res.status(403).json({
+        message: "Maximum number of images for this resource was reached",
+      });
+    }
+  }
+});
+
+// check if spot exists before creating a review
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+  // Check if spot exists first
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found"
     });
   }
+
+  // Create review only if spot exists
+  const { review, stars } = req.body;
+  const newReview = await Review.create({
+    userId: req.user.id,
+    spotId: spot.id, // Use the found spot's id
+    review,
+    stars
+  });
+
+  return res.status(201).json(newReview);
 });
 
 // Get current user's reviews
