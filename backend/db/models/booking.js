@@ -28,9 +28,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
     }
-  }, {
+  },
+  {
     sequelize,
     modelName: 'Booking',
-  });
+    defaultScope: {
+      attributes: {
+        exclude: [],
+      }
+    }
+  }
+);
   return Booking;
 };
