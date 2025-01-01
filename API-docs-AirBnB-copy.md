@@ -54,7 +54,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: false
 * Request
   * Method: GET
-  * Route path: api/users/current
+  * Route path: api/session
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -95,7 +95,7 @@ information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: api/login
+  * Route path: api/session
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -972,7 +972,7 @@ Return all the bookings that the current user has made.
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: api/users/:userId/bookings
+  * Route path: api/bookings/current
   * Body: none
 
 * Successful Response
@@ -1311,7 +1311,7 @@ Delete an existing image for a Spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * Route path: api/spots/:spotId/images/:imageId  ?
+  * Route path: api/spot-images/:spotId
   * Body: none
 
 * Successful Response
@@ -1346,7 +1346,7 @@ Delete an existing image for a Review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: DELETE
-  * Route path: api/reviews/:reviewId/images/:imageId  ?
+  * Route path: api/review-images/:reviewId
   * Body: none
 
 * Successful Response
