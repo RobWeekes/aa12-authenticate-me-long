@@ -1,10 +1,18 @@
 'use strict';
 
+const { SpotImage } = require('../models');
+const bcrypt = require("bcryptjs");
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  // define your schema in options object
+  options.schema = process.env.SCHEMA;
+}
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-
-    await queryInterface.bulkInsert('SpotImages', [
+    await SpotImage.bulkCreate([
       {
         spotId: 1,
         url: 'https://example.com/image1.jpg',
@@ -20,27 +28,14 @@ module.exports = {
         url: 'https://example.com/image3.jpg',
         preview: true
       }
-    ]);
+    ], { validate: true });
   },
 
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
-
-
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('SpotImages', null, {});
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    options.tableName = 'SpotImages';
+    const Op = Sequelize.Op;
+    await queryInterface.bulkDelete(options, {
+      spotId: { [Op.in]: [1,2,3] }
+    }, {});
   }
 };
