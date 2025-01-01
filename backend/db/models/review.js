@@ -1,11 +1,9 @@
 'use strict';
-// const {
-//   Model
-// } = require('sequelize');
+
 const { Model, Validator } = require('sequelize');
 
 const sequelize = require('../../config/database');
-const User = require('./user');
+// const User = require('./user');
 
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {

@@ -28,11 +28,26 @@ const router = express.Router();
 
 
 
+
+
+
 // Get all Spots
+// need to reference reviews table
 router.get('/',
     async (req, res) => {
     const allSpots = await Spot.findAll()
-    return res.json(allSpots);
+
+    const countSpots = await Spot.count();
+    console.log('countSpots:', countSpots);
+    // not sure about these maths \/
+    // const sumStars = await Review.sum('stars');
+    // console.log('sumStars:', sumStars);
+    // const avgStars = sumStars/countSpots;
+    // console.log('avgStars:', avgStars);
+    allSpots.avgRating = 'avgStars';
+    allSpots.previewImage = "<image url>"
+    console.log(allSpots);
+    return res.status(200).json(allSpots);
 })
 
 
