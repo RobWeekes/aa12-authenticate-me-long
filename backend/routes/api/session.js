@@ -15,16 +15,33 @@ const validateLogin = [
   check('credential')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
+    .withMessage("Email or username is required"),
   check('password')
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
+    .withMessage("Password is required"),
   handleValidationErrors
 ];
 
 // session paths start with '/session' (handled by router in index.js)
 
-// Log in
+// Get the Current User / Restore session
+router.get("/", (req, res) => {
+  const { user } = req;
+  if (user) {
+    const safeUser = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        username: user.username,
+      };
+    return res.json({
+      user: safeUser,
+    });
+  } else return res.json({ user: null });
+});
+
+// Log in a User
 router.post(
   "/",
   validateLogin,
@@ -41,11 +58,15 @@ router.post(
   });
 
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
-    const err = new Error("Login failed");
-    err.status = 401;
-    err.title = "Login failed";
-    err.errors = { credential: "The provided credentials were invalid." };
-    return next(err);
+    const err = new Error("Invalid credentials");
+    return res.json({
+      "message": "Invalid credentials"
+    });
+    // const err = new Error("Login failed");
+    // err.status = 401;
+    // err.title = "Login failed";
+    // err.errors = { credential: "The provided credentials were invalid." };
+    // return next(err);
   }
 
   const safeUser = {
@@ -69,21 +90,6 @@ router.delete("/", (_req, res) => {
   return res.json({ message: "success" });
 });
 
-// Restore session user
-router.get("/", (req, res) => {
-  const { user } = req;
-  if (user) {
-    const safeUser = {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        username: user.username,
-      };
-    return res.json({
-      user: safeUser,
-    });
-  } else return res.json({ user: null });
-});
+
 
 module.exports = router;

@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const { ValidationError } = require('sequelize');
 
 const { environment } = require('./config');
-const isProduction = environment === 'production'; 
+const isProduction = environment === 'production';
 // import the routes in backend/app.js
 const routes = require('./routes');
 
@@ -17,8 +17,8 @@ const routes = require('./routes');
 const app = express();
 // global middleware for logging information
 app.use(morgan('dev'));
-// Add the cookie-parser middleware for parsing cookies 
-// and the express.json middleware for parsing JSON bodies 
+// Add the cookie-parser middleware for parsing cookies
+// and the express.json middleware for parsing JSON bodies
 app.use(cookieParser());
 app.use(express.json());
 
@@ -76,7 +76,7 @@ app.use((err, _req, _res, next) => {
     res.status(err.status || 500);
     console.error(err);
     res.json({
-      title: err.title || 'Server Error',
+      // title: err.title || 'Server Error',
       message: err.message,
       errors: err.errors,
       stack: isProduction ? null : err.stack
@@ -122,7 +122,7 @@ app.get('/', (req, res) => {
       message: "API server is running"
   });
 });
-// 
+//
 
 // at the bottom export app
 module.exports = app;
