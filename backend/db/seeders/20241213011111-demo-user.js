@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   // define your schema in options object
-  options.schema = process.env.SCHEMA;  
+  options.schema = process.env.SCHEMA;
 }
 
 module.exports = {
@@ -16,22 +16,22 @@ module.exports = {
         email: 'demo@user.io',
         username: 'Demo-lition',
         hashedPassword: bcrypt.hashSync('password'),
-        firstName: 'Peter',
-        lastName: 'Parker'
+        firstName: 'John',
+        lastName: 'Smith'
       },
       {
         email: 'user1@user.io',
         username: 'FakeUser1',
         hashedPassword: bcrypt.hashSync('password2'),
-        firstName: 'Peter',
-        lastName: 'Parker'
+        firstName: 'John',
+        lastName: 'Smith'
       },
       {
         email: 'user2@user.io',
         username: 'FakeUser2',
         hashedPassword: bcrypt.hashSync('password3'),
-        firstName: 'Peter',
-        lastName: 'Parker'
+        firstName: 'John',
+        lastName: 'Smith'
       }
     ], { validate: true });
   },
