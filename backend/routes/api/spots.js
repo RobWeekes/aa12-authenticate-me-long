@@ -93,6 +93,36 @@ router.get('/current', requireAuth, async (req, res) => {
     // else return res.json({ user: null });
 });
 
+// Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (req, res) => {
+  const reviewsBySpotId = await Spot.findByPk(req.params.spotId);
+
+  if (!reviewsBySpotId) {
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
+  }
+
+  const reviews = await Review.findAll({
+    where: {
+      spotId: req.params.spotId
+    },
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+        model: ReviewImage,
+        as: 'ReviewImages',
+        attributes: ['id', 'url']
+      }
+    ]
+  });
+
+  return res.json({ Reviews: reviews });
+});
+
 // Get details of a Spot from a Spot id
 router.get('/:spotId', async (req, res) => {
     const spot = await Spot.findOne({
@@ -151,24 +181,6 @@ router.get('/', async (req, res) => {
   return res.status(200).json({ "Spots": allSpots });
 })
 
-// Create a Spot
-router.post('/', requireAuth, validateNewSpot, async (req, res) => {
-  const newSpot = await Spot.create({
-      "ownerId": req.user.id,
-      "address": req.body.address,
-      "city": req.body.city,
-      "state": req.body.state,
-      "country": req.body.country,
-      "lat": req.body.lat,
-      "lng": req.body.lng,
-      "name": req.body.name,
-      "description": req.body.description,
-      "price": req.body.price
-  });
-  // console.log(newSpot);
-  return res.status(201).json(newSpot);
-})
-
 // Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
@@ -196,36 +208,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     preview: newSpotImage.preview
   });
 })
-
-// Get all Reviews by a Spot's id
-router.get('/:spotId/reviews', async (req, res) => {
-  const reviewsBySpotId = await Spot.findByPk(req.params.spotId);
-
-  if (!reviewsBySpotId) {
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  }
-
-  const reviews = await Review.findAll({
-    where: {
-      spotId: req.params.spotId
-    },
-    include: [
-      {
-        model: User,
-        attributes: ['id', 'firstName', 'lastName']
-      },
-      {
-        model: ReviewImage,
-        as: 'ReviewImages',
-        attributes: ['id', 'url']
-      }
-    ]
-  });
-
-  return res.json({ Reviews: reviews });
-});
 
 // Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
@@ -262,5 +244,23 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
 
   return res.status(201).json(newReview);
 });
+
+// Create a Spot
+router.post('/', requireAuth, validateNewSpot, async (req, res) => {
+  const newSpot = await Spot.create({
+      "ownerId": req.user.id,
+      "address": req.body.address,
+      "city": req.body.city,
+      "state": req.body.state,
+      "country": req.body.country,
+      "lat": req.body.lat,
+      "lng": req.body.lng,
+      "name": req.body.name,
+      "description": req.body.description,
+      "price": req.body.price
+  });
+  // console.log(newSpot);
+  return res.status(201).json(newSpot);
+})
 
 module.exports = router;
