@@ -1,14 +1,5 @@
 # `Authenticate Me Backend Project`
 
-Render.com database:
-https://auth-me-z6z9.onrender.com
-
-## Database Schema Design
-
-![](https://res.cloudinary.com/ddb0y4vlh/image/upload/v1734407368/AirBnB_database_schema_xctmdf.png)
-
-# `Authenticate Me Backend Project`
-
 ## Database Schema Design
 
 ![](https://res.cloudinary.com/ddb0y4vlh/image/upload/v1734407368/AirBnB_database_schema_xctmdf.png)
