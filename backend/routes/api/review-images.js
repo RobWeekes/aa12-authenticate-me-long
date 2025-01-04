@@ -14,9 +14,6 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     }]
   });
 
-  console.log('Found review image:', reviewImage);
-  console.log('Line 14 - Delete route hit with imageId:', req.params.imageId);
-
   if (!reviewImage) {
     return res.status(404).json({
       message: "Review Image couldn't be found"
