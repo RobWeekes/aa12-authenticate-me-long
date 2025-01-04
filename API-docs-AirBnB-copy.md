@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![](https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c)
+![](https://res.cloudinary.com/ddb0y4vlh/image/upload/v1734407368/AirBnB_database_schema_xctmdf.png)
 
 Render.com database:
 https://auth-me-z6z9.onrender.com
@@ -1310,7 +1310,7 @@ Delete an existing image for a Spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * Route path: api/spots/:spotId/images/:imageId  ?
+  * Route path: api/spot-images/:imageId
   * Body: none
 
 * Successful Response
@@ -1345,7 +1345,7 @@ Delete an existing image for a Review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: DELETE
-  * Route path: api/reviews/:reviewId/images/:imageId  ?
+  * Route path: api/review-images/:imageId
   * Body: none
 
 * Successful Response
