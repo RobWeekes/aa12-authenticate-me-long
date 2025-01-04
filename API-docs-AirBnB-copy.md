@@ -4,9 +4,8 @@
 
 ![](https://asset.cloudinary.com/ddb0y4vlh/ec9feaf4e53174b5d98bbded5bcf447c)
 
-<!-- ![db-schema] -->
-
-<!-- [db-schema]: ./images/authenticate-me-project.png -->
+Render.com database:
+https://auth-me-z6z9.onrender.com
 
 ## API Documentation
 
