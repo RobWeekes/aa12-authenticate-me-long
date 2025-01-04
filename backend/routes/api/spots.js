@@ -11,6 +11,42 @@ const { QueryInterface, Sequelize } = require('sequelize');
 
 const router = express.Router();
 
+const validateNewSpot = [
+  check('address')
+    .exists({ checkFalsy: true })
+    .withMessage('Street address is required'),
+  check('city')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4 })
+    .withMessage('City is required'),
+  check('state')
+    .exists({ checkFalsy: true })
+    .withMessage('State is required'),
+  check('country')
+    .exists({ checkFalsy: true })
+    .withMessage('Country is required'),
+  check('lat')
+    .exists({ checkFalsy: true })
+    // range req. -90 < 90
+    .withMessage('Latitude must be within -90 and 90'),
+  check('lng')
+    .exists({ checkFalsy: true })
+    // range req. -180 < 180
+    .withMessage('Longitude must be within -180 and 180'),
+  check('name')
+    .exists({ checkFalsy: true })
+    .isLength({ max: 50 })
+    .withMessage('Name must be less than 50 characters'),
+  check('description')
+    .exists({ checkFalsy: true })
+    .withMessage('Description is required'),
+  check('price')
+    .exists({ checkFalsy: true })
+    // range req. < 0
+    .withMessage('Price per day must be a positive number'),
+  handleValidationErrors
+];
+
 // spot paths start with '/spots' (handled by router in index.js)
 
 // Get all Spots owned by the Current User
@@ -47,7 +83,7 @@ router.get('/current', requireAuth, async (req, res) => {
     // else return res.json({ user: null });
 });
 
-// Get details of a Spot from an id
+// Get details of a Spot from a Spot id
 router.get('/:spotId', async (req, res) => {
     const spot = await Spot.findOne({
         where: {
@@ -68,7 +104,7 @@ router.get('/:spotId', async (req, res) => {
           },
           {
             model: User,
-            as: 'Owner',
+            as: 'Owner', // alias name
             attributes: ['id', 'firstName', 'lastName']
           },
         ],
@@ -76,7 +112,6 @@ router.get('/:spotId', async (req, res) => {
           include: [
             [sequelize.fn('COUNT', sequelize.col('SpotReviews.spotId')), 'numReviews'],
             [sequelize.fn('AVG', sequelize.col('SpotReviews.stars')), 'avgStarRating']
-            // [sequelize.col('SpotImages.url'), 'SpotImages']
           ]
         },
         group: ['Spot.id', 'SpotImages.id', 'Owner.id']
@@ -91,8 +126,7 @@ router.get('/:spotId', async (req, res) => {
 })
 
 // Get all Spots
-router.get('/',
-  async (req, res) => {
+router.get('/', async (req, res) => {
   const allSpots = await Spot.findAll()
   const countSpots = await Spot.count();
   // console.log('countSpots:', countSpots);
@@ -107,7 +141,50 @@ router.get('/',
   return res.status(200).json({ "Spots": allSpots });
 })
 
+// Create a Spot
+router.post('/', requireAuth, validateNewSpot, async (req, res) => {
+  const newSpot = await Spot.create({
+      "ownerId": req.user.id,
+      "address": req.body.address,
+      "city": req.body.city,
+      "state": req.body.state,
+      "country": req.body.country,
+      "lat": req.body.lat,
+      "lng": req.body.lng,
+      "name": req.body.name,
+      "description": req.body.description,
+      "price": req.body.price
+  });
+  // console.log(newSpot);
+  return res.status(201).json(newSpot);
+})
 
+// Add an Image to a Spot based on the Spot's id
+router.post('/:spotId/images', requireAuth, async (req, res) => {
+  const spot = await Spot.findByPk(req.params.spotId);
 
+  if(!spot) {  // Couldn't find a Spot with the specified id
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
+  } // Spot must belong to the current user
+  if(spot.ownerId !== req.user.id) {
+    return res.status(403).json({
+      message: "Forbidden"
+    });
+  }
+  // Successful Response
+  const newSpotImage = await SpotImage.create({
+    spotId: req.params.spotId,
+    url: req.body.url,
+    preview: req.body.preview,
+
+  })
+  return res.status(201).json({
+    id: newSpotImage.id,
+    url: newSpotImage.url,
+    preview: newSpotImage.preview
+  });
+})
 
 module.exports = router;
