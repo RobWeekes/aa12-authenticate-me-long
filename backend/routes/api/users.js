@@ -38,7 +38,7 @@ const validateSignup = [
   handleValidationErrors
 ];
 
-// user paths start with '/users' (handled by router in index.js)
+// User paths start with '/users' (handled by router in index.js)
 
 // Sign up new User
 router.post('/', validateSignup, async (req, res) => {

@@ -971,7 +971,7 @@ Return all the bookings that the current user has made.
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: api/users/:userId/bookings
+  * Route path: api/bookings/current
   * Body: none
 
 * Successful Response
