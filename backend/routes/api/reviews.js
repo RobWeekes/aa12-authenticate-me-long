@@ -5,6 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Review, User, Spot, ReviewImage } = require('../../db/models');
 // const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
+const { QueryInterface, Sequelize } = require('sequelize');
 
 const router = express.Router();
 
@@ -19,28 +20,7 @@ const validateReview = [
   handleValidationErrors
 ];
 
-// Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
-  const { spotId } = req.params;
-  const { review, stars } = req.body;
-  const userId = req.user.id;
 
-  // Check if the spot exists
-  const spot = await Spot.findByPk(spotId);
-  if (!spot) {
-    return res.status(404).json({ message: "Spot couldn't be found" });
-  }
-
-  // Create the new review
-  const newReview = await Review.create({
-    userId,
-    spotId,
-    review,
-    stars
-  });
-
-  return res.status(201).json(newReview);
-});
 
 // Get all Reviews of the Current User
 router.get('/current', requireAuth, async (req, res) => {
@@ -53,7 +33,8 @@ router.get('/current', requireAuth, async (req, res) => {
       },
       {
         model: Spot,
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [Sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
+      ]
       },
       {
         model: ReviewImage,
@@ -64,32 +45,6 @@ router.get('/current', requireAuth, async (req, res) => {
   });
   return res.json({ Reviews: reviews });
 });
-
-// Get all Reviews by a Spot's id
-router.get('/spots/:spotId/reviews', async (req, res) => {
-  const reviewsBySpotId = await Review.findAll({
-    where: {
-      spotIdd: req.params.spotId
-    },
-    include: [
-      {
-        model: User,
-        attributes: ['id', 'firstName', 'lastName']
-      },
-      {
-        model: ReviewImage,
-        attributes: ['id', 'url']
-      }
-    ]
-  })
-
-  if (!reviewsBySpotId) {
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  }
-  return res.json(spot);
-})
 
 // Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
