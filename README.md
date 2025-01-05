@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![](https://res.cloudinary.com/ddb0y4vlh/image/upload/v1734407368/AirBnB_database_schema_xctmdf.png)
+![](https://res.cloudinary.com/dk6ayq1by/image/upload/v1736116645/AirBnB_database_schema_dhkbqr.png)
 
 Render.com database:
 https://auth-me-z6z9.onrender.com
