@@ -8,6 +8,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, Review, SpotImage, User, ReviewImage, Booking, sequelize } = require('../../db/models');
 const { QueryInterface, Sequelize } = require('sequelize');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 
@@ -57,39 +58,74 @@ const validateReview = [
   handleValidationErrors
 ];
 
+const validateQueryParameterForSpot = [
+  check('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('Page must be greater than or equal to 1'),
+  check('size')
+    .optional()
+    .isInt({ min: 1, max: 20 })
+    .withMessage('Size must be between 1 and 20'),
+  check('maxLat')
+    .optional()
+    .isFloat({ min: -90, max: 90 })
+    .withMessage('Maximum latitude is invalid'),
+  check('minLat')
+    .optional()
+    .isFloat({ min: -90, max: 90 })
+    .withMessage('Minimum latitude is invalid'),
+  check('minLng')
+    .optional()
+    .isFloat({ min: -180, max: 180 })
+    .withMessage('Maximum longitude is invalid'),
+  check('maxLng')
+    .optional()
+    .isFloat({ min: -180, max: 180 })
+    .withMessage('Minimum longitude is invalid'),
+  check('minPrice')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('Minimum price must be greater than or equal to 0'),
+  check('maxPrice')
+    .isFloat({ min: 0 })
+    .withMessage('Maximum price must be greater than or equal to 0'),
+  handleValidationErrors
+];
+
 // Spot paths start with '/spots' (handled by router in index.js)
 
 // Get all Spots owned by the Current User
 router.get('/current', requireAuth, async (req, res) => {
-    const ownerSpots = await Spot.findAll({
-        where: {
-            ownerId: req.user.id
-        },
-        include: [
-          {
-            model: Review,
-            as: 'SpotReviews',  // alias name
-            attributes: []
-          },
-          {
-            model: SpotImage,
-            as: 'SpotImages',  // alias name
-            attributes: [],
-            where: { preview: true },
-            required: false
-          },
-        ],
-        attributes: {
-          include: [
-            [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating'],
-            [sequelize.col('SpotImages.url'), 'previewImage']
-          ]
-        },
-        group: ['Spot.id', 'SpotImages.url']
-    });
-    return res.json({ "Spots": ownerSpots });  // if else not needed bcuz Get user not logged in returns { user: null }
-    // if(ownerSpots) return res.json({ ownerSpots });
-    // else return res.json({ user: null });
+  const ownerSpots = await Spot.findAll({
+    where: {
+      ownerId: req.user.id
+    },
+    include: [
+      {
+        model: Review,
+        as: 'SpotReviews',  // alias name
+        attributes: []
+      },
+      {
+        model: SpotImage,
+        as: 'SpotImages',  // alias name
+        attributes: [],
+        where: { preview: true },
+        required: false
+      },
+    ],
+    attributes: {
+      include: [
+        [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating'],
+        [sequelize.col('SpotImages.url'), 'previewImage']
+      ]
+    },
+    group: ['Spot.id', 'SpotImages.url']
+  });
+  return res.json({ "Spots": ownerSpots });  // if else not needed bcuz Get user not logged in returns { user: null }
+  // if(ownerSpots) return res.json({ ownerSpots });
+  // else return res.json({ user: null });
 });
 
 // Get all Reviews by a Spot's id
@@ -152,41 +188,43 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 // Get details of a Spot from a Spot ID
 router.get('/:spotId', async (req, res) => {
-    const spot = await Spot.findOne({
-        where: {
-            id: req.params.spotId
-        },
-        include: [
-          {
-            model: Review,
-            as: 'SpotReviews',  // alias name
-            attributes: []
-          },
-          {
-            model: SpotImage,
-            as: 'SpotImages',  // alias name
-            attributes: ['id','url','preview']
-            // where: { preview: true },
-            // required: false
-          },
-          {
-            model: User,
-            as: 'Owner', // alias name
-            attributes: ['id', 'firstName', 'lastName']
-          },
-        ],
-        attributes: {
-          include: [
-            [sequelize.fn('COUNT', sequelize.col('SpotReviews.spotId')), 'numReviews'],
-            [sequelize.fn('AVG', sequelize.col('SpotReviews.stars')), 'avgStarRating']
-          ]
-        },
-        group: ['Spot.id', 'SpotImages.id', 'Owner.id']
-    });  // invalid spot id
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    };
-    return res.json(spot);
+  const spot = await Spot.findOne({
+    where: {
+      id: req.params.spotId
+    },
+    include: [
+      {
+        model: Review,
+        as: 'SpotReviews',  // alias name
+        attributes: []
+      },
+      {
+        model: SpotImage,
+        as: 'SpotImages',  // alias name
+        attributes: ['id', 'url', 'preview']
+        // where: { preview: true },
+        // required: false
+      },
+      {
+        model: User,
+        as: 'Owner', // alias name
+        attributes: ['id', 'firstName', 'lastName']
+      },
+    ],
+    attributes: {
+      include: [
+        [sequelize.fn('COUNT', sequelize.col('SpotReviews.spotId')), 'numReviews'],
+        [sequelize.fn('AVG', sequelize.col('SpotReviews.stars')), 'avgStarRating']
+      ]
+    },
+    group: ['Spot.id', 'SpotImages.id', 'Owner.id']
+  });  // invalid spot id
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
+  }
+  return res.json(spot);
 })
 
 // Get all Spots
@@ -202,10 +240,12 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
   const { url, preview } = req.body;
   const spot = await Spot.findByPk(spotId);
 
-  if (!spot) { // couldn't find a Spot with the specified id
-    return res.status(404).json({ message: "Spot couldn't be found" });
-  }; // spot must belong to the current user
-  if(spot.ownerId !== req.user.id) {
+  if (!spot) {  // Couldn't find a Spot with the specified id
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
+  } // spot must belong to the current user
+  if (spot.ownerId !== req.user.id) {
     return res.status(403).json({
       message: "Forbidden"
     });
@@ -263,7 +303,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res) => {
   if (!spot) {
     return res.status(404).json({ message: "Spot couldn't be found" });
   }
-  if(spot.ownerId !== req.user.id) {
+  if (spot.ownerId !== req.user.id) {
     return res.status(403).json({ "message": "Forbidden" });
   }
   // reassign spot attributes with new values
@@ -279,7 +319,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   if (!spot) {
     return res.status(404).json({ message: "Spot couldn't be found" });
   }
-  if(spot.ownerId !== req.user.id) {
+  if (spot.ownerId !== req.user.id) {
     return res.status(403).json({ "message": "Forbidden" });
   }
   // delete the spot
@@ -295,5 +335,143 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
   // console.log(newSpot);
   return res.status(201).json(newSpot);
 })
+
+// Add Query Filters to Get All Spots
+
+// Utility function to handle query parameter validation
+const validateQueryParams = (query) => {
+  const errors = {};
+
+  // Validate page
+  if (query.page && (query.page < 1)) {
+    errors.page = "Page must be greater than or equal to 1";
+  }
+
+  // Validate size
+  if (query.size && (query.size < 1 || query.size > 20)) {
+    errors.size = "Size must be between 1 and 20";
+  }
+
+  // Validate latitude and longitude ranges
+  if (query.minLat && query.maxLat && query.minLat > query.maxLat) {
+    errors.minLat = "Minimum latitude must be less than or equal to maximum latitude";
+  }
+
+  if (query.minLng && query.maxLng && query.minLng > query.maxLng) {
+    errors.minLng = "Minimum longitude must be less than or equal to maximum longitude";
+  }
+
+  // Validate price range
+  if (query.minPrice && query.minPrice < 0) {
+    errors.minPrice = "Minimum price must be greater than or equal to 0";
+  }
+
+  if (query.maxPrice && query.maxPrice < 0) {
+    errors.maxPrice = "Maximum price must be greater than or equal to 0";
+  }
+
+  return errors;
+};
+
+// API endpoint for retrieving filtered spots
+router.get('/', validateQueryParameterForSpot, async (req, res) => {
+  const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice = Infinity } = req.query;
+
+  // Validate query parameters
+  const errors = validateQueryParams(req.query);
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({
+      message: "Bad Request",
+      errors: errors,
+    });
+  }
+
+  // Convert query parameters to numbers
+
+  let pageNum = 1; // Default value
+  let pageSize = 20; // Default value
+  let minLatValue = null; // Default value
+  let maxLatValue = null; // Default value
+  let minLngValue = null; // Default value
+  let maxLngValue = null; // Default value
+  let minPriceValue = 0; // Default value
+  let maxPriceValue = Infinity; // Default value
+
+  // Check if 'page' exists, then parse and assign it to pageNum
+  if (page) {
+    pageNum = parseInt(page, 10);
+  }
+
+  // Check if 'size' exists, then parse and assign it to pageSize
+  if (size) {
+    pageSize = parseInt(size, 10);
+  }
+
+  // Check if 'minLat' exists, then parse and assign it to minLatValue
+  if (minLat) {
+    minLatValue = parseFloat(minLat);
+  }
+
+  // Check if 'maxLat' exists, then parse and assign it to maxLatValue
+  if (maxLat) {
+    maxLatValue = parseFloat(maxLat);
+  }
+
+  // Check if 'minLng' exists, then parse and assign it to minLngValue
+  if (minLng) {
+    minLngValue = parseFloat(minLng);
+  }
+
+  // Check if 'maxLng' exists, then parse and assign it to maxLngValue
+  if (maxLng) {
+    maxLngValue = parseFloat(maxLng);
+  }
+
+  // Check if 'minPrice' exists, then parse and assign it to minPriceValue
+  if (minPrice) {
+    minPriceValue = parseFloat(minPrice);
+  }
+
+  // Check if 'maxPrice' exists, then parse and assign it to maxPriceValue
+  if (maxPrice) {
+    maxPriceValue = parseFloat(maxPrice);
+  }
+
+  // Build query filters
+  const filters = {};
+
+  if (minLatValue && maxLatValue) {
+    filters.lat = { [Sequelize.Op.between]: [minLatValue, maxLatValue] };
+  }
+
+  if (minLngValue && maxLngValue) {
+    filters.lng = { [Sequelize.Op.between]: [minLngValue, maxLngValue] };
+  }
+
+  if (minPriceValue >= 0 && maxPriceValue >= 0) {
+    filters.price = { [Sequelize.Op.between]: [minPriceValue, maxPriceValue] };
+  }
+
+  try {
+    // Query the database with the built filters and pagination
+    const spots = await Spot.findAndCountAll({
+      where: filters,
+      limit: pageSize,
+      offset: (pageNum - 1) * pageSize,
+    });
+
+    // Return paginated results
+    const response = {
+      Spots: spots.rows,
+      page: pageNum,
+      size: pageSize,
+    };
+
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 module.exports = router;
