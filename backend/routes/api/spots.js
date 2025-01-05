@@ -36,7 +36,7 @@ const validateNewSpot = [
     .withMessage('Longitude must be within -180 and 180'),
   check('name')
     .exists({ checkFalsy: true })
-    .isLength({ max: 50 })
+    .isLength({ min: 1, max: 50 })
     .withMessage('Name must be less than 50 characters'),
   check('description')
     .exists({ checkFalsy: true })
