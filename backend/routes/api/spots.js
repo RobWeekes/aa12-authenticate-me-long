@@ -120,15 +120,14 @@ router.get('/current', requireAuth, async (req, res) => {
     },
     group: ['Spot.id', 'SpotImages.url']
   });
-  return res.json({ "Spots": ownerSpots });  // if else not needed bcuz Get user not logged in returns { user: null }
-  // if(ownerSpots) return res.json({ ownerSpots });
-  // else return res.json({ user: null });
+  return res.json({ "Spots": ownerSpots });
+  // get user not logged in returns { user: null }
 });
 
 // Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
-  if (!spot) {
+  if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
   };
   const reviews = await Review.findAll({
@@ -164,8 +163,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
       },
     ]
   });
-  // invalid spot id
-  if (!spot) {
+  if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
   };
   // successful response: if you ARE NOT the owner of the spot.
@@ -180,7 +178,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   // }
   // successful response: if you ARE the owner of the spot.
   res.json({ Bookings: spotBookings });
-
 })
 
 // Get details of a Spot from a Spot ID
@@ -215,38 +212,31 @@ router.get('/:spotId', async (req, res) => {
       ]
     },
     group: ['Spot.id', 'SpotImages.id', 'Owner.id']
-  });  // invalid spot id
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  }
+  });
+  if (!spot) {  // couldn't find a spot with the specified id
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  };
   return res.json(spot);
-})
+});
 
 // Get all Spots
 router.get('/', async (req, res) => {
   const allSpots = await Spot.findAll()
   // console.log(allSpots);
   return res.status(200).json({ "Spots": allSpots });
-})
+});
 
 // Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
   const { url, preview } = req.body;
   const spot = await Spot.findByPk(spotId);
-
-  if (!spot) {  // Couldn't find a Spot with the specified id
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  } // spot must belong to the current user
+  if (!spot) {  // couldn't find a spot with the specified id
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  };  // check if spot is owned by user
   if (spot.ownerId !== req.user.id) {
-    return res.status(403).json({
-      message: "Forbidden"
-    });
-  }
+    return res.status(403).json({ message: "Forbidden" });
+  };
   // successful response
   const newSpotImage = await SpotImage.create({
     spotId,
@@ -258,7 +248,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     url: newSpotImage.url,
     preview: newSpotImage.preview
   });
-})
+});
 
 // Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
@@ -268,9 +258,9 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
   const userId = req.user.id;
   // check if the spot exists
   const spot = await Spot.findByPk(spotId);
-  if (!spot) {
+  if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
-  };
+  };    // check if user already reviewed this spot
   const existingReview = await Review.findOne({
     where: {
       spotId: spotId,
@@ -281,7 +271,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
     return res.status(500).json({
       message: "User already has a review for this spot"
     });
-  }
+  };
   // create the new review
   const newReview = await Review.create({
     userId,
@@ -297,12 +287,12 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res) => {
   const spotId = req.params.spotId;
   // check if the spot exists
   const spot = await Spot.findByPk(spotId);
-  if (!spot) {
+  if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
-  }
+  };  // check if spot is owned by user
   if (spot.ownerId !== req.user.id) {
     return res.status(403).json({ "message": "Forbidden" });
-  }
+  };
   // reassign spot attributes with new values
   const updatedSpot = await spot.update(req.body);
   return res.json(updatedSpot);
@@ -313,12 +303,12 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
   // check if the spot exists
   const spot = await Spot.findByPk(spotId);
-  if (!spot) {
+  if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
-  }
+  };  // check if spot is owned by user
   if (spot.ownerId !== req.user.id) {
     return res.status(403).json({ "message": "Forbidden" });
-  }
+  };
   // delete the spot
   await spot.destroy();
   return res.json({ "message": "Successfully deleted" });
@@ -331,49 +321,41 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
   const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
   // console.log(newSpot);
   return res.status(201).json(newSpot);
-})
+});
 
 // Add Query Filters to Get All Spots
 
 // Utility function to handle query parameter validation
 const validateQueryParams = (query) => {
   const errors = {};
-
   // Validate page
   if (query.page && (query.page < 1)) {
     errors.page = "Page must be greater than or equal to 1";
-  }
-
+  };
   // Validate size
   if (query.size && (query.size < 1 || query.size > 20)) {
     errors.size = "Size must be between 1 and 20";
-  }
-
+  };
   // Validate latitude and longitude ranges
   if (query.minLat && query.maxLat && query.minLat > query.maxLat) {
     errors.minLat = "Minimum latitude must be less than or equal to maximum latitude";
-  }
-
+  };
   if (query.minLng && query.maxLng && query.minLng > query.maxLng) {
     errors.minLng = "Minimum longitude must be less than or equal to maximum longitude";
-  }
-
+  };
   // Validate price range
   if (query.minPrice && query.minPrice < 0) {
     errors.minPrice = "Minimum price must be greater than or equal to 0";
-  }
-
+  };
   if (query.maxPrice && query.maxPrice < 0) {
     errors.maxPrice = "Maximum price must be greater than or equal to 0";
-  }
-
+  };
   return errors;
 };
 
 // API endpoint for retrieving filtered spots
 router.get('/', validateQueryParameterForSpot, async (req, res) => {
   const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice = Infinity } = req.query;
-
   // Validate query parameters
   const errors = validateQueryParams(req.query);
   if (Object.keys(errors).length > 0) {
@@ -381,10 +363,8 @@ router.get('/', validateQueryParameterForSpot, async (req, res) => {
       message: "Bad Request",
       errors: errors,
     });
-  }
-
+  };
   // Convert query parameters to numbers
-
   let pageNum = 1; // Default value
   let pageSize = 20; // Default value
   let minLatValue = null; // Default value
@@ -393,62 +373,49 @@ router.get('/', validateQueryParameterForSpot, async (req, res) => {
   let maxLngValue = null; // Default value
   let minPriceValue = 0; // Default value
   let maxPriceValue = Infinity; // Default value
-
   // Check if 'page' exists, then parse and assign it to pageNum
   if (page) {
     pageNum = parseInt(page, 10);
-  }
-
+  };
   // Check if 'size' exists, then parse and assign it to pageSize
   if (size) {
     pageSize = parseInt(size, 10);
-  }
-
+  };
   // Check if 'minLat' exists, then parse and assign it to minLatValue
   if (minLat) {
     minLatValue = parseFloat(minLat);
-  }
-
+  };
   // Check if 'maxLat' exists, then parse and assign it to maxLatValue
   if (maxLat) {
     maxLatValue = parseFloat(maxLat);
-  }
-
+  };
   // Check if 'minLng' exists, then parse and assign it to minLngValue
   if (minLng) {
     minLngValue = parseFloat(minLng);
-  }
-
+  };
   // Check if 'maxLng' exists, then parse and assign it to maxLngValue
   if (maxLng) {
     maxLngValue = parseFloat(maxLng);
-  }
-
+  };
   // Check if 'minPrice' exists, then parse and assign it to minPriceValue
   if (minPrice) {
     minPriceValue = parseFloat(minPrice);
-  }
-
+  };
   // Check if 'maxPrice' exists, then parse and assign it to maxPriceValue
   if (maxPrice) {
     maxPriceValue = parseFloat(maxPrice);
-  }
-
+  };
   // Build query filters
   const filters = {};
-
   if (minLatValue && maxLatValue) {
     filters.lat = { [Sequelize.Op.between]: [minLatValue, maxLatValue] };
-  }
-
+  };
   if (minLngValue && maxLngValue) {
     filters.lng = { [Sequelize.Op.between]: [minLngValue, maxLngValue] };
-  }
-
+  };
   if (minPriceValue >= 0 && maxPriceValue >= 0) {
     filters.price = { [Sequelize.Op.between]: [minPriceValue, maxPriceValue] };
-  }
-
+  };
   try {
     // Query the database with the built filters and pagination
     const spots = await Spot.findAndCountAll({
@@ -456,19 +423,19 @@ router.get('/', validateQueryParameterForSpot, async (req, res) => {
       limit: pageSize,
       offset: (pageNum - 1) * pageSize,
     });
-
     // Return paginated results
     const response = {
       Spots: spots.rows,
       page: pageNum,
       size: pageSize,
     };
-
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
-  }
+  };
 });
+
+
 
 module.exports = router;
