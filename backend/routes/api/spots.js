@@ -6,7 +6,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, Review, SpotImage, User, ReviewImage, sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, User, ReviewImage, Booking, sequelize } = require('../../db/models');
 const { QueryInterface, Sequelize } = require('sequelize');
 
 const router = express.Router();
@@ -96,10 +96,8 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:spotId/reviews', async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  }
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  };
   const reviews = await Review.findAll({
     where: {
       spotId: req.params.spotId
@@ -118,6 +116,39 @@ router.get('/:spotId/reviews', async (req, res) => {
   });
   return res.json({ Reviews: reviews });
 });
+
+// Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+  const spotBookings = await Booking.findAll({
+    where: {
+      spotId: req.params.spotId
+    },
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      },
+    ]
+  });
+  // invalid spot id
+  if (!spot) {
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  };
+  // successful response: if you ARE NOT the owner of the spot.
+  // if (spot.ownerId !== req.user.id) {
+  //   return res.json({ Bookings:
+  //     {
+  //       spotId: spotBookings.spotId,
+  //       startDate: spotBookings.startDate,
+  //       endDate: spotBookings.endDate,
+  //     }
+  //   })
+  // }
+  // successful response: if you ARE the owner of the spot.
+  res.json({ Bookings: spotBookings });
+
+})
 
 // Get details of a Spot from a Spot ID
 router.get('/:spotId', async (req, res) => {
@@ -153,10 +184,8 @@ router.get('/:spotId', async (req, res) => {
         group: ['Spot.id', 'SpotImages.id', 'Owner.id']
     });  // invalid spot id
     if (!spot) {
-        return res.status(404).json({
-            message: "Spot couldn't be found"
-        });
-    }
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    };
     return res.json(spot);
 })
 
@@ -173,11 +202,9 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
   const { url, preview } = req.body;
   const spot = await Spot.findByPk(spotId);
 
-  if(!spot) {  // Couldn't find a Spot with the specified id
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  } // spot must belong to the current user
+  if (!spot) { // couldn't find a Spot with the specified id
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  }; // spot must belong to the current user
   if(spot.ownerId !== req.user.id) {
     return res.status(403).json({
       message: "Forbidden"
@@ -206,7 +233,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
   const spot = await Spot.findByPk(spotId);
   if (!spot) {
     return res.status(404).json({ message: "Spot couldn't be found" });
-  }
+  };
   const existingReview = await Review.findOne({
     where: {
       spotId: spotId,

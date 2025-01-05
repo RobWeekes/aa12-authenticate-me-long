@@ -34,6 +34,13 @@ module.exports = {
         startDate: new Date(),
         endDate: new Date(),
       },
+      {
+        // id: 4, added to test "Get all User's Bookings"
+        spotId: 2,
+        userId: 1,
+        startDate: new Date(),
+        endDate: new Date(),
+      },
     ], { validate: true });
   },
 
