@@ -343,7 +343,7 @@ const validateQueryParams = (query) => {
 };
 
 // API endpoint for retrieving filtered spots
-app.get('/', validateQueryParameterForSpot, async (req, res) => {
+router.get('/', validateQueryParameterForSpot, async (req, res) => {
   const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice = Infinity } = req.query;
 
   // Validate query parameters
