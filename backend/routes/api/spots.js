@@ -277,7 +277,8 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 // Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) => {
   const spotId = req.params.spotId;
-  const { startDate,endDate } = req.body;
+  const { startDate, endDate } = req.body;
+  const userId = req.user.id;
   const spot = await Spot.findByPk(spotId);
   if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
@@ -327,14 +328,14 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
   }
 
   // Create booking if no conflicts
-  const booking = await Booking.create({
+  const spotBookings = await Booking.create({
     spotId,
-    userId: req.user.id,
+    userId,
     startDate,
     endDate
   });
 
-  res.json({ Bookings: spotBookings });
+  res.json(spotBookings);
 });
 
 // Create a Review for a Spot based on the Spot's id

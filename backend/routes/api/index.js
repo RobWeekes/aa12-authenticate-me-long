@@ -16,6 +16,7 @@ const spotsRouter = require('./spots.js');
 const reviewsRouter = require('./reviews.js');
 const reviewImagesRouter = require('./review-images.js');
 const bookingsRouter = require('./bookings.js');
+const spotImagesRouter = require('./spot-images.js');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
@@ -25,7 +26,7 @@ router.use('/spots', spotsRouter);
 router.use('/reviews', reviewsRouter);
 router.use('/review-images', reviewImagesRouter);
 router.use('/bookings', bookingsRouter);
-
+router.use('/spot-images', spotImagesRouter);
 
 // // Will use this test route later for front end testing
 // router.post('/test', (req, res) => {

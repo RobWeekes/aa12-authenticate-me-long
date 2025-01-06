@@ -7,7 +7,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 const { Booking, Spot, User, SpotImage, sequelize } = require('../../db/models');
-const { QueryInterface, Sequelize } = require('sequelize');
+const { QueryInterface, Sequelize, Op } = require('sequelize');
 
 const router = express.Router();
 
@@ -92,6 +92,7 @@ router.get('/current', requireAuth, async (req, res) => {
 // Edit a Booking
 router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
   const bookingId = req.params.bookingId;
+  const { startDate, endDate } = req.body;
   // check if the booking exists
   const booking = await Booking.findByPk(bookingId);
   if (!booking) {  // couldn't find a booking with the specified id
@@ -107,7 +108,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
   // check for booking conflicts
   const conflictingBooking = await Booking.findOne({
     where: {
-      id: { [Op.ne]: bookingId },
+      id: { [Op.ne]: parseInt(bookingId) },
       spotId: booking.spotId,
       [Op.or]: [
         {
@@ -146,7 +147,12 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
 router.delete('/:bookingId', requireAuth, async (req, res) => {
   const bookingId = req.params.bookingId;
   // check if the booking exists
-  const booking = await Booking.findByPk(bookingId);
+  const booking = await Booking.findOne({
+    where: { id: bookingId },
+    include: [{
+      model: Spot
+    }]
+  });
   if (!booking) {  // couldn't find a booking with the specified id
     return res.status(404).json({ message: "Booking couldn't be found" });
   };  
@@ -155,7 +161,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     return res.status(403).json({ message: "Bookings that have been started can't be deleted" });
   }
   // check if booking or spot is owned by user
-  if (spot.ownerId !== req.user.id && booking.userId !== req.user.id) {
+  if (booking.Spot.ownerId !== req.user.id && booking.userId !== req.user.id) {
     return res.status(403).json({ "message": "Forbidden" });
   };
   // delete the booking
