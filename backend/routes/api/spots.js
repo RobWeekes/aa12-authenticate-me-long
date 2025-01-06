@@ -168,7 +168,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
 // Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) => {
-  const spotId = req.params.spotId;
+  const spotId = parseInt(req.params.spotId);
   const { startDate, endDate } = req.body;
   const userId = req.user.id;
   const spot = await Spot.findByPk(spotId);
