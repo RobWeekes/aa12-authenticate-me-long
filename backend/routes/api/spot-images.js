@@ -14,10 +14,13 @@ router.delete('/:spotImageId', requireAuth, async (req, res) => {
   const spotImageId = req.params.spotImageId;
   // check if the spot image exists
   const spotImage = await SpotImage.findByPk(spotImageId, {
-    include: [{ model: Spot }]
+    include: [{
+      model: Spot,
+      attributes: ['ownerId']
+     }],
   });
   if (!spotImage) {
-    return res.status(404).json({ message: "Couldn't find a Spot Image with the specified id" });
+    return res.status(404).json({ message: "Spot Image couldn't be found" });
   };  // check user permissions
   if (spotImage.Spot.ownerId !== req.user.id) {
     return res.status(403).json({ message: "Forbidden" });
