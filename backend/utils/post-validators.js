@@ -82,7 +82,7 @@ const validateNewSpot = [
   handleValidationErrors
 ];
 
-const validateQueryParameterForSpot = [
+const validateQueryParamsForSpots = [
   check('page')
     .optional()
     .isInt({ min: 1 })
@@ -125,5 +125,5 @@ module.exports = {
   validateReview,
   validateBooking,
   validateNewSpot,
-  validateQueryParameterForSpot
+  validateQueryParamsForSpots
 };
