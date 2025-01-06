@@ -83,37 +83,6 @@ const router = express.Router();
 //   handleValidationErrors
 // ];
 
-// const validateQueryParameterForSpot = [
-//   check('page')
-//     .optional()
-//     .isInt({ min: 1 })
-//     .withMessage('Page must be greater than or equal to 1'),
-//   check('size')
-//     .optional()
-//     .isInt({ min: 1, max: 20 })
-//     .withMessage('Size must be between 1 and 20'),
-//   check('maxLat')
-//     .optional()
-//     .isFloat({ max: 90 })
-//     .withMessage('Maximum latitude is invalid'),
-//   check('minLat')
-//     .optional()
-//     .isFloat({ min: -90 })
-//     .withMessage('Minimum latitude is invalid'),
-//   check('minLng')
-//     .optional()
-//     .isFloat({ max: 180 })
-//     .withMessage('Maximum longitude is invalid'),
-//   check('maxLng')
-//     .optional()
-//     .isFloat({ min: -180 })
-//     .withMessage('Minimum longitude is invalid'),
-//   check('minPrice')
-//     .optional()
-//     .isFloat({ min: 0 })
-//     .withMessage('Minimum price must be greater than or equal to 0'),
-//   handleValidationErrors
-// ];
 
 // Spot paths start with '/spots' (handled by router in index.js)
 
@@ -244,11 +213,11 @@ router.get('/:spotId', async (req, res) => {
   return res.json(spot);
 });
 
-// Get all Spots
-router.get('/', async (req, res) => {
-  const allSpots = await Spot.findAll()
-  return res.status(200).json({ "Spots": allSpots });
-});
+// // Get all Spots
+// router.get('/', async (req, res) => {
+//   const allSpots = await Spot.findAll()
+//   return res.status(200).json({ "Spots": allSpots });
+// });
 
 // Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
@@ -413,116 +382,211 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
 
 // Add Query Filters to Get All Spots
 
-// Utility function to handle query parameter validation
-const validateQueryParams = (query) => {
-  const errors = {};
-  // Validate page
-  if (query.page && (query.page < 1)) {
-    errors.page = "Page must be greater than or equal to 1";
-  };
-  // Validate size
-  if (query.size && (query.size < 1 || query.size > 20)) {
-    errors.size = "Size must be between 1 and 20";
-  };
-  // Validate latitude and longitude ranges
-  if (query.minLat && query.maxLat && query.minLat > query.maxLat) {
-    errors.minLat = "Minimum latitude must be less than or equal to maximum latitude";
-  };
-  if (query.minLng && query.maxLng && query.minLng > query.maxLng) {
-    errors.minLng = "Minimum longitude must be less than or equal to maximum longitude";
-  };
-  // Validate price range
-  if (query.minPrice && query.minPrice < 0) {
-    errors.minPrice = "Minimum price must be greater than or equal to 0";
-  };
-  if (query.maxPrice && query.maxPrice < 0) {
-    errors.maxPrice = "Maximum price must be greater than or equal to 0";
-  };
-  return errors;
-};
+// // Utility function to handle query parameter validation
+// const validateQueryParams = (query) => {
+//   const errors = {};
+//   // Validate page
+//   if (query.page && (query.page < 1)) {
+//     errors.page = "Page must be greater than or equal to 1";
+//   };
+//   // Validate size
+//   if (query.size && (query.size < 1 || query.size > 20)) {
+//     errors.size = "Size must be between 1 and 20";
+//   };
+//   // Validate latitude and longitude ranges
+//   if (query.minLat && query.maxLat && query.minLat > query.maxLat) {
+//     errors.minLat = "Minimum latitude must be less than or equal to maximum latitude";
+//   };
+//   if (query.minLng && query.maxLng && query.minLng > query.maxLng) {
+//     errors.minLng = "Minimum longitude must be less than or equal to maximum longitude";
+//   };
+//   // Validate price range
+//   if (query.minPrice && query.minPrice < 0) {
+//     errors.minPrice = "Minimum price must be greater than or equal to 0";
+//   };
+//   if (query.maxPrice && query.maxPrice < 0) {
+//     errors.maxPrice = "Maximum price must be greater than or equal to 0";
+//   };
+//   return errors;
+// };
 
+// Add Query Filters to Get All Spots
 // API endpoint for retrieving filtered spots
+// router.get('/', validateQueryParameterForSpot, async (req, res) => {
+//   // const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+//   const page = parseInt(req.query.page) || 1;
+//   const size = parseInt(req.query.size) || 20;
+
+//   const pagination = {
+//     limit: parseInt(size),
+//     offset: (parseInt(page) - 1) * parseInt(size)
+//   };
+
+//   const spots = await Spot.findAll({
+//     ...pagination,
+//     include: [
+//       {
+//         model: Review,
+//         as: 'SpotReviews',
+//         attributes: []
+//       },
+//       {
+//         model: SpotImage,
+//         as: 'SpotImages',
+//         attributes: [],
+//         where: { preview: true },
+//         required: false
+//       }
+//     ]
+//   });
+
+//   return res.json({
+//     Spots: spots,
+//     page: page,
+//     size: size
+//   });
+// });
+
 router.get('/', validateQueryParameterForSpot, async (req, res) => {
-  const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice = Infinity } = req.query;
-  // Validate query parameters
-  const errors = validateQueryParams(req.query);
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({
-      message: "Bad Request",
-      errors: errors,
-    });
+  const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 20;
+
+  const pagination = {
+    limit: parseInt(size),
+    offset: (parseInt(page) - 1) * parseInt(size)
   };
-  // Convert query parameters to numbers
-  let pageNum = 1; // Default value
-  let pageSize = 20; // Default value
-  let minLatValue = null; // Default value
-  let maxLatValue = null; // Default value
-  let minLngValue = null; // Default value
-  let maxLngValue = null; // Default value
-  let minPriceValue = 0; // Default value
-  let maxPriceValue = Infinity; // Default value
-  // Check if 'page' exists, then parse and assign it to pageNum
-  if (page) {
-    pageNum = parseInt(page, 10);
-  };
-  // Check if 'size' exists, then parse and assign it to pageSize
-  if (size) {
-    pageSize = parseInt(size, 10);
-  };
-  // Check if 'minLat' exists, then parse and assign it to minLatValue
-  if (minLat) {
-    minLatValue = parseFloat(minLat);
-  };
-  // Check if 'maxLat' exists, then parse and assign it to maxLatValue
-  if (maxLat) {
-    maxLatValue = parseFloat(maxLat);
-  };
-  // Check if 'minLng' exists, then parse and assign it to minLngValue
-  if (minLng) {
-    minLngValue = parseFloat(minLng);
-  };
-  // Check if 'maxLng' exists, then parse and assign it to maxLngValue
-  if (maxLng) {
-    maxLngValue = parseFloat(maxLng);
-  };
-  // Check if 'minPrice' exists, then parse and assign it to minPriceValue
-  if (minPrice) {
-    minPriceValue = parseFloat(minPrice);
-  };
-  // Check if 'maxPrice' exists, then parse and assign it to maxPriceValue
-  if (maxPrice) {
-    maxPriceValue = parseFloat(maxPrice);
-  };
-  // Build query filters
-  const filters = {};
-  if (minLatValue && maxLatValue) {
-    filters.lat = { [Sequelize.Op.between]: [minLatValue, maxLatValue] };
-  };
-  if (minLngValue && maxLngValue) {
-    filters.lng = { [Sequelize.Op.between]: [minLngValue, maxLngValue] };
-  };
-  if (minPriceValue >= 0 && maxPriceValue >= 0) {
-    filters.price = { [Sequelize.Op.between]: [minPriceValue, maxPriceValue] };
-  };
-  try {
-    // Query the database with the built filters and pagination
-    const spots = await Spot.findAndCountAll({
-      where: filters,
-      limit: pageSize,
-      offset: (pageNum - 1) * pageSize,
-    });
-    // Return paginated results
-    const response = {
-      Spots: spots.rows,
-      page: pageNum,
-      size: pageSize,
-    };
-    res.status(200).json(response);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
-  };
+
+  const where = {};
+
+  if (minLat && maxLat) {
+    where.lat = { [Op.between]: [minLat, maxLat] };
+  }
+
+  if (minLng || maxLng) {
+    where.lng = {};
+    if (minLng) where.lng[Op.gte] = minLng;
+    if (maxLng) where.lng[Op.lte] = maxLng;
+  }
+
+  if (minPrice || maxPrice) {
+    where.price = {};
+    if (minPrice) where.price[Op.gte] = minPrice;
+    if (maxPrice) where.price[Op.lte] = maxPrice;
+  }
+
+  const spots = await Spot.findAll({
+    where,
+    ...pagination,
+    include: [
+      {
+        model: Review,
+        as: 'SpotReviews',
+        attributes: []
+      },
+      {
+        model: SpotImage,
+        as: 'SpotImages',
+        attributes: [],
+        where: { preview: true },
+        required: false
+      }
+    ]
+  });
+
+  return res.json({
+      Spots: spots,
+      page: page,
+      size: size
+  });
 });
+
+
+// router.get('/', validateQueryParameterForSpot, async (req, res) => {
+  // // Validate query parameters
+  // const errors = validateQueryParams(req.query);
+  // if (Object.keys(errors).length > 0) {
+  //   return res.status(400).json({
+  //     message: "Bad Request",
+  //     errors: errors,
+  //   });
+  // };
+
+  // // Convert query parameters to numbers
+  // let pageNum = 1; // Default value
+  // let pageSize = 20; // Default value
+  // let minLatValue = null; // Default value
+  // let maxLatValue = null; // Default value
+  // let minLngValue = null; // Default value
+  // let maxLngValue = null; // Default value
+  // let minPriceValue = 0; // Default value
+  // let maxPriceValue = Infinity; // Default value
+
+  // // Check if 'page' exists, then parse and assign it to pageNum
+  // if (page) {
+  //   pageNum = parseInt(page, 10);
+  // };
+  // // Check if 'size' exists, then parse and assign it to pageSize
+  // if (size) {
+  //   pageSize = parseInt(size, 10);
+  // };
+  // // Check if 'minLat' exists, then parse and assign it to minLatValue
+  // if (minLat) {
+  //   minLatValue = parseFloat(minLat);
+  // };
+  // // Check if 'maxLat' exists, then parse and assign it to maxLatValue
+  // if (maxLat) {
+  //   maxLatValue = parseFloat(maxLat);
+  // };
+  // // Check if 'minLng' exists, then parse and assign it to minLngValue
+  // if (minLng) {
+  //   minLngValue = parseFloat(minLng);
+  // };
+  // // Check if 'maxLng' exists, then parse and assign it to maxLngValue
+  // if (maxLng) {
+  //   maxLngValue = parseFloat(maxLng);
+  // };
+  // // Check if 'minPrice' exists, then parse and assign it to minPriceValue
+  // if (minPrice) {
+  //   minPriceValue = parseFloat(minPrice);
+  // };
+  // // Check if 'maxPrice' exists, then parse and assign it to maxPriceValue
+  // if (maxPrice) {
+  //   maxPriceValue = parseFloat(maxPrice);
+  // };
+
+  // // Build query filters
+  // const filters = {};
+  // if (minLatValue && maxLatValue) {
+  //   filters.lat = { [Sequelize.Op.between]: [minLatValue, maxLatValue] };
+  // };
+  // if (minLngValue && maxLngValue) {
+  //   filters.lng = { [Sequelize.Op.between]: [minLngValue, maxLngValue] };
+  // };
+  // if (minPriceValue >= 0 && maxPriceValue >= 0) {
+  //   filters.price = { [Sequelize.Op.between]: [minPriceValue, maxPriceValue] };
+  // };
+  // try {
+  //   // Query the database with the built filters and pagination
+  //   const spots = await Spot.findAndCountAll({
+  //     where: filters,
+  //     limit: pageSize,
+  //     offset: (pageNum - 1) * pageSize,
+  //   });
+  //   // Return paginated results
+  //   const response = {
+  //     Spots: spots.rows,
+  //     page: pageNum,
+  //     size: pageSize,
+  //   };
+  //   res.status(200).json(response);
+  // } catch (err) {
+  //   console.error(err);
+  //   res.status(500).json({ message: "Internal Server Error" });
+  // };
+// });
 
 
 
