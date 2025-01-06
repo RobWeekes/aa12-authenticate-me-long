@@ -13,77 +13,6 @@ const { Op } = require('sequelize');
 
 const router = express.Router();
 
-// const validateNewSpot = [
-//   check('address')
-//     .exists({ checkFalsy: true })
-//     .withMessage('Street address is required'),
-//   check('city')
-//     .exists({ checkFalsy: true })
-//     .isLength({ min: 4 })
-//     .withMessage('City is required'),
-//   check('state')
-//     .exists({ checkFalsy: true })
-//     .withMessage('State is required'),
-//   check('country')
-//     .exists({ checkFalsy: true })
-//     .withMessage('Country is required'),
-//   check('lat')
-//     .exists({ checkFalsy: true })
-//     .isDecimal({ min: -90, max: 90 }) // range req. -90 < 90
-//     .withMessage('Latitude must be within -90 and 90'),
-//   check('lng')
-//     .exists({ checkFalsy: true })
-//     .isDecimal({ min: -180, max: 180 })// range req. -180 < 180
-//     .withMessage('Longitude must be within -180 and 180'),
-//   check('name')
-//     .exists({ checkFalsy: true })
-//     .isLength({ min: 1, max: 50 })
-//     .withMessage('Name must be less than 50 characters'),
-//   check('description')
-//     .exists({ checkFalsy: true })
-//     .withMessage('Description is required'),
-//   check('price')
-//     .exists({ checkFalsy: true })
-//     .isDecimal({ min: 0 }) // range req. > 0
-//     .withMessage('Price per day must be a positive number'),
-//   handleValidationErrors
-// ];
-
-// const validateReview = [
-//   check('review')
-//     .exists({ checkFalsy: true })
-//     .withMessage('Review text is required'),
-//   check('stars')
-//     .isInt({ min: 1, max: 5 })
-//     .withMessage('Stars must be an integer from 1 to 5'),
-//   handleValidationErrors
-// ];
-
-// const validateBooking = [
-//   check('startDate')
-//   .exists({ checkFalsy: true })
-//   .custom((value) => {
-//     const startDate = new Date(value);
-//     const today = new Date();
-//     if (startDate < today) {
-//       throw new Error('startDate cannot be in the past');
-//     }
-//     return true;
-//   }),
-//   check('endDate')
-//   .exists({ checkFalsy: true })
-//   .custom((value, { req }) => {
-//     const endDate = new Date(value);
-//     const startDate = new Date(req.body.startDate);
-//     if (endDate <= startDate) {
-//       throw new Error('endDate cannot be on or before startDate');
-//     }
-//     return true;
-//   }),
-//   handleValidationErrors
-// ];
-
-
 // Spot paths start with '/spots' (handled by router in index.js)
 
 // Get all Spots owned by the Current User
@@ -378,9 +307,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
 // Add Query Filters to Get All Spots
 // API endpoint for retrieving filtered spots
 router.get('/', validateQueryParamsForSpots, async (req, res) => {
-  const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
-  const page = parseInt(req.query.page) || 1;
-  const size = parseInt(req.query.size) || 20;
+  const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
   const pagination = {  // standard page limit/offset object
     limit: parseInt(size),
@@ -421,16 +348,29 @@ router.get('/', validateQueryParamsForSpots, async (req, res) => {
         where: { preview: true },
         required: false
       }
-    ]
+    ],
+    attributes: {
+      include: [  // got it working with SQL literals
+        [sequelize.literal('(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'avgRating'],
+        [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
+      ] // sequelize.fn/col kept giving { "message": "SQLITE_ERROR: no such column: SpotReviews.stars" } at routes\\api\\spots.js:406:17"
+    },
+    group: ['Spot.id']
   });
 
+  // if no query params were passed, return [spots] w/o page & size keys
+  // console.log('req.query:', req.query)
+  if (Object.keys(req.query).length === 0) {
+    return res.json({
+      Spots: spots,
+    });
+  };  // if query params were passed, include page & size
   return res.json({
       Spots: spots,
       page: page,
       size: size
   });
 });
-
 
 
 
