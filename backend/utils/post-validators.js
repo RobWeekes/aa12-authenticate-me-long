@@ -77,7 +77,7 @@ const validateNewSpot = [
     .withMessage('Description is required'),
   check('price')
     .exists({ checkFalsy: true })
-    .isDecimal({ min: 0 }) // range req. > 0
+    .isFloat({ min: 0 }) // range req. > 0
     .withMessage('Price per day must be a positive number'),
   handleValidationErrors
 ];
