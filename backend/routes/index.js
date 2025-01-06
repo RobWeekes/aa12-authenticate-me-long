@@ -24,13 +24,9 @@ router.get("/api/csrf/restore", (req, res) => {
   });
 });
 
-
 router.use('/api', apiRouter);
 
-
 // GET /api/restore-user
-
-
 router.get(
   '/restore-user',
   (req, res) => {

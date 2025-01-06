@@ -3,9 +3,10 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-
 const { requireAuth } = require('../../utils/auth');
+const { handleValidationErrors } = require('../../utils/validation');
+const { validateBooking, validateReview } = require('../../utils/post-validators');
+
 const { Booking, Spot, User, SpotImage, sequelize } = require('../../db/models');
 const { QueryInterface, Sequelize, Op } = require('sequelize');
 
@@ -13,29 +14,29 @@ const router = express.Router();
 
 // Booking paths start with '/bookings' (handled by router in index.js)
 
-const validateBooking = [
-  check('startDate')
-  .exists({ checkFalsy: true })
-  .custom((value) => {
-    const startDate = new Date(value);
-    const today = new Date();
-    if (startDate < today) {
-      throw new Error('startDate cannot be in the past');
-    }
-    return true;
-  }),
-  check('endDate')
-  .exists({ checkFalsy: true })
-  .custom((value, { req }) => {
-    const endDate = new Date(value);
-    const startDate = new Date(req.body.startDate);
-    if (endDate <= startDate) {
-      throw new Error('endDate cannot be on or before startDate');
-    }
-    return true;
-  }),
-  handleValidationErrors
-];
+// const validateBooking = [
+//   check('startDate')
+//     .exists({ checkFalsy: true })
+//     .custom((value) => {
+//         const startDate = new Date(value);
+//         const today = new Date();
+//         if (startDate < today) {
+//           throw new Error('startDate cannot be in the past');
+//         }
+//         return true;
+//   }),
+//   check('endDate')
+//     .exists({ checkFalsy: true })
+//     .custom((value, { req }) => {
+//         const endDate = new Date(value);
+//         const startDate = new Date(req.body.startDate);
+//         if (endDate <= startDate) {
+//           throw new Error('endDate cannot be on or before startDate');
+//         }
+//         return true;
+//   }),
+//   handleValidationErrors
+// ];
 
 // Get all of the Current User's Bookings
 router.get('/current', requireAuth, async (req, res) => {
@@ -155,7 +156,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
   });
   if (!booking) {  // couldn't find a booking with the specified id
     return res.status(404).json({ message: "Booking couldn't be found" });
-  };  
+  };
   // check if booking has started
   if (new Date(booking.startDate) <= new Date()) {
     return res.status(403).json({ message: "Bookings that have been started can't be deleted" });

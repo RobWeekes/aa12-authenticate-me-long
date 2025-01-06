@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { validateReview, validateBooking } = require('../../utils/post-validators');
+
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Review, User, Spot, ReviewImage } = require('../../db/models');
 // const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
@@ -9,16 +11,16 @@ const { QueryInterface, Sequelize } = require('sequelize');
 
 const router = express.Router();
 
-// Validation for creating a review
-const validateReview = [
-  check('review')
-    .exists({ checkFalsy: true })
-    .withMessage('Review text is required'),
-  check('stars')
-    .isInt({ min: 1, max: 5 })
-    .withMessage('Stars must be an integer from 1 to 5'),
-  handleValidationErrors
-];
+// // Validation for creating a review
+// const validateReview = [
+//   check('review')
+//     .exists({ checkFalsy: true })
+//     .withMessage('Review text is required'),
+//   check('stars')
+//     .isInt({ min: 1, max: 5 })
+//     .withMessage('Stars must be an integer from 1 to 5'),
+//   handleValidationErrors
+// ];
 
 // Review paths start with '/reviews' (handled by router in index.js)
 
@@ -104,5 +106,7 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
   await review.destroy();
   res.json({ message: "Successfully deleted" });
 });
+
+
 
 module.exports = router;

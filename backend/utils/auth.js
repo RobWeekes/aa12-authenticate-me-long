@@ -5,13 +5,12 @@ const { User } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
-
 // backend/utils/auth.js
 // Sends a JWT Cookie
 // This function will be used in the login and signup routes later.
 const setTokenCookie = (res, user) => {
     // Create the token. (Q: why don't we need to use await?)
-    const safeUser = {  
+    const safeUser = {
       id: user.id,   // Do NOT add the hashedPassword to the payload
       email: user.email,
       username: user.username,
@@ -21,9 +20,7 @@ const setTokenCookie = (res, user) => {
       secret,                 // secret token
       { expiresIn: parseInt(expiresIn) } // options object: 604,800 seconds = 1 week
     );
-
     const isProduction = process.env.NODE_ENV === "production";
-
     // Set the token cookie on the response
     res.cookie('token', token, {
       maxAge: expiresIn * 1000, // maxAge in milliseconds
@@ -31,7 +28,6 @@ const setTokenCookie = (res, user) => {
       secure: isProduction,
       sameSite: isProduction && "Lax"
     });
-
     return token;
   };  // This function will be used in the login and signup routes later.
 
@@ -42,12 +38,10 @@ const restoreUser = (req, res, next) => {  // GLOBAL middleware
     // token parsed from cookies
     const { token } = req.cookies;
     req.user = null;
-
     return jwt.verify(token, secret, null, async (err, jwtPayload) => {
       if (err) {
         return next();
-      }
-
+      };
       try {
         const { id } = jwtPayload.data;
         req.user = await User.findByPk(id, {
@@ -58,14 +52,11 @@ const restoreUser = (req, res, next) => {  // GLOBAL middleware
       } catch (e) {
         res.clearCookie('token');
         return next();
-      }
-
+      };
       if (!req.user) res.clearCookie('token');
-
       return next();
     });
   };
-
 
 // If there is no current user, return an error
 // not global - applies to some endpoints
@@ -78,7 +69,8 @@ const requireAuth = function (req, _res, next) {
     err.errors = { message: 'Authentication required' };
     err.status = 401;
     return next(err);
-  }
+};
 
-  module.exports = { setTokenCookie, restoreUser, requireAuth };
-  
+
+
+module.exports = { setTokenCookie, restoreUser, requireAuth };
