@@ -195,15 +195,20 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
     where: {
       spotId,
       [Op.or]: [
+        // new booking starts during existing booking
         {
-          startDate: {
-            [Op.between]: [new Date(startDate), new Date(endDate)]
-          }
+          startDate: { [Op.lte]: new Date(startDate) },
+          endDate: { [Op.gte]: new Date(startDate) }
         },
+        // new booking ends during existing booking  
         {
-          endDate: {
-            [Op.between]: [new Date(startDate), new Date(endDate)]
-          }
+          startDate: { [Op.lte]: new Date(endDate) },
+          endDate: { [Op.gte]: new Date(endDate) }
+        },
+        // new booking surrounds existing booking
+        {
+          startDate: { [Op.gte]: new Date(startDate) },
+          endDate: { [Op.lte]: new Date(endDate) }
         }
       ]
     }
@@ -318,8 +323,8 @@ router.get('/', validateQueryParamsForSpots, async (req, res) => {
 
   if (minLat || maxLat) {   // checks if either a minimum or maximum latitude was provided in the query parameters
     where.lat = {};    // creates an empty object to hold the latitude conditions
-    if(minLat) where.lat[Op.gte] = parseFloat(minLat);  // add a "greater than or equal to" condition
-    if(maxLat) where.lat[Op.lte] = parseFloat(maxLat);  // Op.gte is Sequelize's operator for ">="
+    if (minLat) where.lat[Op.gte] = parseFloat(minLat);  // add a "greater than or equal to" condition
+    if (maxLat) where.lat[Op.lte] = parseFloat(maxLat);  // Op.gte is Sequelize's operator for ">="
   }    // This creates a flexible 'where' clause that can handle either or both latitude boundaries, which Sequelize then uses to filter the database query results.
   if (minLng || maxLng) {
     where.lng = {};
@@ -366,9 +371,9 @@ router.get('/', validateQueryParamsForSpots, async (req, res) => {
     });
   };  // if query params were passed, include page & size
   return res.json({
-      Spots: spots,
-      page: page,
-      size: size
+    Spots: spots,
+    page: page,
+    size: size
   });
 });
 

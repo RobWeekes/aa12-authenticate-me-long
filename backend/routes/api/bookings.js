@@ -44,22 +44,22 @@ router.get('/current', requireAuth, async (req, res) => {
     // attributes: ['id', 'spotId'],
     where: { userId: req.user.id },
     include: [
-        {
-            model: Spot,
-            attributes: [
-                'id', 'ownerId', 'address', 'city', 'state',
-                'country', 'lat', 'lng', 'name', 'price',
-            ],
-            include: [
-              {
-                model: SpotImage,
-                as: 'SpotImages',
-                attributes: ['url'],
-                where: { preview: true },
-                required: false
-              }
-            ]
-        }
+      {
+        model: Spot,
+        attributes: [
+          'id', 'ownerId', 'address', 'city', 'state',
+          'country', 'lat', 'lng', 'name', 'price',
+        ],
+        include: [
+          {
+            model: SpotImage,
+            as: 'SpotImages',
+            attributes: ['url'],
+            where: { preview: true },
+            required: false
+          }
+        ]
+      }
     ],
     attributes: [
       'id', 'spotId', 'userId', 'startDate',
@@ -112,16 +112,35 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
       id: { [Op.ne]: parseInt(bookingId) },
       spotId: booking.spotId,
       [Op.or]: [
+        // new booking starts during existing booking
         {
+          startDate: { [Op.lte]: new Date(startDate) },
+          endDate: { [Op.gte]: new Date(startDate) }
+        },
+        // new booking ends during existing booking
+        {
+          startDate: { [Op.lte]: new Date(endDate) },
+          endDate: { [Op.gte]: new Date(endDate) }
+        },
+        // new booking surrounds existing booking
+        {
+          startDate: { [Op.gte]: new Date(startDate) },
+          endDate: { [Op.lte]: new Date(endDate) }
+        },
+        {
+          // new booking start date on existing start date
           startDate: {
-            [Op.between]: [new Date(startDate), new Date(endDate)]
+            [Op.lte]: new Date(endDate),
+            [Op.gte]: new Date(startDate)
           }
         },
         {
+          // new booking end date on end start date
           endDate: {
-            [Op.between]: [new Date(startDate), new Date(endDate)]
+            [Op.lte]: new Date(endDate),
+            [Op.gte]: new Date(startDate)
           }
-        }
+        },
       ]
     }
   });
