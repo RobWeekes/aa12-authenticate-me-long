@@ -27,9 +27,7 @@ router.delete('/:spotImageId', requireAuth, async (req, res) => {
   };  // if user has access allow deletion
   // console.log(`User ${spotImage.Spot.ownerId} has access:`)
   await spotImage.destroy();
-  return res.json({
-    "message": "Successfully deleted"
-  });
+  return res.json({ message: "Successfully deleted" });
 });
 
 

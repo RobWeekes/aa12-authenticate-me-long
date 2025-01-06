@@ -12,8 +12,6 @@ const { QueryInterface, Sequelize, Op } = require('sequelize');
 
 const router = express.Router();
 
-// Booking paths start with '/bookings' (handled by router in index.js)
-
 // const validateBooking = [
 //   check('startDate')
 //     .exists({ checkFalsy: true })
@@ -37,6 +35,8 @@ const router = express.Router();
 //   }),
 //   handleValidationErrors
 // ];
+
+// Booking paths start with '/bookings' (handled by router in index.js)
 
 // Get all of the Current User's Bookings
 router.get('/current', requireAuth, async (req, res) => {

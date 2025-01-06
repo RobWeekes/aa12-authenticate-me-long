@@ -83,39 +83,6 @@ app.use((err, _req, _res, next) => {
     });
   });
 
-// Error handler for Reviews
-// Error handler for Review not found
-// if (!review) {
-//   res.status(404).json({
-//       message: "Review couldn't be found"
-//   });
-// }
-
-// // Error handler for validation errors
-// if (validationErrors) {
-//   res.status(400).json({
-//       message: "Bad Request",
-//       errors: {
-//           review: "Review text is required",
-//           stars: "Stars must be an integer from 1 to 5"
-//       }
-//   });
-// }
-
-// // Error handler for maximum images
-// if (reviewImages.length >= 10) {
-//   res.status(403).json({
-//       message: "Maximum number of images for this resource was reached"
-//   });
-// }
-
-// // Error handler for existing review
-// if (existingReview) {
-//   res.status(500).json({
-//       message: "User already has a review for this spot"
-//   });
-// }
-
 // Root route - DO NOT MODIFY
 app.get('/', (req, res) => {
   res.json({
