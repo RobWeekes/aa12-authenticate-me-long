@@ -36,31 +36,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       lat: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
-          min: {
-            args: -90,
-            msg: "Latitude must be within -90 and 90"
-          },
-          max: {
-            args: 90,
-            msg: "Latitude must be within -90 and 90"
-          },
+          min: -90,
+          max: 90,
+          isDecimal: true
         }
       },
       lng: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
-          min: {
-            args: -180,
-            msg: "Longitude must be within -180 and 180"
-          },
-          max: {
-            args: 180,
-            msg: "Longitude must be within -180 and 180"
-          },
+          min: -180,
+          max: 180,
+          isDecimal: true
         }
       },
       name: {
