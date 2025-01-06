@@ -4,15 +4,16 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, setTokenCookie } = require('../../utils/auth');
 const { SpotImage, Review, User, Spot, ReviewImage } = require('../../db/models');
-const { validateReview } = require('../../utils/post-validators');
 
 const router = express.Router();
 
+// Spot-image paths start with '/spot-images' (handled by router in index.js)
+
 // Delete a Spot image
-router.delete('/spot-images/:spotId', requireAuth, validateReview, async (req, res) => {
-  const spotId = req.params.spotId;  // is validateReview needed ^^ ?
+router.delete('/:spotImageId', requireAuth, async (req, res) => {
+  const spotImageId = req.params.spotImageId;
   // check if the spot image exists
-  const spotImage = await SpotImage.findByPk(spotId, {
+  const spotImage = await SpotImage.findByPk(spotImageId, {
     include: [{ model: Spot }]
   });
   if (!spotImage) {
@@ -21,6 +22,7 @@ router.delete('/spot-images/:spotId', requireAuth, validateReview, async (req, r
   if (spotImage.Spot.ownerId !== req.user.id) {
     return res.status(403).json({ message: "Forbidden" });
   };  // if user has access allow deletion
+  // console.log(`User ${spotImage.Spot.ownerId} has access:`)
   await spotImage.destroy();
   return res.json({
     "message": "Successfully deleted"
