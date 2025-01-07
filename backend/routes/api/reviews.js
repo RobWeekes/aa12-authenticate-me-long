@@ -5,8 +5,9 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { validateReview, validateBooking } = require('../../utils/post-validators');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
+const { Review, User, Spot, ReviewImage, SpotImage, sequelize } = require('../../db/models');
 const { QueryInterface, Sequelize } = require('sequelize');
+// const { sequelize } = require('sequelize');
 
 const router = express.Router();
 
@@ -33,10 +34,11 @@ router.get('/current', requireAuth, async (req, res) => {
         attributes: ['id', 'firstName', 'lastName']
       },
       {
-        model: Spot,  // to reference SpotImages use "airbnb_schema"."SpotImages" -->
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [Sequelize.literal('(SELECT url FROM "airbnb_schema"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)'), 'previewImage']
-      ] // Sequelize.literal - The double quotes are essential in Postgres when dealing with case-sensitive identifiers like table names and schema names. This ensures Postgres treats "SpotImages" as exactly that, rather than converting it to lowercase "spotimages".
-      },
+        model: Spot,  // use sequelize instance instead of Sequelize model! \/
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
+        // attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [Sequelize.literal('(SELECT url FROM "airbnb_schema"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)'), 'previewImage']
+      ] // to reference SpotImages with Sequelize use "airbnb_schema"."SpotImages" ^
+      }, // Sequelize.literal - The " " are essential in Postgres when dealing with case-sensitive identifiers like table names / schema names. This ensures Postgres runs queries with "SpotImages", not converting it to "spotimages".
       {
         model: ReviewImage,
         as: 'ReviewImages',

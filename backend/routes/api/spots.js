@@ -200,7 +200,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
           startDate: { [Op.lte]: new Date(startDate) },
           endDate: { [Op.gte]: new Date(startDate) }
         },
-        // new booking ends during existing booking  
+        // new booking ends during existing booking
         {
           startDate: { [Op.lte]: new Date(endDate) },
           endDate: { [Op.gte]: new Date(endDate) }
