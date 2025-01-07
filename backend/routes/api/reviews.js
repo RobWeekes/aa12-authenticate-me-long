@@ -34,11 +34,11 @@ router.get('/current', requireAuth, async (req, res) => {
         attributes: ['id', 'firstName', 'lastName']
       },
       {
-        model: Spot,  // use sequelize instance instead of Sequelize model! \/
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
-        // attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [Sequelize.literal('(SELECT url FROM "airbnb_schema"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)'), 'previewImage']
-      ] // to reference SpotImages with Sequelize use "airbnb_schema"."SpotImages" ^
-      }, // Sequelize.literal - The " " are essential in Postgres when dealing with case-sensitive identifiers like table names / schema names. This ensures Postgres runs queries with "SpotImages", not converting it to "spotimages".
+        model: Spot,  // use sequelize instance instead of Sequelize model
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price',
+          [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
+      ]
+      },
       {
         model: ReviewImage,
         as: 'ReviewImages',
