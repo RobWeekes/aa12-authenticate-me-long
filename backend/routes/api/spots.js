@@ -8,7 +8,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, Review, SpotImage, User, ReviewImage, Booking, sequelize } = require('../../db/models');
 const { validateReview, validateBooking, validateNewSpot, validateQueryParamsForSpots } = require('../../utils/post-validators');
-const { QueryInterface, Sequelize } = require('sequelize');
+// const { QueryInterface, Sequelize } = require('sequelize');
 const { Op } = require('sequelize');
 
 const router = express.Router();
@@ -294,30 +294,30 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
 });
 
 
-// Add Query Filters to Get All Spots
+// Get All Spots with Params
 // API endpoint for retrieving filtered spots
 router.get('/', validateQueryParamsForSpots, async (req, res) => {
   const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-  const pagination = {  // standard page limit/offset object
+  const pagination = {
     limit: parseInt(size),
     offset: (parseInt(page) - 1) * parseInt(size)
   };
 
   const where = {};
 
-  if (minLat || maxLat) {   // checks if either a minimum or maximum latitude was provided in the query parameters
-    where.lat = {};    // creates an empty object to hold the latitude conditions
-    if (minLat) where.lat[Op.gte] = parseFloat(minLat);  // add a "greater than or equal to" condition
-    if (maxLat) where.lat[Op.lte] = parseFloat(maxLat);  // Op.gte is Sequelize's operator for ">="
-  }    // This creates a flexible 'where' clause that can handle either or both latitude boundaries, which Sequelize then uses to filter the database query results.
+  if (minLat || maxLat) {
+    where.lat = {};
+    if (minLat) where.lat[Op.gte] = parseFloat(minLat);
+    if (maxLat) where.lat[Op.lte] = parseFloat(maxLat);
+  }
   if (minLng || maxLng) {
     where.lng = {};
     if (minLng) where.lng[Op.gte] = parseFloat(minLng);
     if (maxLng) where.lng[Op.lte] = parseFloat(maxLng);
   }
   if (minPrice || maxPrice) {
-    where.price = {};             // parseFloat not needed?
+    where.price = {};
     if (minPrice) where.price[Op.gte] = parseFloat(minPrice);
     if (maxPrice) where.price[Op.lte] = parseFloat(maxPrice);
   }
@@ -329,38 +329,109 @@ router.get('/', validateQueryParamsForSpots, async (req, res) => {
       {
         model: Review,
         as: 'SpotReviews',
-        attributes: []
+        attributes: ['stars'],
+        required: false
       },
       {
         model: SpotImage,
         as: 'SpotImages',
-        attributes: [],
         where: { preview: true },
+        attributes: ['url'],
         required: false
       }
     ],
-    attributes: {
-      include: [  // got it working with SQL literals
-        [sequelize.literal('(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'avgRating'],
-        [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
-      ] // sequelize.fn/col kept giving { "message": "SQLITE_ERROR: no such column: SpotReviews.stars" } at routes\\api\\spots.js:406:17"
-    },
     group: ['Spot.id']
   });
 
-  // if no query params were passed, return [spots] w/o page & size keys
-  // console.log('req.query:', req.query)
+  const formattedSpots = spots.map(spot => {
+    const spotData = spot.toJSON();
+    spotData.avgRating = spot.SpotReviews.length ?
+      spot.SpotReviews.reduce((sum, review) => sum + review.stars, 0) / spot.SpotReviews.length :
+      null;
+    spotData.previewImage = spot.SpotImages[0]?.url || null;
+    delete spotData.SpotReviews;
+    delete spotData.SpotImages;
+    return spotData;
+  });
+
   if (Object.keys(req.query).length === 0) {
-    return res.json({
-      Spots: spots,
-    });
-  };  // if query params were passed, include page & size
+    return res.json({ Spots: formattedSpots });
+  }
+
   return res.json({
-    Spots: spots,
-    page: page,
-    size: size
+    Spots: formattedSpots,
+    page: parseInt(page),
+    size: parseInt(size)
   });
 });
+
+// router.get('/', validateQueryParamsForSpots, async (req, res) => {
+//   const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+//   const pagination = {  // standard page limit/offset object
+//     limit: parseInt(size),
+//     offset: (parseInt(page) - 1) * parseInt(size)
+//   };
+
+//   const where = {};
+
+//   if (minLat || maxLat) {   // checks if either a minimum or maximum latitude was provided in the query parameters
+//     where.lat = {};    // creates an empty object to hold the latitude conditions
+//     if (minLat) where.lat[Op.gte] = parseFloat(minLat);  // add a "greater than or equal to" condition
+//     if (maxLat) where.lat[Op.lte] = parseFloat(maxLat);  // Op.gte is Sequelize's operator for ">="
+//   }    // This creates a flexible 'where' clause that can handle either or both latitude boundaries, which Sequelize then uses to filter the database query results.
+//   if (minLng || maxLng) {
+//     where.lng = {};
+//     if (minLng) where.lng[Op.gte] = parseFloat(minLng);
+//     if (maxLng) where.lng[Op.lte] = parseFloat(maxLng);
+//   }
+//   if (minPrice || maxPrice) {
+//     where.price = {};             // parseFloat not needed?
+//     if (minPrice) where.price[Op.gte] = parseFloat(minPrice);
+//     if (maxPrice) where.price[Op.lte] = parseFloat(maxPrice);
+//   }
+
+//   const spots = await Spot.findAll({
+//     where,
+//     ...pagination,
+//     include: [
+//       {
+//         model: Review,
+//         as: 'SpotReviews',
+//         attributes: []
+//       },
+//       {
+//         model: SpotImage,
+//         as: 'SpotImages',
+//         attributes: [],
+//         where: { preview: true },
+//         required: false
+//       }
+//     ],
+//     attributes: {
+//       include: [  // got it working with SQL literals
+//         [sequelize.literal(`(SELECT AVG(stars) FROM "${process.env.SCHEMA}"."Reviews" WHERE "Reviews"."spotId" = "Spot"."id")`), 'avgRating'],
+//         [sequelize.literal(`(SELECT url FROM "${process.env.SCHEMA}"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)`), 'previewImage']
+//       ] // sequelize.fn/col kept giving { "message": "SQLITE_ERROR: no such column: SpotReviews.stars" } at routes\\api\\spots.js:406:17"
+//     },
+//     group: ['Spot.id']
+//   });
+
+//   // if no query params were passed, return [spots] w/o page & size keys
+//   // console.log('req.query:', req.query)
+//   if (Object.keys(req.query).length === 0) {
+//     return res.json({
+//       Spots: spots,
+//     });
+//   };  // if query params were passed, include page & size
+//   return res.json({
+//     Spots: spots,
+//     page: page,
+//     size: size
+//   });
+// });
+
+
 
 
 
