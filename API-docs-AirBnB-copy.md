@@ -616,7 +616,7 @@ Deletes an existing spot.
 
 ## REVIEWS
 
-### Get all Reviews of the Current User
+### Get Reviews of Current User
 
 Returns all the reviews written by the current user.
 

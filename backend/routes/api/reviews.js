@@ -5,8 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { validateReview, validateBooking } = require('../../utils/post-validators');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Review, User, Spot, ReviewImage } = require('../../db/models');
-// const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
+const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
 const { QueryInterface, Sequelize } = require('sequelize');
 
 const router = express.Router();
@@ -35,7 +34,7 @@ router.get('/current', requireAuth, async (req, res) => {
       },
       {
         model: Spot,
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [Sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', [Sequelize.literal('(SELECT url FROM spotimages WHERE spotimages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
       ]
       },
       {
