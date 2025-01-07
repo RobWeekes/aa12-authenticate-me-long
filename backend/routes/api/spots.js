@@ -42,9 +42,8 @@ router.get('/current', requireAuth, async (req, res) => {
       ]
     },
     group: ['Spot.id', 'SpotImages.url']
-  });
+  });   // user not logged in returns { user: null }
   return res.json({ "Spots": ownerSpots });
-  // get user not logged in returns { user: null }
 });
 
 // Get all Reviews by a Spot's id
@@ -74,10 +73,14 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 // Get all Bookings for a Spot based on the Spot's id
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
-  const spot = await Spot.findByPk(req.params.spotId);
+  const spotId = parseInt(req.params.spotId);
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  };
   const spotBookings = await Booking.findAll({
     where: {
-      spotId: req.params.spotId
+      spotId: spotId
     },
     include: [
       {
@@ -86,21 +89,17 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
       },
     ]
   });
-  if (!spot) {  // couldn't find a spot with the specified id
-    return res.status(404).json({ message: "Spot couldn't be found" });
-  };
-  // successful response: if you ARE NOT the owner of the spot.
-  // if (spot.ownerId !== req.user.id) {
-  //   return res.json({ Bookings:
-  //     {
-  //       spotId: spotBookings.spotId,
-  //       startDate: spotBookings.startDate,
-  //       endDate: spotBookings.endDate,
-  //     }
-  //   })
-  // }
-  // successful response: if you ARE the owner of the spot.
-  res.json({ Bookings: spotBookings });
+  // successful response: if you ARE NOT the owner of the spot:
+  if (spot.ownerId !== req.user.id) {  // create a smaller response object
+    const shortenedBookings = spotBookings.map(booking => ({
+      spotId: booking.spotId,
+      startDate: booking.startDate,
+      endDate: booking.endDate,
+    }));
+    return res.json({ Bookings: shortenedBookings });
+  }
+  // successful response: if you ARE the owner of the spot
+  return res.json({ Bookings: spotBookings });  // full response
 })
 
 // Get details of a Spot from a Spot ID
@@ -169,28 +168,17 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 // Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) => {
   const spotId = parseInt(req.params.spotId);
-  const { startDate, endDate } = req.body;
-  const userId = req.user.id;
   const spot = await Spot.findByPk(spotId);
   if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
-  };  // check if spot is owned by user
-  if (spot.ownerId !== req.user.id) {
+  };
+  const { startDate, endDate } = req.body;
+  const userId = req.user.id;
+  // spot must NOT belong to the current user
+  if (spot.ownerId === userId) {
     return res.status(403).json({ message: "Forbidden" });
   };
-  // successful response
-  // const newSpotImage = await SpotImage.create({
-  //   spotId,
-  //   url,
-  //   preview
-  // });
-  // return res.status(201).json({
-  //   id: newSpotImage.id,
-  //   url: newSpotImage.url,
-  //   preview: newSpotImage.preview
-  // });
-
-  // Check for booking conflicts
+  // check for booking conflicts
   const conflictingBooking = await Booking.findOne({
     where: {
       spotId,
@@ -213,7 +201,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
       ]
     }
   });
-
   if (conflictingBooking) {
     return res.status(403).json({
       message: "Sorry, this spot is already booked for the specified dates",
@@ -223,16 +210,14 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
       }
     });
   }
-
-  // Create booking if no conflicts
+  // create booking if no conflicts
   const spotBookings = await Booking.create({
     spotId,
     userId,
     startDate,
     endDate
   });
-
-  res.json(spotBookings);
+  res.status(201).json(spotBookings);
 });
 
 // Create a Review for a Spot based on the Spot's id

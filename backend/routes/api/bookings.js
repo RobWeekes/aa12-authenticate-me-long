@@ -12,30 +12,6 @@ const { Sequelize, Op } = require('sequelize');
 
 const router = express.Router();
 
-// const validateBooking = [
-//   check('startDate')
-//     .exists({ checkFalsy: true })
-//     .custom((value) => {
-//         const startDate = new Date(value);
-//         const today = new Date();
-//         if (startDate < today) {
-//           throw new Error('startDate cannot be in the past');
-//         }
-//         return true;
-//   }),
-//   check('endDate')
-//     .exists({ checkFalsy: true })
-//     .custom((value, { req }) => {
-//         const endDate = new Date(value);
-//         const startDate = new Date(req.body.startDate);
-//         if (endDate <= startDate) {
-//           throw new Error('endDate cannot be on or before startDate');
-//         }
-//         return true;
-//   }),
-//   handleValidationErrors
-// ];
-
 // Booking paths start with '/bookings' (handled by router in index.js)
 
 // Get all of the Current User's Bookings
@@ -89,6 +65,8 @@ router.get('/current', requireAuth, async (req, res) => {
   console.log('formattedBookings:', formattedBookings);
   return res.json({ Bookings: formattedBookings });
 });
+
+// Get all Bookings for a Spot based on the Spot's id - in spots.js route
 
 // Edit a Booking
 router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
