@@ -13,7 +13,7 @@ const router = express.Router();
 
 // Review paths start with '/reviews' (handled by router in index.js)
 
-// Get all Reviews of the Current User
+// Get Reviews of Current User
 router.get('/current', requireAuth, async (req, res) => {
   const reviews = await Review.findAll({
     where: { userId: req.user.id },
@@ -23,10 +23,15 @@ router.get('/current', requireAuth, async (req, res) => {
         attributes: ['id', 'firstName', 'lastName']
       },
       {
-        model: Spot,  // use sequelize instance instead of Sequelize model
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price',
-          [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
-      ]
+        model: Spot,
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+        include: [{
+          model: SpotImage,
+          as: 'SpotImages',
+          where: { preview: true },
+          attributes: ['url'],
+          required: false
+        }]
       },
       {
         model: ReviewImage,
@@ -35,8 +40,41 @@ router.get('/current', requireAuth, async (req, res) => {
       }
     ]
   });
-  return res.json({ Reviews: reviews });
+  const formattedReviews = reviews.map(review => {
+    const reviewData = review.toJSON();
+    reviewData.Spot.previewImage = reviewData.Spot.SpotImages?.[0]?.url || null;
+    delete reviewData.Spot.SpotImages;  // remove "SpotImages": [{url}] from response
+    return reviewData;
+  });
+  return res.json({ Reviews: formattedReviews });
 });
+
+
+// // Get Reviews of Current User
+// router.get('/current', requireAuth, async (req, res) => {
+//   const reviews = await Review.findAll({
+//     where: { userId: req.user.id },
+//     include: [
+//       {
+//         model: User,
+//         attributes: ['id', 'firstName', 'lastName']
+//       },
+//       {
+//         model: Spot,  // use sequelize instance instead of Sequelize model
+//         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price',
+//           [Sequelize.literal(`(SELECT url FROM "${process.env.SCHEMA}"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)`), 'previewImage']
+//           // [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
+//       ]
+//       },
+//       {
+//         model: ReviewImage,
+//         as: 'ReviewImages',
+//         attributes: ['id', 'url']
+//       }
+//     ]
+//   });
+//   return res.json({ Reviews: reviews });
+// });
 
 // Get all Reviews by a Spot's id - route is in spots.js
 
