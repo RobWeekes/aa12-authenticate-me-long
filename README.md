@@ -447,7 +447,7 @@ Creates and returns a new spot.
     }
     ```
 
-### Add an Image to a Spot based on the Spot's id
+### Create an Image for a Spot based on the Spot's id
 
 Create and return a new image for a spot specified by id.
 
@@ -804,7 +804,7 @@ Create and return a new review for a spot specified by id.
     }
     ```
 
-### Add an Image to a Review based on the Review's id
+### Create an Image for a Review based on the Review's id
 
 Create and return a new image for a review specified by id.
 

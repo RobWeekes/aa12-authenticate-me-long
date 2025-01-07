@@ -11,17 +11,6 @@ const { QueryInterface, Sequelize } = require('sequelize');
 
 const router = express.Router();
 
-// // Validation for creating a review
-// const validateReview = [
-//   check('review')
-//     .exists({ checkFalsy: true })
-//     .withMessage('Review text is required'),
-//   check('stars')
-//     .isInt({ min: 1, max: 5 })
-//     .withMessage('Stars must be an integer from 1 to 5'),
-//   handleValidationErrors
-// ];
-
 // Review paths start with '/reviews' (handled by router in index.js)
 
 // Get all Reviews of the Current User
@@ -53,7 +42,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 // Create a Review for a Spot based on the Spot's id - route is in spots.js
 
-// Add an Image to a Review based on the Review's id
+// Create an Image for a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
   const review = await Review.findByPk(req.params.reviewId);
   if (!review) {
