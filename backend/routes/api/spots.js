@@ -221,11 +221,9 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
 });
 
 // Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
-  const spotId = parseInt(req.params.spotId);
-  const { review } = req.body;
-  const stars = parseInt(req.body.stars);
-  const userId = req.user.id;
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+  const { review, stars } = req.body;
+  const spotId = req.params.spotId;
   // check if the spot exists
   const spot = await Spot.findByPk(spotId);
   if (!spot) {  // couldn't find a spot with the specified id
@@ -234,7 +232,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
   const existingReview = await Review.findOne({
     where: {
       spotId: spotId,
-      userId: userId
+      userId: req.user.id
     }
   });
   if (existingReview) {
@@ -244,13 +242,61 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
   };
   // create the new review
   const newReview = await Review.create({
-    userId,
-    spotId,
+    userId: req.user.id,
+    spotId: parseInt(spotId),
     review,
     stars
   });
-  return res.status(201).json(newReview);
+
+  const formattedReview = await Review.findByPk(newReview.id, {
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+        model: ReviewImage,
+        as: 'ReviewImages',
+        attributes: ['id', 'url']
+      }
+    ]
+  });
+
+  return res.status(201).json(formattedReview);
 });
+
+
+// Create a Review for a Spot based on the Spot's id
+// router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+//   const spotId = parseInt(req.params.spotId);
+//   const { review } = req.body;
+//   const stars = parseInt(req.body.stars);
+//   const userId = req.user.id;
+//   // check if the spot exists
+//   const spot = await Spot.findByPk(spotId);
+//   if (!spot) {  // couldn't find a spot with the specified id
+//     return res.status(404).json({ message: "Spot couldn't be found" });
+//   };    // check if user already reviewed this spot
+//   const existingReview = await Review.findOne({
+//     where: {
+//       spotId: spotId,
+//       userId: userId
+//     }
+//   });
+//   if (existingReview) {
+//     return res.status(500).json({
+//       message: "User already has a review for this spot"
+//     });
+//   };
+//   // create the new review
+//   const newReview = await Review.create({
+//     userId,
+//     spotId,
+//     review,
+//     stars
+//   });
+//   return res.status(201).json(newReview);
+// });
 
 // Edit a Spot
 router.put('/:spotId', requireAuth, validateNewSpot, async (req, res) => {
@@ -285,13 +331,37 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 });
 
 // Create a Spot
-router.post('/', requireAuth, validateNewSpot, async (req, res) => {
-  const ownerId = req.user.id;
+router.post('/', requireAuth, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
-  const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
-  // console.log(newSpot);
-  return res.status(201).json(newSpot);
+  
+  const spot = await Spot.create({
+    ownerId: req.user.id,
+    address,
+    city,
+    state, 
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price
+  });
+
+  const formattedSpot = spot.toJSON();
+  formattedSpot.avgRating = null;
+  formattedSpot.previewImage = null;
+
+  return res.status(201).json(formattedSpot);
 });
+
+// Create a Spot
+// router.post('/', requireAuth, validateNewSpot, async (req, res) => {
+//   const ownerId = req.user.id;
+//   const { address, city, state, country, lat, lng, name, description, price } = req.body;
+//   const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
+//   // console.log(newSpot);
+//   return res.status(201).json(newSpot);
+// });
 
 
 // Get All Spots with Params
