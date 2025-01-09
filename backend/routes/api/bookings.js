@@ -50,7 +50,8 @@ router.get('/current', requireAuth, async (req, res) => {
       spotId: plainBooking.spotId,
       Spot: {
         ...plainBooking.Spot,   // spreads in all Spot properties
-        previewImage: plainBooking.Spot.SpotImages?.[0]?.url || "No preview image available"
+        price: Number(plainBooking.Spot.price),
+        previewImage: plainBooking.Spot.SpotImages?.[0]?.url || null
       },  // previewImage is set using optional chaining (?.) to safely access the URL from SpotImages
       userId: plainBooking.userId,
       startDate: plainBooking.startDate,
@@ -60,7 +61,7 @@ router.get('/current', requireAuth, async (req, res) => {
     };
   });  // remove 'SpotImages' from 'Spot' attribute
   formattedBookings.map(booking => {
-    const bookingData = booking.toJSON();
+    const bookingData = booking;
     bookingData.Spot.price = Number(bookingData.Spot.price);
     bookingData.Spot.previewImage = bookingData.Spot.SpotImages?.[0]?.url || null;
     delete bookingData.Spot.SpotImages;
