@@ -42,13 +42,13 @@ router.get('/current', requireAuth, async (req, res) => {
   });
   const formattedReviews = reviews.map(review => {
     const reviewData = review.toJSON();
+    reviewData.Spot.price = Number(reviewData.Spot.price);
     reviewData.Spot.previewImage = reviewData.Spot.SpotImages?.[0]?.url || null;
     delete reviewData.Spot.SpotImages;  // remove "SpotImages": [{url}] from response
     return reviewData;
   });
   return res.json({ Reviews: formattedReviews });
 });
-
 
 // // Get Reviews of Current User
 // router.get('/current', requireAuth, async (req, res) => {

@@ -43,9 +43,16 @@ router.get('/current', requireAuth, async (req, res) => {
     },
     group: ['Spot.id', 'SpotImages.url']
   });   // user not logged in returns { user: null }
-  return res.json({ "Spots": ownerSpots });
-});
 
+  // Get Spots of Current User
+  const formattedSpots = ownerSpots.map(spot => {
+    const spotData = spot.toJSON();
+    spotData.price = Number(spotData.price);
+    return spotData;
+  });
+
+  return res.json({ "Spots": formattedSpots });
+});
 // Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
@@ -98,8 +105,14 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     }));
     return res.json({ Bookings: shortenedBookings });
   }
+
+  const formattedBookings = spotBookings.map(booking => {
+    const bookingData = booking.toJSON();
+    bookingData.Spot.price = Number(bookingData.Spot.price);
+    return bookingData;
+  });
   // successful response: if you ARE the owner of the spot
-  return res.json({ Bookings: spotBookings });  // full response
+  return res.json({ Bookings: formattedBookings });  // full response
 })
 
 // Get details of a Spot from a Spot ID

@@ -33,36 +33,18 @@ router.get('/current', requireAuth, async (req, res) => {
             attributes: ['url'],
             where: { preview: true },
             required: false
-          }
-        ]
+          }]
       }
-    ],
-    attributes: [
-      'id', 'spotId', 'userId', 'startDate',
-      'endDate', 'createdAt', 'updatedAt'
     ]
   });   // takes each booking from the array and transforms it
   const formattedBookings = bookings.map(booking => {
-    // converts the Sequelize model instance into a plain JavaScript object \/
-    const plainBooking = booking.get({ plain: true });
-    return {  // creates a new object w attributes in specific order:
-      id: plainBooking.id,
-      spotId: plainBooking.spotId,
-      Spot: {
-        ...plainBooking.Spot,   // spreads in all Spot properties
-        previewImage: plainBooking.Spot.SpotImages?.[0]?.url || "No preview image available"
-      },  // previewImage is set using optional chaining (?.) to safely access the URL from SpotImages
-      userId: plainBooking.userId,
-      startDate: plainBooking.startDate,
-      endDate: plainBooking.endDate,
-      createdAt: plainBooking.createdAt,
-      updatedAt: plainBooking.updatedAt
-    };
-  });  // remove 'SpotImages' from 'Spot' attribute
-  formattedBookings.forEach(booking => {
-    delete booking.Spot.SpotImages;
+    const bookingData = booking.toJSON();
+    bookingData.Spot.price = Number(bookingData.Spot.price);
+    bookingData.Spot.previewImage = bookingData.Spot.SpotImages?.[0]?.url || null;
+    delete bookingData.Spot.SpotImages;
+    return bookingData;
   });
-  console.log('formattedBookings:', formattedBookings);
+
   return res.json({ Bookings: formattedBookings });
 });
 
