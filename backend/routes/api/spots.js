@@ -344,7 +344,7 @@ router.post('/', requireAuth, async (req, res) => {
     lng,
     name,
     description,
-    price
+    price: parseFloat(price)
   });
 
   const formattedSpot = spot.toJSON();
