@@ -348,6 +348,7 @@ router.post('/', requireAuth, async (req, res) => {
   });
 
   const formattedSpot = spot.toJSON();
+  formattedSpot.price = parseFloat(formattedSpot.price);
   formattedSpot.avgRating = null;
   formattedSpot.previewImage = null;
 
