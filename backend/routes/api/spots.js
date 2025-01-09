@@ -350,7 +350,10 @@ router.post('/', requireAuth, async (req, res) => {
   const formattedSpot = spot.toJSON();
   formattedSpot.avgRating = null;
   formattedSpot.previewImage = null;
-  formattedSpot.price = parseFloat(formattedSpot.price);
+  // formattedSpot.price = parseFloat(formattedSpot.price); // returns this error in Postman 
+                                                            // if commented in: {"message":"Validation 
+                                                            // error","errors":{"id":"id must be unique"},
+                                                            // "stack":null}
 
   return res.status(201).json(formattedSpot);
 });
