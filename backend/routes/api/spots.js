@@ -321,6 +321,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 router.post('/', requireAuth, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
   const spot = await Spot.create({
+    ownerId: req.user.id,
     address,
     city,
     state,
@@ -330,12 +331,10 @@ router.post('/', requireAuth, async (req, res) => {
     name,
     description,
     price
-  },
-  // {
-  //   // Add this options object to ensure proper ID handling
-  //   returning: true
-  // }
-);
+  }, {
+    // Add this options object to ensure proper ID handling
+    returning: true
+  });
   const formattedSpot = {
     ...spot.toJSON(),
     price: Number(price)
