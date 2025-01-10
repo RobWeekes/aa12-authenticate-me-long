@@ -167,12 +167,11 @@ router.get('/', async (req, res) => {
     include: [
       {
         model: Review,
-        as: 'SpotReviews',
-        attributes: []
+        attributes: [],
+        required: false
       },
       {
         model: SpotImage,
-        as: 'SpotImages',
         attributes: [],
         where: {
           preview: true
