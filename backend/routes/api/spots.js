@@ -285,39 +285,6 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
   return res.status(201).json(formattedReview);
 });
 
-
-// Create a Review for a Spot based on the Spot's id
-// router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
-//   const spotId = parseInt(req.params.spotId);
-//   const { review } = req.body;
-//   const stars = parseInt(req.body.stars);
-//   const userId = req.user.id;
-//   // check if the spot exists
-//   const spot = await Spot.findByPk(spotId);
-//   if (!spot) {  // couldn't find a spot with the specified id
-//     return res.status(404).json({ message: "Spot couldn't be found" });
-//   };    // check if user already reviewed this spot
-//   const existingReview = await Review.findOne({
-//     where: {
-//       spotId: spotId,
-//       userId: userId
-//     }
-//   });
-//   if (existingReview) {
-//     return res.status(500).json({
-//       message: "User already has a review for this spot"
-//     });
-//   };
-//   // create the new review
-//   const newReview = await Review.create({
-//     userId,
-//     spotId,
-//     review,
-//     stars
-//   });
-//   return res.status(201).json(newReview);
-// });
-
 // Edit a Spot
 router.put('/:spotId', requireAuth, validateNewSpot, async (req, res) => {
   const spotId = req.params.spotId;
@@ -353,7 +320,6 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 // Create a Spot
 router.post('/', requireAuth, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
-
   const spot = await Spot.create({
     ownerId: req.user.id,
     address,
@@ -366,16 +332,10 @@ router.post('/', requireAuth, async (req, res) => {
     description,
     price
   });
-
   const formattedSpot = {
     ...spot.toJSON(),
     price: Number(price)
   };
-  // formattedSpot.price = parseFloat(formattedSpot.price); // returns this error in Postman
-  // if commented in: {"message":"Validation
-  // error","errors":{"id":"id must be unique"},
-  // "stack":null}
-
   return res.status(201).json(formattedSpot);
 });
 
@@ -460,73 +420,6 @@ router.get('/', validateQueryParamsForSpots, async (req, res) => {
     size: parseInt(size)
   });
 });
-
-// router.get('/', validateQueryParamsForSpots, async (req, res) => {
-//   const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
-
-//   const pagination = {  // standard page limit/offset object
-//     limit: parseInt(size),
-//     offset: (parseInt(page) - 1) * parseInt(size)
-//   };
-
-//   const where = {};
-
-//   if (minLat || maxLat) {   // checks if either a minimum or maximum latitude was provided in the query parameters
-//     where.lat = {};    // creates an empty object to hold the latitude conditions
-//     if (minLat) where.lat[Op.gte] = parseFloat(minLat);  // add a "greater than or equal to" condition
-//     if (maxLat) where.lat[Op.lte] = parseFloat(maxLat);  // Op.gte is Sequelize's operator for ">="
-//   }    // This creates a flexible 'where' clause that can handle either or both latitude boundaries, which Sequelize then uses to filter the database query results.
-//   if (minLng || maxLng) {
-//     where.lng = {};
-//     if (minLng) where.lng[Op.gte] = parseFloat(minLng);
-//     if (maxLng) where.lng[Op.lte] = parseFloat(maxLng);
-//   }
-//   if (minPrice || maxPrice) {
-//     where.price = {};             // parseFloat not needed?
-//     if (minPrice) where.price[Op.gte] = parseFloat(minPrice);
-//     if (maxPrice) where.price[Op.lte] = parseFloat(maxPrice);
-//   }
-
-//   const spots = await Spot.findAll({
-//     where,
-//     ...pagination,
-//     include: [
-//       {
-//         model: Review,
-//         as: 'SpotReviews',
-//         attributes: []
-//       },
-//       {
-//         model: SpotImage,
-//         as: 'SpotImages',
-//         attributes: [],
-//         where: { preview: true },
-//         required: false
-//       }
-//     ],
-//     attributes: {
-//       include: [  // got it working with SQL literals
-//         [sequelize.literal(`(SELECT AVG(stars) FROM "${process.env.SCHEMA}"."Reviews" WHERE "Reviews"."spotId" = "Spot"."id")`), 'avgRating'],
-//         [sequelize.literal(`(SELECT url FROM "${process.env.SCHEMA}"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)`), 'previewImage']
-//       ] // sequelize.fn/col kept giving { "message": "SQLITE_ERROR: no such column: SpotReviews.stars" } at routes\\api\\spots.js:406:17"
-//     },
-//     group: ['Spot.id']
-//   });
-
-//   // if no query params were passed, return [spots] w/o page & size keys
-//   // console.log('req.query:', req.query)
-//   if (Object.keys(req.query).length === 0) {
-//     return res.json({
-//       Spots: spots,
-//     });
-//   };  // if query params were passed, include page & size
-//   return res.json({
-//     Spots: spots,
-//     page: page,
-//     size: size
-//   });
-// });
-
 
 
 
