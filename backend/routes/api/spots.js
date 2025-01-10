@@ -161,54 +161,6 @@ router.get('/:spotId', async (req, res) => {
   return res.json(spot);
 });
 
-// Get all Spots
-router.get('/', async (req, res) => {
-  const spots = await Spot.findAll({
-    include: [
-      {
-        model: Review,
-        as: 'Reviews',
-        attributes: []
-      },
-      {
-        model: SpotImage,
-        as: 'SpotImages',
-        attributes: [],
-        where: {
-          preview: true
-        },
-        required: false
-      }
-    ],
-    attributes: [
-      'id',
-      'ownerId',
-      'address',
-      'city',
-      'state',
-      'country',
-      'lat',
-      'lng',
-      'name',
-      'description',
-      'price',
-      'createdAt',
-      'updatedAt',
-      [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('Reviews.stars')), 1), 'avgRating'],
-      [sequelize.col('SpotImages.url'), 'previewImage']
-    ],
-    group: ['Spot.id', 'SpotImages.url'],
-  });
-  const formattedSpots = spots.map(spot => {
-    const spotData = spot.toJSON();
-    spotData.price = Number(spotData.price);
-    spotData.avgRating = spotData.avgRating ? Number(spotData.avgRating) : null;
-    return spotData;
-  });
-
-  return res.json({ Spots: formattedSpots });
-});
-
 // Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
@@ -436,7 +388,7 @@ router.post('/', requireAuth, async (req, res) => {
 // });
 
 
-// Get All Spots with Params
+// Get all Spots and Get All Spots with Params
 // API endpoint for retrieving filtered spots
 router.get('/', validateQueryParamsForSpots, async (req, res) => {
   const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
