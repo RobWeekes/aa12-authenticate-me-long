@@ -321,7 +321,8 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 router.post('/', requireAuth, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
   const spot = await Spot.create({
-    ownerId: req.user.id,
+    // Remove the id field from the Spot.create() call entirely since it should be auto-generated:
+    // ownerId: req.user.id,
     address,
     city,
     state,
