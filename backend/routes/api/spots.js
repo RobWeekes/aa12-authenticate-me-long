@@ -368,10 +368,10 @@ router.post('/', requireAuth, async (req, res) => {
   });
 
   const formattedSpot = {
-    ...spot.toJSON()
-    // price: Number(price),
-    // avgRating: null,
-    // previewImage: null
+    ...spot.toJSON(),
+    price: Number(price),
+    avgRating: null,
+    previewImage: null
   };
   // formattedSpot.price = parseFloat(formattedSpot.price); // returns this error in Postman
   // if commented in: {"message":"Validation
