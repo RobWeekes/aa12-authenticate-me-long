@@ -48,6 +48,9 @@ router.get('/current', requireAuth, async (req, res) => {
   const formattedSpots = ownerSpots.map(spot => {
     const spotData = spot.toJSON();
     spotData.price = Number(spotData.price);
+    spotData.avgRating = Number(spotData.avgRating);
+    spotData.previewImage = spotData.SpotImages?.[0]?.url || null;
+    delete spotData.SpotImages;
     return spotData;
   });
 
@@ -155,7 +158,51 @@ router.get('/:spotId', async (req, res) => {
   if (!spot) {  // couldn't find a spot with the specified id
     return res.status(404).json({ message: "Spot couldn't be found" });
   };
+  const spotData = spot.toJSON();
+  spotData.price = Number(spotData.price);
+  spotData.numReviews = Number(spotData.numReviews);
+  spotData.avgStarRating = Number(spotData.avgStarRating);
   return res.json(spot);
+});
+
+// Get all Spots
+router.get('/', async (req, res) => {
+  const spots = await Spot.findAll({
+    include: [
+      {
+        model: SpotImage,
+        as: 'SpotImages',
+        where: { preview: true },
+        required: false,
+        attributes: ['url']
+      },
+      {
+        model: Review,
+        attributes: [],
+        required: false
+      }
+    ],
+    attributes: {
+      include: [
+        [
+          sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('Reviews.stars')), 1),
+          'avgRating'
+        ]
+      ]
+    },
+    group: ['Spot.id', 'SpotImages.id']
+  });
+
+  const formattedSpots = spots.map(spot => {
+    const spotData = spot.toJSON();
+    spotData.price = Number(spotData.price);
+    spotData.avgRating = Number(spotData.avgRating);
+    spotData.previewImage = spotData.SpotImages?.[0]?.url || null;
+    delete spotData.SpotImages;
+    return spotData;
+  });
+
+  return res.json({ Spots: formattedSpots });
 });
 
 // Add an Image to a Spot based on the Spot's id
@@ -350,12 +397,12 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 // Create a Spot
 router.post('/', requireAuth, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
-  
+
   const spot = await Spot.create({
     ownerId: req.user.id,
     address,
     city,
-    state, 
+    state,
     country,
     lat,
     lng,
@@ -368,9 +415,9 @@ router.post('/', requireAuth, async (req, res) => {
   formattedSpot.avgRating = null;
   formattedSpot.previewImage = null;
   // formattedSpot.price = parseFloat(formattedSpot.price); // returns this error in Postman 
-                                                            // if commented in: {"message":"Validation 
-                                                            // error","errors":{"id":"id must be unique"},
-                                                            // "stack":null}
+  // if commented in: {"message":"Validation 
+  // error","errors":{"id":"id must be unique"},
+  // "stack":null}
 
   return res.status(201).json(formattedSpot);
 });
