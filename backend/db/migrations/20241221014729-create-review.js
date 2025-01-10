@@ -47,12 +47,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date('2023-12-15')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date('2023-12-15')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     }, options);
   },
