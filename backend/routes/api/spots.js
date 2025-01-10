@@ -373,8 +373,8 @@ router.post('/', requireAuth, async (req, res) => {
     avgRating: null,
     previewImage: null
   };
-  // formattedSpot.price = parseFloat(formattedSpot.price); // returns this error in Postman 
-  // if commented in: {"message":"Validation 
+  // formattedSpot.price = parseFloat(formattedSpot.price); // returns this error in Postman
+  // if commented in: {"message":"Validation
   // error","errors":{"id":"id must be unique"},
   // "stack":null}
 
@@ -446,6 +446,7 @@ router.get('/', validateQueryParamsForSpots, async (req, res) => {
       spot.SpotReviews.reduce((sum, review) => sum + review.stars, 0) / spot.SpotReviews.length :
       null;
     spotData.previewImage = spot.SpotImages[0]?.url || null;
+    spotData.price = Number(spot.price);
     delete spotData.SpotReviews;
     delete spotData.SpotImages;
     return spotData;
