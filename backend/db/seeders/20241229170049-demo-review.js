@@ -18,8 +18,8 @@ module.exports = {
         spotId: 1,  // First spot
         review: 'This was an awesome spot!',
         stars: 5,
-        createdAt: new Date('2023-11-19 20:39:36'),
-        updatedAt: new Date('2023-11-19 20:39:36')
+        createdAt: new Date('2023-12-15'),
+        updatedAt: new Date('2023-12-15')
       },
       {
         id: 2,
@@ -27,8 +27,8 @@ module.exports = {
         spotId: 2,  // Second spot
         review: 'This was an okay spot.',
         stars: 3,
-        createdAt: new Date('2023-11-19 20:39:36'),
-        updatedAt: new Date('2023-11-19 20:39:36')
+        createdAt: new Date('2023-12-15'),
+        updatedAt: new Date('2023-12-15')
       },
       {
         id: 3,
@@ -36,8 +36,8 @@ module.exports = {
         spotId: 3,  // Third spot
         review: 'This was a horrible spot.',
         stars: 1,
-        createdAt: new Date('2023-11-19 20:39:36'),
-        updatedAt: new Date('2023-11-19 20:39:36')
+        createdAt: new Date('2023-12-15'),
+        updatedAt: new Date('2023-12-15')
       }
     ], { validate: true });
   },

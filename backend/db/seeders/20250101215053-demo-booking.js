@@ -16,22 +16,22 @@ module.exports = {
         // id: 1,
         spotId: 1,
         userId: 1,
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: new Date('2031-01-01'),
+        endDate: new Date('2031-01-02'),
       },
       {
         // id: 2,
         spotId: 2,
         userId: 2,
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: new Date('2031-02-15'),
+        endDate: new Date('2031-02-16'),
       },
       {
         // id: 3,
         spotId: 3,
         userId: 3,
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: new Date('2031-03-20'),
+        endDate: new Date('2031-03-21'),
       },
       {
         // id: 4, added to test "Get all User's Bookings"

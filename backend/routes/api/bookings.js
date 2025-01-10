@@ -85,10 +85,10 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
     return res.status(403).json({ "message": "Forbidden" });
   };
   // check if booking is in the past
-  const today = new Date();
-  const bookingStart = new Date(booking.startDate);
-  
-  if (bookingStart < today) {
+  const bookingEnd = new Date(endDate);
+  const updatedDate = new Date(booking.updatedAt);
+
+  if (updatedDate < bookingEnd) {
     return res.status(403).json({ message: "Past bookings can't be modified" });
   }
   // check for booking conflicts
