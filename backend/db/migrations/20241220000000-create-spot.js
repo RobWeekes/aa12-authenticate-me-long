@@ -13,10 +13,9 @@ module.exports = {
     options.tableName = "Spots";
     await queryInterface.createTable('Spots', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true
       },
       ownerId: {
         type: Sequelize.INTEGER,
