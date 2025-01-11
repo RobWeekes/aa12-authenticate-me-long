@@ -11,10 +11,10 @@ module.exports = {
     options.tableName = "Bookings";
     await queryInterface.createTable('Bookings', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true,
+        allowNull: false
       },
       spotId: {
         type: Sequelize.INTEGER,
