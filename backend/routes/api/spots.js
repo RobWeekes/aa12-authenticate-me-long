@@ -318,7 +318,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 });
 
 // Create a Spot
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, validateNewSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
   const spot = await Spot.create({
     ownerId: req.user.id,
