@@ -1,12 +1,12 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const { check } = require('express-validator');
+// const bcrypt = require('bcryptjs');
+// const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { validateReview, validateBooking } = require('../../utils/post-validators');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Review, User, Spot, ReviewImage, SpotImage, sequelize } = require('../../db/models');
-const { QueryInterface, Sequelize } = require('sequelize');
+// const { QueryInterface, Sequelize } = require('sequelize');
 // const { sequelize } = require('sequelize');
 
 const router = express.Router();
@@ -49,32 +49,6 @@ router.get('/current', requireAuth, async (req, res) => {
   });
   return res.json({ Reviews: formattedReviews });
 });
-
-// // Get Reviews of Current User
-// router.get('/current', requireAuth, async (req, res) => {
-//   const reviews = await Review.findAll({
-//     where: { userId: req.user.id },
-//     include: [
-//       {
-//         model: User,
-//         attributes: ['id', 'firstName', 'lastName']
-//       },
-//       {
-//         model: Spot,  // use sequelize instance instead of Sequelize model
-//         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price',
-//           [Sequelize.literal(`(SELECT url FROM "${process.env.SCHEMA}"."SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND preview = true LIMIT 1)`), 'previewImage']
-//           // [sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true LIMIT 1)'), 'previewImage']
-//       ]
-//       },
-//       {
-//         model: ReviewImage,
-//         as: 'ReviewImages',
-//         attributes: ['id', 'url']
-//       }
-//     ]
-//   });
-//   return res.json({ Reviews: reviews });
-// });
 
 // Get all Reviews by a Spot's id - route is in spots.js
 
