@@ -319,7 +319,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
   });
   const formattedSpot = {
     ...spot.toJSON(),
-    price: Number(spot.price)
+    price: Number(price)
   };
   return res.status(201).json(formattedSpot);
 });
