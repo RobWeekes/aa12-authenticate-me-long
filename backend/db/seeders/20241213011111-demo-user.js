@@ -1,7 +1,7 @@
 'use strict';
 
 const { User } = require('../models');
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");   // to decrypt passwords
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {

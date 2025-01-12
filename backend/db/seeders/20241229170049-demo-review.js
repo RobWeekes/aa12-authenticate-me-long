@@ -1,7 +1,6 @@
 'use strict';
 
 const { Review } = require('../models');
-const bcrypt = require("bcryptjs");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -13,7 +12,6 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Review.bulkCreate([
       {
-        id: 1,
         userId: 1,  // Demo-lition user
         spotId: 1,  // First spot
         review: 'This was an awesome spot!',
@@ -22,7 +20,6 @@ module.exports = {
         updatedAt: new Date('2023-12-15')
       },
       {
-        id: 2,
         userId: 2,  // FakeUser1
         spotId: 2,  // Second spot
         review: 'This was an okay spot.',
@@ -31,7 +28,6 @@ module.exports = {
         updatedAt: new Date('2023-12-15')
       },
       {
-        id: 3,
         userId: 3,  // FakeUser2
         spotId: 3,  // Third spot
         review: 'This was a horrible spot.',
@@ -43,16 +39,16 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    /**
+    /*
      * Add commands to revert seed here.
-     *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'Reviews';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1, 2, 3] }
+      userId: { [Op.in]: [1, 2, 3] },
+      spotId: { [Op.in]: [1, 2, 3] }
     }, {});
   }
 };
