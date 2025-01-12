@@ -49,9 +49,9 @@ router.get('/current', requireAuth, async (req, res) => {
     spotData.avgRating = Number(spotData.avgRating);
     return spotData;
   });
-
   return res.json({ "Spots": formattedSpots });
 });
+
 // Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
