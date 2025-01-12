@@ -77,7 +77,6 @@ app.use((err, _req, _res, next) => {
     console.error(err);
     const error = {
       message: err.message,
-      statusCode: err.status || 500,
       errors: err.errors
     };
     // Only include stack traces in development
