@@ -73,7 +73,6 @@ app.use((err, _req, _res, next) => {
   });
 
   app.use((err, _req, res, _next) => {
-    res.status(err.status || 500);
     console.error(err);
     const error = {
       message: err.message,
@@ -82,14 +81,8 @@ app.use((err, _req, _res, next) => {
     // Only include stack traces in development
   if (process.env.NODE_ENV !== 'production') {
     error.stack = err.stack;
-  }
-  res.status(error.statusCode).json(error);
-    // res.json({
-    //   // title: err.title || 'Server Error',
-    //   message: err.message,
-    //   errors: err.errors,
-    //   stack: isProduction ? null : err.stack
-    // });
+  } // pass along error code or 500 by default
+  res.status(err.status || 500).json(error);
   });
 
 // Root route - DO NOT MODIFY
