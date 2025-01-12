@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.Booking, { foreignKey: 'spotId', as: 'SpotBookings' });
     }
   }
-
   Spot.init({
     ownerId: {
       type: DataTypes.INTEGER,

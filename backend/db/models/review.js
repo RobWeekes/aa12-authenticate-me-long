@@ -1,9 +1,7 @@
 'use strict';
 
 const { Model, Validator } = require('sequelize');
-
-const sequelize = require('../../config/database');
-// const User = require('./user');
+// const sequelize = require('../../config/database');
 
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
@@ -21,12 +19,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Review.init({
     userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      type: DataTypes.INTEGER
     },
     spotId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      type: DataTypes.INTEGER
     },
     review: {
       type: DataTypes.TEXT,
