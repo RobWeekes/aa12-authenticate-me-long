@@ -75,12 +75,22 @@ app.use((err, _req, _res, next) => {
   app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
     console.error(err);
-    res.json({
-      // title: err.title || 'Server Error',
+    const error = {
       message: err.message,
-      errors: err.errors,
-      stack: isProduction ? null : err.stack
-    });
+      statusCode: err.status || 500,
+      errors: err.errors
+    };
+    // Only include stack traces in development
+  if (process.env.NODE_ENV !== 'production') {
+    error.stack = err.stack;
+  }
+  res.status(error.statusCode).json(error);
+    // res.json({
+    //   // title: err.title || 'Server Error',
+    //   message: err.message,
+    //   errors: err.errors,
+    //   stack: isProduction ? null : err.stack
+    // });
   });
 
 // Root route - DO NOT MODIFY
