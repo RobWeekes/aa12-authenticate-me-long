@@ -267,21 +267,6 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     review,
     stars
   });
-
-  // const formattedReview = await Review.findByPk(newReview.id, {
-  //   include: [
-  //     {
-  //       model: User,
-  //       attributes: ['id', 'firstName', 'lastName']
-  //     },
-  //     {
-  //       model: ReviewImage,
-  //       as: 'ReviewImages',
-  //       attributes: ['id', 'url']
-  //     }
-  //   ]
-  // });
-
   return res.status(201).json(newReview);
 });
 
