@@ -303,36 +303,26 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 });
 
 // Create a Spot
-// router.post('/', requireAuth, validateNewSpot, async (req, res) => {
-//   const { address, city, state, country, lat, lng, name, description, price } = req.body;
-//   const spot = await Spot.create({
-//     ownerId: req.user.id,
-//     address,
-//     city,
-//     state,
-//     country,
-//     lat,
-//     lng,
-//     name,
-//     description,
-//     price
-//   });
-//   const formattedSpot = {
-//     ...spot.toJSON(),
-//     price: Number(price)
-//   };
-//   return res.status(201).json(formattedSpot);
-// });
-
-// Create a Spot
 router.post('/', requireAuth, validateNewSpot, async (req, res) => {
-  const ownerId = req.user.id;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
-  const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
-  // console.log(newSpot);
-  return res.status(201).json(newSpot);
+  const spot = await Spot.create({
+    ownerId: req.user.id,
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price
+  });
+  const formattedSpot = {
+    ...spot.toJSON(),
+    price: Number(price)
+  };
+  return res.status(201).json(formattedSpot);
 });
-
 
 // Get all Spots and Get All Spots with Params
 // API endpoint for retrieving filtered spots
