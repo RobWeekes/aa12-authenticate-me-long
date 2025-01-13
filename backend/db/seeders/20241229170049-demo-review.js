@@ -16,24 +16,24 @@ module.exports = {
         spotId: 1,  // First spot
         review: 'This was an awesome spot!',
         stars: 5,
-        createdAt: new Date('2023-12-15'),
-        updatedAt: new Date('2023-12-15')
+        createdAt: new Date('2025-03-15'),
+        updatedAt: new Date('2025-03-15')
       },
       {
         userId: 2,  // FakeUser1
         spotId: 2,  // Second spot
         review: 'This was an okay spot.',
         stars: 3,
-        createdAt: new Date('2023-12-15'),
-        updatedAt: new Date('2023-12-15')
+        createdAt: new Date('2025-04-20'),
+        updatedAt: new Date('2025-04-20')
       },
       {
         userId: 3,  // FakeUser2
         spotId: 3,  // Third spot
         review: 'This was a horrible spot.',
         stars: 1,
-        createdAt: new Date('2023-12-15'),
-        updatedAt: new Date('2023-12-15')
+        createdAt: new Date('2025-05-25'),
+        updatedAt: new Date('2025-05-25')
       }
     ], { validate: true });
   },

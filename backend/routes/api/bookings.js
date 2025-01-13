@@ -85,13 +85,24 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
     return res.status(403).json({ "message": "Forbidden" });
   };
   // check if booking is in the past
-  const bookingEnd = new Date(endDate);
-  const updatedDate = new Date(booking.updatedAt);
-
-  if (updatedDate < bookingEnd) {
+  const currentDate = new Date();
+  if (booking.startDate < currentDate) {
     return res.status(403).json({ message: "Past bookings can't be modified" });
   }
   // check for booking conflicts
+  const existingBooking = await Booking.findOne({
+    where: {
+      endDate: startDate,
+      id: { [Op.ne]: parseInt(bookingId)} // Exclude current booking
+    }
+  });
+
+  if (existingBooking) {
+    return res.status(403).json({
+      message: "Start date conflicts with an existing booking"
+    });
+  }
+
   const conflictingBooking = await Booking.findOne({
     where: {
       id: { [Op.ne]: parseInt(bookingId) },
@@ -139,7 +150,6 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
       }
     });
   }
-
   const updatedBooking = await booking.update({
     startDate,
     endDate
