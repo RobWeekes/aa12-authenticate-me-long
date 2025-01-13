@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 const generateDates = (endDate) => {
   const end = new Date(endDate);
   const start = new Date(end);
-  start.setDate(end.getDate() - 1); // booking starts 2 days before review
+  start.setDate(end.getDate() - 1); // booking starts 1 day before review
   return { start, end };
 }
 

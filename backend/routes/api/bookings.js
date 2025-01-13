@@ -93,7 +93,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
   const existingBooking = await Booking.findOne({
     where: {
       endDate: startDate,
-      id: { [Op.ne]: parseInt(bookingId)} // Exclude current booking
+      id: { [Op.ne]: parseInt(bookingId)} // exclude current booking
     }
   });
 
