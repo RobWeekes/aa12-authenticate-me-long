@@ -107,8 +107,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
       endDate: booking.endDate,
     }));
     return res.json({ Bookings: shortenedBookings });
-  }
-
+  };
   const formattedBookings = spotBookings.map(booking => {
     const bookingData = booking.toJSON();
     bookingData.Spot.price = Number(bookingData.Spot.price);
@@ -158,7 +157,7 @@ router.get('/:spotId', async (req, res) => {
   spotData.price = Number(spotData.price);
   spotData.numReviews = Number(spotData.numReviews);
   spotData.avgStarRating = Number(spotData.avgStarRating);
-  return res.json(spot);
+  return res.json(spotData);
 });
 
 // Add an Image to a Spot based on the Spot's id
@@ -323,6 +322,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res) => {
   };
   return res.status(201).json(formattedSpot);
 });
+
 
 // Get all Spots and Get All Spots with Params
 // API endpoint for retrieving filtered spots
