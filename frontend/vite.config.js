@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
   // server: {
   //   open: true
   // }
-  // added below
+  // added below for phase 0 of frontend readme
   server: {
     proxy: {
       '/api': 'http://localhost:8000'
