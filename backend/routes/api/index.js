@@ -80,5 +80,19 @@ router.use('/spot-images', spotImagesRouter);
 //// CODE FOR TESTING USER AUTH ROUTES ABOVE ////
 /////////////////////////////////////////////////
 
+// removed the POST /api/test test route below for phase 0 of frontend readme
+// // note: the readme didn't instruct to paste the following code. added below for phase 0 of frontend readme
+// router.post('/test', (req, res) => {
+//     // note: added this because there wasn't an object with a key of requestBody logged in the terminal with the value as the object that was passed into the body of the request. added below for phase 0 of frontend readme
+//     console.log('requestBody:', req.body);
+//     // 
+//     const { credential, password } = req.body;
+//     // note: changed this because there wasn't an object with a key of requestBody logged in the terminal with the value as the object that was passed into the body of the request. added below for phase 0 of frontend readme
+//     // res.json({ credential, password });
+//     res.json({ message: "Test endpoint successful",
+//         receivedData: { credential, password } });
+//         // 
+// });
+// // 
 
 module.exports = router;
