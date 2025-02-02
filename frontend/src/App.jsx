@@ -34,18 +34,18 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-  // 
-  {
-    path: '/',
-    element: <h1>Welcome!</h1>
-  },
-  {
-    path: '/login',
-    element: <LoginFormPage />
+      // 
+      {
+        path: '/',
+        element: <h1>Welcome!</h1>
+      },
+      {
+        path: '/login',
+        element: <LoginFormPage />
+      }
+      // added below for phase 1 of frontend readme
+    ]
   }
-  // added below for phase 1 of frontend readme
-]
-}
   // 
 ]);
 // 
