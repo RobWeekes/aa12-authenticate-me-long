@@ -5,11 +5,17 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 // changed below for phase 1 of frontend readme
 // import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+// changed below for phase 3 of frontend readme
+// import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
+// 
 // 
 import LoginFormPage from './components/LoginFormPage';
 // added below for phase 2 of frontend readme
 import SignupFormPage from './components/SignupFormPage';
+// 
+// added below for phase 3 of frontend readme
+import Navigation from './components/Navigation';
 // 
 // added below for phase 1 of frontend readme
 import * as sessionActions from './store/session';
@@ -26,6 +32,9 @@ function Layout() {
 
   return (
     <>
+    {/* // added below for phase 3 of frontend readme */}
+    <Navigation isLoaded={isLoaded} />
+    {/*  */}
       {isLoaded && <Outlet />}
     </>
   );
