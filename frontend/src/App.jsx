@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 // 
 import LoginFormPage from './components/LoginFormPage';
+// added below for phase 2 of frontend readme
+import SignupFormPage from './components/SignupFormPage';
+// 
 // added below for phase 1 of frontend readme
 import * as sessionActions from './store/session';
 
@@ -42,7 +45,14 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginFormPage />
+        // added below for phase 2 of frontend readme
+        // }
+      },
+      {
+        path: "/signup",
+        element: <SignupFormPage />
       }
+      // 
       // added below for phase 1 of frontend readme
     ]
   }
