@@ -46,4 +46,15 @@ const sessionReducer = (state = initialState, action) => {
     }
 };
 
+// added below for phase 1 of frontend readme
+// ...
+export const restoreUser = () => async (dispatch) => {
+    const response = await csrfFetch("/api/session");
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;
+};
+// ...
+//   
+
 export default sessionReducer;
