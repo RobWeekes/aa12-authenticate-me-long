@@ -1,7 +1,9 @@
 // frontend/src/components/Navigation/Navigation.jsx
 // added below for phase 3 of frontend readme
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+// changed below to remove the logout logic for phase 3 of frontend readme
+// import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 // removed below to remove the logout logic for phase 3 of frontend readme
 // import * as sessionActions from '../../store/session';

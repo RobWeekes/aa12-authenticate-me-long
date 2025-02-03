@@ -40,5 +40,24 @@ div {
     width: 100%;
     padding: 0.5rem;
   }
+
+  /* // added below for phase 3 of frontend readme */
+  .hidden {
+    display: none;
+  }  
+
+  .profile-dropdown {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .hidden {
+    display: none;
+  }  
+  /*  */
   
 /*  */
