@@ -16,6 +16,9 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 // ... other imports
 import * as sessionActions from './store/session'; // <-- ADD THIS LINE
 // 
+// added below for phase 4 of frontend readme
+import { Modal, ModalProvider } from './context/Modal';
+// 
 
 const store = configureStore();
 // added below for phase 0 of frontend readme
@@ -32,19 +35,30 @@ if (import.meta.env.MODE !== 'production') {
 }
 // 
 
-if (process.env.NODE_ENV !== 'production') {
-  window.store = store;
-}
+// removed below for phase 4 of frontend readme
+// if (process.env.NODE_ENV !== 'production') {
+//   window.store = store;
+// }
+// 
 // 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    {/* added below for phase 4 of frontend readme */}
+    <ModalProvider>
+    {/*  */}
 {/* // added below for phase 0 of frontend readme */}
 <Provider store={store}>
   {/*  */}
     <App />
     {/*  */}
+    {/* added below for phase 4 of frontend readme */}
+    <Modal />
+    {/*  */}
     </Provider>
+    {/*  */}
+    {/* added below for phase 4 of frontend readme */}
+    </ModalProvider>
     {/*  */}
   </React.StrictMode>
 );

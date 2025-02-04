@@ -18,4 +18,16 @@ module.exports = {
     ],
     'react/prop-types': 'off'
   },
+  // added below for phase 4 of frontend readme
+  overrides: [
+    {
+      files: [
+        "src/context/*.jsx"
+      ],
+      rules: {
+        'react-refresh/only-export-components': 'off'
+      }
+    }
+  ],
+  // 
 }

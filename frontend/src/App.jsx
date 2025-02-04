@@ -10,7 +10,9 @@ import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 // 
 // 
-import LoginFormPage from './components/LoginFormPage';
+// removed below for phase 4 of frontend readme
+// import LoginFormPage from './components/LoginFormPage';
+// 
 // added below for phase 2 of frontend readme
 import SignupFormPage from './components/SignupFormPage';
 // 
