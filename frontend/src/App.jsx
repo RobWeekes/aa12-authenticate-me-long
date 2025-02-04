@@ -13,6 +13,9 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 // removed below for phase 4 of frontend readme
 // import LoginFormPage from './components/LoginFormPage';
 // 
+// note: not instructed to add below for phase 4 of frontend readme
+import LoginFormModal from './components/LoginFormModal';
+// 
 // added below for phase 2 of frontend readme
 import SignupFormPage from './components/SignupFormPage';
 // 
@@ -55,7 +58,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element: <LoginFormPage />
+        // note: not instructed to change below for phase 4 of frontend readme
+        // element: <LoginFormPage />
+        element: <LoginFormModal />
+        // 
         // added below for phase 2 of frontend readme
         // }
       },

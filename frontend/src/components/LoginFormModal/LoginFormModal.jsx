@@ -20,10 +20,10 @@ import './LoginForm.css';
 
 // changed below for phase 4 of frontend readme
 // function LoginFormPage() {
-  function LoginFormModal() {
+function LoginFormModal() {
   // 
   const dispatch = useDispatch();
-// removed below for phase 4 of frontend readme
+  // removed below for phase 4 of frontend readme
   // const sessionUser = useSelector((state) => state.session.user);
   // 
   const [credential, setCredential] = useState("");
@@ -35,27 +35,27 @@ import './LoginForm.css';
 
   // removed below for phase 4 of frontend readme
   // if (sessionUser) return <Navigate to="/" replace={true} />;
-// 
+  // 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
-    // added below for phase 4 of frontend readme
-    .then(closeModal)
-    // 
-    .catch(
-      async (res) => {
-        const data = await res.json();
-        // changed below for phase 4 of frontend readme
-        // if (data?.errors) 
-        if (data && data.errors) {
-          // 
-          setErrors(data.errors);
-      }
-      // changed below for phase 4 of frontend readme
-    // );
-  });
+      // added below for phase 4 of frontend readme
+      .then(closeModal)
+      // 
+      .catch(
+        async (res) => {
+          const data = await res.json();
+          // changed below for phase 4 of frontend readme
+          // if (data?.errors) 
+          if (data && data.errors) {
+            // 
+            setErrors(data.errors);
+          }
+          // changed below for phase 4 of frontend readme
+          // );
+        });
     // 
   };
 
@@ -81,7 +81,15 @@ import './LoginForm.css';
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+        {/* // changed below for phase 4 of frontend readme */}
+        {/* {errors.credential &&  */}
+        {errors.credential && (
+          // 
+          // {/* // changed below for phase 4 of frontend readme */}
+          <p>{errors.credential}</p>
+          // }
+        )}
+        {/* //  */}
         <button type="submit">Log In</button>
       </form>
     </>
