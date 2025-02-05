@@ -12,6 +12,9 @@ import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 // 
+// added below for phase 4 of frontend readme
+import SignupFormModal from '../SignupFormModal';
+// 
 // added below for phase 3 of frontend readme */
 // ...
 import './Navigation.css';
@@ -32,13 +35,23 @@ function Navigation({ isLoaded }) {
 //   };
 // 
 
-  const sessionLinks = sessionUser ? (
+// changed below for phase 4 of frontend readme
+  // const sessionLinks = sessionUser ? (
+    let sessionLinks;
+    if (sessionUser) {
+      sessionLinks = (
+    // 
     // removed below for phase 4 of frontend readme
     // <>
     // 
       <li>
         <ProfileButton user={sessionUser} />
       </li>
+      // added below for phase 4 of frontend readme
+    );
+  } else {
+    sessionLinks = (
+      // 
       // removed below to remove the logout logic for phase 3 of frontend readme */}
       //  <li>
         // <button onClick={logout}>Log Out</button>
@@ -47,7 +60,9 @@ function Navigation({ isLoaded }) {
       //  removed below for phase 4 of frontend readme */}
     //  </> */}
     // 
-  ) : (
+    // removed below for phase 4 of frontend readme
+  // ) : (
+  // 
     <>
       <li>
       {/* added below for phase 4 of frontend readme */}
@@ -58,14 +73,23 @@ function Navigation({ isLoaded }) {
       </li>
         {/*  */}
         {/* removed below for phase 4 of frontend readme */}
-        {/* <NavLink to="/login">Log In</NavLink>
-      </li> */}
-      {/*  */}
+        {/* //  <NavLink to="/login">Log In</NavLink> */}
+      {/* // </li> */}
+      {/* //  */}
       <li>
-        <NavLink to="/signup">Sign Up</NavLink>
+        {/* changed below for phase 4 of frontend readme */}
+        {/* <NavLink to="/signup">Sign Up</NavLink> */}
+        <OpenModalButton
+          buttonText="Sign Up"
+          modalComponent={<SignupFormModal />}
+        />
+        {/*  */}
       </li>
-    </>
+     </> 
   );
+  // added below for phase 4 of frontend readme
+}
+  // 
 
   return (
     <ul>

@@ -1,8 +1,16 @@
 // frontend/src/components/SignupFormPage/SignupFormPage.jsx
 // added below for phase 2 of frontend readme
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+// changed below for phase 4 of frontend readme
+// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+// 
+// added below for phase 4 of frontend readme
+import { useModal } from '../../context/Modal';
+// 
+// removed below for phase 4 of frontend readme
+// import { Navigate } from 'react-router-dom';
+// 
 import * as sessionActions from '../../store/session';
 // added below for phase 2 of frontend readme
 // ...
@@ -10,9 +18,14 @@ import './SignupForm.css';
 // ...
 // 
 
-function SignupFormPage() {
+// changed below for phase 4 of frontend readme
+// function SignupFormPage() {
+function SignupFormModal() {
+    // 
     const dispatch = useDispatch();
-    const sessionUser = useSelector((state) => state.session.user);
+    // removed below for phase 4 of frontend readme
+    // const sessionUser = useSelector((state) => state.session.user);
+    // 
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -20,8 +33,13 @@ function SignupFormPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
+    // added below for phase 4 of frontend readme
+    const { closeModal } = useModal();
+    // 
 
-    if (sessionUser) return <Navigate to="/" replace={true} />;
+    // removed below for phase 4 of frontend readme
+    // if (sessionUser) return <Navigate to="/" replace={true} />;
+    // 
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,12 +53,16 @@ function SignupFormPage() {
                     lastName,
                     password
                 })
-            ).catch(async (res) => {
-                const data = await res.json();
-                if (data?.errors) {
-                    setErrors(data.errors);
-                }
-            });
+            )
+                // added below for phase 4 of frontend readme
+                .then(closeModal)
+                // 
+                .catch(async (res) => {
+                    const data = await res.json();
+                    if (data?.errors) {
+                        setErrors(data.errors);
+                    }
+                });
         }
         return setErrors({
             confirmPassword: "Confirm Password field must be the same as the Password field"
@@ -110,12 +132,23 @@ function SignupFormPage() {
                         required
                     />
                 </label>
-                {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+                {/* // changed below for phase 4 of frontend readme */}
+                {/* {errors.confirmPassword &&  */}
+                {errors.confirmPassword && (
+                    // 
+                    <p>{errors.confirmPassword}</p>
+                    // changed below for phase 4 of frontend readme
+                    // }
+                )}
+                {/* // */}
                 <button type="submit">Sign Up</button>
             </form>
         </>
     );
 }
 
-export default SignupFormPage;
+// changed below for phase 4 of frontend readme
+// export default SignupFormPage;
+export default SignupFormModal;
+// 
 // 
