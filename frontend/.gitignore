@@ -8,7 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
+# changed below for phase 2 of frontend deploy readme
+# dist
+!dist
+# 
 dist-ssr
 *.local
 
