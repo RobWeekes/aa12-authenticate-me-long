@@ -38,7 +38,9 @@ if (process.env.NODE_ENV === 'production') {
   // Serve the frontend's index.html file at the root route
   router.get('/', (req, res) => {
     res.cookie('XSRF-TOKEN', req.csrfToken());
-    return res.sendFile(
+    // changed below for phase 1 of frontend deploy readme
+    // return res.sendFile(
+      res.sendFile(
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
     );
   });
@@ -49,7 +51,10 @@ if (process.env.NODE_ENV === 'production') {
   // Serve the frontend's index.html file at all other routes NOT starting with /api
   router.get(/^(?!\/?api).*/, (req, res) => {
     res.cookie('XSRF-TOKEN', req.csrfToken());
-    return res.sendFile(
+    // changed below for phase 1 of frontend deploy readme
+    // return res.sendFile(
+      res.sendFile(
+      // 
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
     );
   });
@@ -60,19 +65,30 @@ if (process.env.NODE_ENV === 'production') {
 // Add a XSRF-TOKEN cookie in development
 if (process.env.NODE_ENV !== 'production') {
   router.get('/api/csrf/restore', (req, res) => {
-    res.cookie('XSRF-TOKEN', req.csrfToken());
-    return res.json({});
+    // changed below for phase 1 of frontend deploy readme
+    // res.cookie('XSRF-TOKEN', req.csrfToken());
+    // return res.json({});
+    const csrfToken = req.csrfToken();
+    res.cookie("XSRF-TOKEN", csrfToken);
+    res.status(200).json({
+      'XSRF-Token': csrfToken
+    // 
+    // added below for phase 1 of frontend deploy readme
+  });
+  // 
   });
 }
 
 // ...
 
-// GET /api/restore-user
-router.get(
-  '/restore-user',
-  (req, res) => {
-    return res.json(req.user);
-  }
-);
+// removed below for phase 1 of frontend deploy readme
+// // GET /api/restore-user
+// router.get(
+//   '/restore-user',
+//   (req, res) => {
+//     return res.json(req.user);
+//   }
+// );
+// 
 
 module.exports = router;
