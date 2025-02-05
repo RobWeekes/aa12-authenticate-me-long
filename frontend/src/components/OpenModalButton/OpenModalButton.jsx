@@ -20,16 +20,18 @@ function OpenModalButton({
 }
 
 // added below for phase 4 of frontend readme
-const Greeting = () => {
-    return (
-      <OpenModalButton
-        buttonText="Greeting"
-        modalComponent={<h2>Hello World!</h2>}
-        onButtonClick={() => console.log("Greeting initiated")}
-        onModalClose={() => console.log("Greeting completed")}
-      />
-    );
-  };
+// removed below to fix error  'Greeting' is assigned a value but never used
+// const Greeting = () => {
+//     return (
+//       <OpenModalButton
+//         buttonText="Greeting"
+//         modalComponent={<h2>Hello World!</h2>}
+//         onButtonClick={() => console.log("Greeting initiated")}
+//         onModalClose={() => console.log("Greeting completed")}
+//       />
+//     );
+//   };
+  // 
 // 
 
 export default OpenModalButton;
