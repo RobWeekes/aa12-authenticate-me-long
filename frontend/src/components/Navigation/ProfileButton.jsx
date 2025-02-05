@@ -11,7 +11,10 @@ import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
 // added below for phase 5 of frontend readme
-import OpenModalButton from '../OpenModalButton';
+// optional: changed below for phase 5 of frontend readme
+// import OpenModalButton from '../OpenModalButton';
+import OpenModalMenuItem from './OpenModalMenuItem';
+// 
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 // 
@@ -63,9 +66,16 @@ function ProfileButton({ user }) {
     // 
   //   
 
+  // optional: added below for phase 5 of frontend readme
+  const closeMenu = () => setShowMenu(false);
+  // 
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    // optional: added below for phase 5 of frontend readme
+    closeMenu();
+    // 
   };
 
   // added below for phase 3 of frontend readme
@@ -104,18 +114,40 @@ function ProfileButton({ user }) {
         </>
         ) : (
           <>
-            <li>
-              <OpenModalButton
-                buttonText="Log In"
+          {/* // optional: removed below for phase 5 of frontend readme */}
+            {/* <li> */}
+              {/*  */}
+              {/* optional: changed below for phase 5 of frontend readme */}
+              {/* <OpenModalButton
+                buttonText="Log In" */}
+                {/* // optional: added below for phase 5 of frontend readme */}
+                {/* onButtonClick={closeMenu} */}
+                {/*  */}
+                <OpenModalMenuItem
+              itemText="Log In"
+              onItemClick={closeMenu}
+              // 
                 modalComponent={<LoginFormModal />}
               />
-            </li>
-            <li>
-              <OpenModalButton
-                buttonText="Sign Up"
+              {/* optional: removed below for phase 5 of frontend readme */}
+            {/* </li> */}
+            {/* <li> */}
+            {/*  */}
+            {/* optional: changed below for phase 5 of frontend readme */}
+              {/* <OpenModalButton
+                buttonText="Sign Up" */}
+                {/* // optional: added below for phase 5 of frontend readme */}
+                {/* onButtonClick={closeMenu} */}
+                {/* // */}
+                <OpenModalMenuItem
+              itemText="Sign Up"
+              onItemClick={closeMenu}
+                // 
                 modalComponent={<SignupFormModal />}
               />
-            </li>
+              {/* optional: removed below for phase 5 of frontend readme */}
+            {/* </li> */}
+            {/*  */}
           </>
         )}
       {/*  */}
