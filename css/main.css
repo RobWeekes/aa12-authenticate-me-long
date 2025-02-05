@@ -1,0 +1,74 @@
+/* below is the format for a css page taken from aa07-css-basic-styling-temp practice */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.page {
+    max-width: 800px; /* Maximum width for content */
+    margin: 0 auto; /* Center the page */
+    padding: 20px; /* Padding for the overall page */
+    background-color: #fff; /* Background for the content area */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px; /* Space below header */
+}
+/* added above */
+/* added values below */
+h1 {
+    font-size: 2.5em;
+/*     font-family: ; */
+/*     padding: ; */
+    margin: 0;
+    font-weight: 700;
+/*     text-decoration: ; */
+    color: #333;
+/*     background-color: ; */
+/* removed above */
+}
+
+.content {
+    padding: 0 20px; /* Side gutters for content */
+}
+
+.story-box {
+    margin-bottom: 30px; /* Space below story */
+}
+/* added above */
+/* added values below */
+h2 {
+    font-size: 2em;
+/*     font-family: ; */
+/*     padding: ; */
+    margin: 20px 0 10px 0;
+    font-weight: 700;
+    color: #444;
+/*     background-color: ; */
+}
+
+p {
+/*     font-family: ; */
+    font-size: 1.125em; /* Slightly larger font for readability */
+/*     padding: ; */
+    margin: 10px 0;
+    color: #555;
+/*     background-color: ; */
+}
+
+/* removed above */
+/* added values below */
+.logo {
+    background-size: cover;
+    background-image: url('https://appacademy.github.io/styleguide/assets/logo/logo-emblem-black-1000.png');
+    background-color: #f0f0f0; /* Change this to your desired background color */
+    height: 200px; /* Adjust height as needed */
+    width: 200px; /* Adjust width as needed */
+}
