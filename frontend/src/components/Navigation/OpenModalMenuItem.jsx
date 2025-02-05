@@ -1,6 +1,8 @@
 // frontend/src/components/Navigation/OpenModalMenuItem.jsx
 // optional: added below for phase 5 of frontend readme
-import React from 'react';
+// removed below to fix error: 'React' is defined but never used
+// import React from 'react';
+// 
 import { useModal } from '../../context/Modal';
 
 function OpenModalMenuItem({
