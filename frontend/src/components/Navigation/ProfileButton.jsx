@@ -10,6 +10,11 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
+// added below for phase 5 of frontend readme
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
+// 
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -37,8 +42,11 @@ function ProfileButton({ user }) {
     // const closeMenu = () => {
         const closeMenu = (e) => {
             // added below for phase 3 of frontend readme
-            if (ulRef.current && !ulRef.current.contains(e.target)) {
+            // changed below for phase 5 of frontend readme
+            // if (ulRef.current && !ulRef.current.contains(e.target)) {
+              if (!ulRef.current.contains(e.target)) {
             // 
+              // 
         // 
       setShowMenu(false);
       // added below for phase 3 of frontend readme
@@ -82,12 +90,35 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}> {/* <-- Attach it here */}
       {/*  */}
       {/*  */}
+      {/* added below for phase 5 of frontend readme */}
+      {user ? (
+          <>
+        {/*  */}
         <li>{user.username}</li>
         <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>
+        {/* added below for phase 5 of frontend readme */}
+        </>
+        ) : (
+          <>
+            <li>
+              <OpenModalButton
+                buttonText="Log In"
+                modalComponent={<LoginFormModal />}
+              />
+            </li>
+            <li>
+              <OpenModalButton
+                buttonText="Sign Up"
+                modalComponent={<SignupFormModal />}
+              />
+            </li>
+          </>
+        )}
+      {/*  */}
       </ul>
     </>
   );
