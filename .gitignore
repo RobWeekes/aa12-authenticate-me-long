@@ -7,3 +7,5 @@ scratch.js
 .env-example
 
 # ALWAYS run npm run build in your frontend folder and commit those changes before deploying / pushing to GitHub
+
+# added this in case it's necessary to revert a git commit after running npm run build command
