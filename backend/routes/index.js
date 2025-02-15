@@ -24,7 +24,7 @@ const apiRouter = require('./api');
 //     'XSRF-Token': csrfToken
 //   });
 // });
-// 
+//
 
 router.use('/api', apiRouter);
 
@@ -54,13 +54,14 @@ if (process.env.NODE_ENV === 'production') {
     // changed below for phase 1 of frontend deploy readme
     // return res.sendFile(
       res.sendFile(
-      // 
+      //
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
     );
   });
 }
 
-// ...
+// In development, you need another way to get the XSRF-TOKEN cookie on your frontend app
+// because the React frontend is on a different server than the Express backend \/
 
 // Add a XSRF-TOKEN cookie in development
 if (process.env.NODE_ENV !== 'production') {
@@ -72,10 +73,10 @@ if (process.env.NODE_ENV !== 'production') {
     res.cookie("XSRF-TOKEN", csrfToken);
     res.status(200).json({
       'XSRF-Token': csrfToken
-    // 
+    //
     // added below for phase 1 of frontend deploy readme
   });
-  // 
+  //
   });
 }
 
@@ -89,6 +90,6 @@ if (process.env.NODE_ENV !== 'production') {
 //     return res.json(req.user);
 //   }
 // );
-// 
+//
 
 module.exports = router;

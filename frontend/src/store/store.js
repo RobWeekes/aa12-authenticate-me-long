@@ -5,14 +5,12 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // import thunk from 'redux-thunk';
 import { thunk } from 'redux-thunk';
 // added below for phase 1 of frontend readme
-// ...
+
 import sessionReducer from './session';
-// 
 
 const rootReducer = combineReducers({
   // added below for phase 1 of frontend readme
   session: sessionReducer
-  // 
 });
 
 let enhancer;
