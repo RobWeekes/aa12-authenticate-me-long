@@ -26,6 +26,8 @@ const apiRouter = require('./api');
 // });
 //
 
+// Phase 1: API Routes
+// All the URLs of the routes in the api router will be prefixed with /api
 router.use('/api', apiRouter);
 
 // added below for phase 0 of frontend readme
