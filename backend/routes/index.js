@@ -16,16 +16,16 @@ const apiRouter = require('./api');
 // // });
 
 // In development: allow any developer to re-set the CSRF token cookie XSRF-TOKEN.
-if (process.env.NODE_ENV !== 'production') {
-  router.get("/api/csrf/restore", (req, res) => {
-    const csrfToken = req.csrfToken();
-    // console.log("XSRF-TOKEN", csrfToken);
-    res.cookie("XSRF-TOKEN", csrfToken);
-    res.status(200).json({
-      'XSRF-Token': csrfToken
-    });
+// if (process.env.NODE_ENV !== 'production') {
+router.get("/api/csrf/restore", (req, res) => {
+  const csrfToken = req.csrfToken();
+  // console.log("XSRF-TOKEN", csrfToken);
+  res.cookie("XSRF-TOKEN", csrfToken);
+  res.status(200).json({
+    'XSRF-Token': csrfToken
   });
-}
+});
+// }
 
 // Phase 1: API Routes
 // All the URLs of the routes in the api router will be prefixed with /api
