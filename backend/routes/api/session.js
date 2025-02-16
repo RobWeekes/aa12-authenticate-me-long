@@ -72,6 +72,19 @@ router.post("/", validateLogin, async (req, res, next) => {
   });
 });
 
+// To test log in locally in the browser console, run this fetch:
+// await fetch('/api/session', {
+//   method: 'POST',
+//   headers: {
+//     "Content-Type": "application/json",
+//     "XSRF-TOKEN": "<PASTE IN XSRF-TOKEN>"
+//   },
+//   body: JSON.stringify({
+//     credential: "Demo-lition",
+//     password: "password"
+//   })
+// }).then(res => res.json()).then(data => console.log(data));
+
 // Log out
 router.delete("/", (_req, res) => {
   res.clearCookie("token");
