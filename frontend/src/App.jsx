@@ -26,6 +26,21 @@ import SignupFormModal from './components/SignupFormModal';
 // added below for phase 3 of frontend readme
 import Navigation from './components/Navigation';
 // 
+// added below
+import LandingPage from './components/LandingPage/LandingPage';
+// 
+// added below
+import CreateSpotForm from './components/CreateSpotForm';
+import DeleteSpotModal from './components/DeleteSpotModal';
+import DeleteReviewModal from './components/DeleteReviewModal';
+// import HowWasYourStayModal from './components/HowWasYourStayModal';
+import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
+// import OpenModalButton from './components/OpenModalButton/OpenModalButton';
+// import Review from './components/Review';
+import SpotDetailsPage from './components/SpotDetailsPage/SpotDetailsPage';
+// import SpotTile from './components/SpotTile';
+import UpdateSpotForm from './components/UpdateSpotForm';
+// 
 // added below for phase 1 of frontend readme
 import * as sessionActions from './store/session';
 
@@ -58,7 +73,8 @@ const router = createBrowserRouter([
       // 
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        // element: <h1>Welcome!</h1>
+        element: <LandingPage />
       },
       {
         path: '/login',
@@ -75,7 +91,34 @@ const router = createBrowserRouter([
         // element: <SignupFormPage />
         element: <SignupFormModal />
         // 
+      },
+      // added below
+      // added below
+      {
+        path: '/spots/:id',
+        element: <SpotDetailsPage />
+      },
+      {
+        path: '/spots/new',
+        element: <CreateSpotForm />
+      },
+      {
+        path: '/spots/current',
+        element: <ManageSpotsPage />
+      },
+      {
+        path: '/spots/:id/edit',
+        element: <UpdateSpotForm />
+      },
+      {
+        path: '/spots/:id/delete',
+        element: <DeleteSpotModal />
+      },
+      {
+        path: '/spots/:id/review/delete',
+        element: <DeleteReviewModal />
       }
+      // 
       // 
       // added below for phase 1 of frontend readme
     ]
