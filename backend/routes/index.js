@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
     );
   });
 
-  // Serve the static assets in the frontend's build folder
+  // Serve the static assets in the frontend's build folder at all other routes NOT starting with /api
   router.use(express.static(path.resolve("../frontend/dist")));
 
   // Serve the frontend's index.html file at all other routes NOT starting with /api
@@ -57,7 +57,6 @@ if (process.env.NODE_ENV === 'production') {
     // changed below for phase 1 of frontend deploy readme
     // return res.sendFile(
       res.sendFile(
-      //
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
     );
   });
@@ -74,7 +73,7 @@ if (process.env.NODE_ENV !== 'production') {
     // return res.json({});
     const csrfToken = req.csrfToken();
     res.cookie("XSRF-TOKEN", csrfToken);
-    res.status(200).json({
+    return res.status(200).json({
       'XSRF-Token': csrfToken
     //
     // added below for phase 1 of frontend deploy readme
