@@ -1,9 +1,12 @@
-import store from "./store";
+import { combineReducers } from 'redux';
+import spotsReducer from './spots';
+import reviewsReducer from './reviews';
+import sessionReducer from './session';
 
-// const configureStore = () => {
+const rootReducer = combineReducers({
+  session: sessionReducer,
+  spots: spotsReducer,
+  reviews: reviewsReducer
+});
 
-//   };
-
-
-//   export default configureStore;
-export default store;
+export default rootReducer;
