@@ -27,17 +27,17 @@ import SignupFormModal from './components/SignupFormModal';
 import Navigation from './components/Navigation';
 // 
 // added below
-import LandingPage from './components/LandingPage/LandingPage';
+import LandingPage from './components/LandingPage';
 // 
 // added below
 import CreateSpotForm from './components/CreateSpotForm';
 import DeleteSpotModal from './components/DeleteSpotModal';
 import DeleteReviewModal from './components/DeleteReviewModal';
 // import HowWasYourStayModal from './components/HowWasYourStayModal';
-import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
+import ManageSpotsPage from './components/ManageSpotsPage';
 // import OpenModalButton from './components/OpenModalButton/OpenModalButton';
 // import Review from './components/Review';
-import SpotDetailsPage from './components/SpotDetailsPage/SpotDetailsPage';
+import SpotDetailsPage from './components/SpotDetailsPage';
 // import SpotTile from './components/SpotTile';
 import UpdateSpotForm from './components/UpdateSpotForm';
 // 
