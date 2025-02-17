@@ -75,14 +75,10 @@ if (process.env.NODE_ENV !== 'production') {
     res.cookie("XSRF-TOKEN", csrfToken);
     return res.status(200).json({
       'XSRF-Token': csrfToken
-    //
     // added below for phase 1 of frontend deploy readme
-  });
-  //
+    });
   });
 }
-
-// ...
 
 // removed below for phase 1 of frontend deploy readme
 // // GET /api/restore-user

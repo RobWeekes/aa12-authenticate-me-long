@@ -44,6 +44,7 @@ router.use('/spot-images', spotImagesRouter);
 
 // // To test the custom csrfFetch function that attaches the CSRF token to the header, navigate to root of app, http://localhost:5173
 // // In the browser console, make a (FETCH) request to POST /api/test with the demo user credentials using the window.csrfFetch function:
+// // "POST /api/test" route above ^ must be commented in for csrfFetch function to work!
 
 // /*
 // csrfFetch('/api/test', {
