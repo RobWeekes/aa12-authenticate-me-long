@@ -45,11 +45,14 @@ export const setError = (error) => ({
 
 // Thunk Action Creator
 export const fetchSpots = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_SPOTS_START' });
+
+  try {
   const response = await fetch('/api/spots');
-  if (response.ok) {
-    const spots = await response.json();
-    dispatch(loadSpots(spots));
-    return spots;
+  const data = await response.json();
+    dispatch({ type: 'FETCH_SPOTS_SUCCESS', spots: data });
+  } catch (error) {
+    dispatch({ type: 'FETCH_SPOTS_FAILURE' });
   }
 };
 

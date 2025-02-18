@@ -7,7 +7,7 @@ import App from './App';
 import './index.css';
 // added below for phase 0 of frontend readme
 import { Provider } from 'react-redux';
-import configureStore from './store';
+import configureStore from './store/store';
 // added below for phase 0 of frontend readme
 import { restoreCSRF, csrfFetch } from './store/csrf';
 // added below for phase 1 of frontend readme
