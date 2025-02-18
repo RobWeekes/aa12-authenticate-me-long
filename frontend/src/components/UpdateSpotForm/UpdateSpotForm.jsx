@@ -43,4 +43,3 @@ const UpdateSpotForm = ({ spot, onUpdateSpot }) => {
 };
 
 export default UpdateSpotForm;
-

@@ -1,49 +1,42 @@
-import { useState } from 'react';
-import HowWasYourStayModal from '../HowWasYourStayModal';
+import { useParams } from 'react-router-dom';
+import { useSelector} from 'react-redux';
 
-const SpotDetailsPage = ({ spot, onSubmitReview }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+function SpotDetailsPage() {
+  const { id } = useParams();
+  const spot = useSelector(state => state.spots.find(spot => spot.id === id));
+  const reviews = useSelector(state => state.reviews.filter(review => review.spotId === id));
 
-  // Function to open the modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // Function to close the modal
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleReserve = () => {
+    alert("Feature coming soon");
   };
 
   return (
-    <div>
-      <h1>{spot.title}</h1>
-      <div className="spot-images">
-        <img src={spot.previewImageUrl} alt="Preview" />
-        {spot.imageUrls.map((url, idx) => (
-          <img key={idx} src={url} alt={`Spot Image ${idx + 1}`} />
+    <div className="spot-details">
+      <h1><strong>{spot.name}</strong></h1>
+      <p>{spot.city}, {spot.state}, {spot.country}</p>
+      <img src={spot.largeImage} alt={spot.name} />
+      <div className="small-images">
+        {spot.images.map((image, index) => (
+          <img key={index} src={image} alt={`${spot.name} ${index + 1}`} />
         ))}
       </div>
-
-      <p>{spot.description}</p>
-
-      <div>
-        {/* Reserve Button (For now, it does nothing) */}
-        <button>Reserve</button>
-
-        {/* Button to open the review modal */}
-        <button onClick={openModal}>Post Your Review</button>
+      <p>Hosted by {spot.hostFirstName} {spot.hostLastName}</p>
+      <div className="spot-reviews">
+        <div>
+          <span>★</span> {spot.avgRating || 'New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
+        </div>
+        <button onClick={handleReserve}>Reserve</button>
+        <div className="reviews-list">
+          {reviews.map(review => (
+            <div key={review.id}>
+              <p>{review.firstName} - {review.date}</p>
+              <p>{review.comment}</p>
+            </div>
+          ))}
+        </div>
       </div>
-
-      {/* Modal to leave a review */}
-      {isModalOpen && (
-        <HowWasYourStayModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          onSubmitReview={onSubmitReview}
-        />
-      )}
     </div>
   );
-};
+}
 
 export default SpotDetailsPage;

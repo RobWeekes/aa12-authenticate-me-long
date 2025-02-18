@@ -7,10 +7,14 @@ import { thunk } from 'redux-thunk';
 // added below for phase 1 of frontend readme
 
 import sessionReducer from './session';
+import spotsReducer from './spots';
+import reviewsReducer from './reviews';
 
 const rootReducer = combineReducers({
   // added below for phase 1 of frontend readme
-  session: sessionReducer
+  session: sessionReducer,
+  spots: spotsReducer,
+  reviews: reviewsReducer,
 });
 
 let enhancer;

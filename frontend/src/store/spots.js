@@ -1,114 +1,78 @@
-// src/redux/store/spots.js
-
 // Action Types
-const FETCH_SPOTS = 'FETCH_SPOTS';
-const FETCH_SPOT_DETAILS = 'FETCH_SPOT_DETAILS';
-const CREATE_SPOT = 'CREATE_SPOT';
+const SET_SPOTS = 'SET_SPOTS';
+const ADD_SPOT = 'ADD_SPOT';
 const UPDATE_SPOT = 'UPDATE_SPOT';
 const DELETE_SPOT = 'DELETE_SPOT';
+const SET_LOADING = 'SET_LOADING';
+const SET_ERROR = 'SET_ERROR';
+const LOAD_SPOTS = 'spots/loadSpots';
 
 // Action Creators
+export const setSpots = (spots) => ({
+  type: SET_SPOTS,
+  payload: spots,
+});
 
-// Fetch all spots
-export const fetchSpots = () => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch('/api/spots');
-      const data = await response.json();
-      dispatch({ type: FETCH_SPOTS, payload: data });
-    } catch (error) {
-      console.error('Error fetching spots:', error);
-    }
-  };
-};
+export const loadSpots = (spots) => ({
+  type: LOAD_SPOTS,
+  payload: spots
+});
 
-// Fetch details of a single spot
-export const fetchSpotDetails = (id) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(`/api/spots/${id}`);
-      const data = await response.json();
-      dispatch({ type: FETCH_SPOT_DETAILS, payload: data });
-    } catch (error) {
-      console.error('Error fetching spot details:', error);
-    }
-  };
-};
+export const addSpot = (spot) => ({
+  type: ADD_SPOT,
+  payload: spot,
+});
 
-// Create a new spot
-export const createSpot = (spotData) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch('/api/spots', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(spotData),
-      });
-      const newSpot = await response.json();
-      dispatch({ type: CREATE_SPOT, payload: newSpot });
-    } catch (error) {
-      console.error('Error creating spot:', error);
-    }
-  };
-};
+export const updateSpot = (spot) => ({
+  type: UPDATE_SPOT,
+  payload: spot,
+});
 
-// Update an existing spot
-export const updateSpot = (id, spotData) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(`/api/spots/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(spotData),
-      });
-      const updatedSpot = await response.json();
-      dispatch({ type: UPDATE_SPOT, payload: updatedSpot });
-    } catch (error) {
-      console.error('Error updating spot:', error);
-    }
-  };
-};
+export const deleteSpot = (id) => ({
+  type: DELETE_SPOT,
+  payload: id,
+});
 
-// Delete a spot
-export const deleteSpot = (id) => {
-  return async (dispatch) => {
-    try {
-      await fetch(`/api/spots/${id}`, { method: 'DELETE' });
-      dispatch({ type: DELETE_SPOT, payload: id });
-    } catch (error) {
-      console.error('Error deleting spot:', error);
-    }
-  };
+export const setLoading = (loading) => ({
+  type: SET_LOADING,
+  payload: loading,
+});
+
+export const setError = (error) => ({
+  type: SET_ERROR,
+  payload: error,
+});
+
+// Thunk Action Creator
+export const fetchSpots = () => async (dispatch) => {
+  const response = await fetch('/api/spots');
+  if (response.ok) {
+    const spots = await response.json();
+    dispatch(loadSpots(spots));
+    return spots;
+  }
 };
 
 // Initial State
 const initialState = {
   spots: [],
-  spotDetails: null,
+  loading: false,
+  error: null,
 };
 
 // Reducer
 const spotsReducer = (state = initialState, action) => {
+  // Check for special Redux actions and ignore them
+  if (action.type.startsWith('@@redux/')) {
+    return state;
+  }
+
   switch (action.type) {
-    case FETCH_SPOTS:
-      return {
-        ...state,
-        spots: action.payload,
-      };
-    case FETCH_SPOT_DETAILS:
-      return {
-        ...state,
-        spotDetails: action.payload,
-      };
-    case CREATE_SPOT:
-      return {
-        ...state,
-        spots: [...state.spots, action.payload],
-      };
+    case SET_SPOTS:
+    case LOAD_SPOTS:
+      return { ...state, spots: action.payload };
+    case ADD_SPOT:
+      return { ...state, spots: [...state.spots, action.payload] };
     case UPDATE_SPOT:
       return {
         ...state,
@@ -121,6 +85,10 @@ const spotsReducer = (state = initialState, action) => {
         ...state,
         spots: state.spots.filter(spot => spot.id !== action.payload),
       };
+    case SET_LOADING:
+      return { ...state, loading: action.payload };
+    case SET_ERROR:
+      return { ...state, error: action.payload };
     default:
       return state;
   }

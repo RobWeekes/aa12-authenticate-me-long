@@ -1,72 +1,64 @@
-// Actions
-const FETCH_REVIEWS = 'FETCH_REVIEWS';
-const CREATE_REVIEW = 'CREATE_REVIEW';
+// Action Types
+const SET_REVIEWS = 'SET_REVIEWS';
+const ADD_REVIEW = 'ADD_REVIEW';
 const DELETE_REVIEW = 'DELETE_REVIEW';
+const SET_LOADING = 'SET_LOADING';
+const SET_ERROR = 'SET_ERROR';
 
 // Action Creators
-export const fetchReviews = (spotId) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(`/api/spots/${spotId}/reviews`);
-      const reviews = await response.json();
-      dispatch({ type: FETCH_REVIEWS, payload: reviews });
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-    }
-  };
-};
+export const setReviews = (reviews) => ({
+  type: SET_REVIEWS,
+  payload: reviews,
+});
 
-export const createReview = (spotId, reviewData) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(`/api/spots/${spotId}/reviews`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(reviewData),
-      });
-      const newReview = await response.json();
-      dispatch({ type: CREATE_REVIEW, payload: newReview });
-    } catch (error) {
-      console.error('Error creating review:', error);
-    }
-  };
-};
+export const addReview = (review) => ({
+  type: ADD_REVIEW,
+  payload: review,
+});
 
-export const deleteReview = (spotId, reviewId) => {
-  return async (dispatch) => {
-    try {
-      await fetch(`/api/spots/${spotId}/reviews/${reviewId}`, { method: 'DELETE' });
-      dispatch({ type: DELETE_REVIEW, payload: reviewId });
-    } catch (error) {
-      console.error('Error deleting review:', error);
-    }
-  };
+export const deleteReview = (id) => ({
+  type: DELETE_REVIEW,
+  payload: id,
+});
+
+export const setLoading = (loading) => ({
+  type: SET_LOADING,
+  payload: loading,
+});
+
+export const setError = (error) => ({
+  type: SET_ERROR,
+  payload: error,
+});
+
+// Initial State
+const initialState = {
+  reviews: [],
+  loading: false,
+  error: null,
 };
 
 // Reducer
-const initialState = {
-  reviews: [],
-};
-
 const reviewsReducer = (state = initialState, action) => {
+  // Check for special Redux actions and ignore them
+  if (action.type.startsWith('@@redux/')) {
+    return state;
+  }
+  
   switch (action.type) {
-    case FETCH_REVIEWS:
-      return {
-        ...state,
-        reviews: action.payload,
-      };
-    case CREATE_REVIEW:
-      return {
-        ...state,
-        reviews: [action.payload, ...state.reviews],
-      };
+    case SET_REVIEWS:
+      return { ...state, reviews: action.payload };
+    case ADD_REVIEW:
+      return { ...state, reviews: [...state.reviews, action.payload] };
     case DELETE_REVIEW:
       return {
         ...state,
         reviews: state.reviews.filter(review => review.id !== action.payload),
       };
+    case SET_LOADING:
+      return { ...state, loading: action.payload };
+    case SET_ERROR:
+      return { ...state, error: action.payload };
     default:
       return state;
   }
