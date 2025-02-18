@@ -82,6 +82,7 @@
 // export const useModal = () => useContext(ModalContext);
 // // 
 // Modal.jsx
+// frontend/src/context/Modal.jsx
 import { useRef, useState, useContext, createContext } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.css';
@@ -93,16 +94,16 @@ export function ModalProvider({ children }) {
   const [modalContent, setModalContent] = useState(null);
   const [onModalClose, setOnModalClose] = useState(null);
 
+  // Function to open the modal with content and close callback
   const openModal = (content, onCloseCallback) => {
-    setModalContent(content); // set content to be rendered in the modal
-    setOnModalClose(() => onCloseCallback); // set the callback function for closing the modal
+    setModalContent(content); // Set modal content
+    setOnModalClose(() => onCloseCallback); // Set callback for closing modal
   };
 
+  // Function to close the modal
   const closeModal = () => {
-    setModalContent(null); // clear the modal content
-    if (onModalClose) {
-      onModalClose(); // call the callback function when the modal closes
-    }
+    setModalContent(null); // Clear modal content
+    if (onModalClose) onModalClose(); // Call onClose callback if provided
   };
 
   const contextValue = {
@@ -125,8 +126,10 @@ export function ModalProvider({ children }) {
 export function Modal() {
   const { modalRef, modalContent, closeModal } = useContext(ModalContext);
 
+  // Render nothing if no content is available
   if (!modalRef.current || !modalContent) return null;
 
+  // Render modal component using React portal
   return ReactDOM.createPortal(
     <div id="modal">
       <div id="modal-background" onClick={closeModal} />
