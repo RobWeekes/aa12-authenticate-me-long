@@ -145,72 +145,106 @@
 // };
 
 // export default LoginFormModal;
+// frontend/src/components/LoginFormPage/LoginFormPage.jsx
+// added below for phase 1 of frontend readme
 import { useState } from 'react';
+import * as sessionActions from '../../store/session';
+// changed below for phase 4 of frontend readme
+// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+// 
+// added below for phase 4 of frontend readme
+import { useModal } from '../../context/Modal';
+// 
+// removed below for phase 4 of frontend readme
+// import { Navigate } from 'react-router-dom';
+// 
+// added below for phase 1 of frontend readme
+// ...
+import './LoginForm.css';
+// ...
+// 
 
-const LoginFormModal = ({ isOpen, onClose, onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+// changed below for phase 4 of frontend readme
+// function LoginFormPage() {
+function LoginFormModal() {
+  // 
+  const dispatch = useDispatch();
+  // removed below for phase 4 of frontend readme
+  // const sessionUser = useSelector((state) => state.session.user);
+  // 
+  const [credential, setCredential] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  // added below for phase 4 of frontend readme
+  const { closeModal } = useModal();
+  // 
+
+  // removed below for phase 4 of frontend readme
+  // if (sessionUser) return <Navigate to="/" replace={true} />;
+  // 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Basic validation
-    if (!email || !password) {
-      setError('Both email and password are required.');
-      return;
-    }
-
-    // Handle login logic (validation, API call, etc.)
-    onLogin(email, password)
-      .then(() => {
-        // Close the modal after successful login
-        onClose();
-      })
-      .catch(() => {
-        // Display error message if login fails
-        setError('The provided credentials were invalid');
-      });
+    setErrors({});
+    return dispatch(sessionActions.login({ credential, password }))
+      // added below for phase 4 of frontend readme
+      .then(closeModal)
+      // 
+      .catch(
+        async (res) => {
+          const data = await res.json();
+          // changed below for phase 4 of frontend readme
+          // if (data?.errors) 
+          if (data && data.errors) {
+            // 
+            setErrors(data.errors);
+          }
+          // changed below for phase 4 of frontend readme
+          // );
+        });
+    // 
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="modal">
-      <h2>Log In</h2>
+    <>
+      <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <label>
+          Username or Email
           <input
             type="text"
-            placeholder="Username or Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={credential}
+            onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </div>
-        <div>
+        </label>
+        <label>
+          Password
           <input
             type="password"
-            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-
-        {error && <p className="error">{error}</p>}
-
+        </label>
+        {/* // changed below for phase 4 of frontend readme */}
+        {/* {errors.credential &&  */}
+        {errors.credential && (
+          // 
+          // {/* // changed below for phase 4 of frontend readme */}
+          <p>{errors.credential}</p>
+          // }
+        )}
+        {/* //  */}
         <button type="submit">Log In</button>
       </form>
-
-      <p className="demo-link" onClick={() => alert('Demo User feature coming soon')}>
-        Demo User
-      </p>
-
-      <button className="close-button" onClick={onClose}>
-        Close
-      </button>
-    </div>
+    </>
   );
-};
+}
 
+// changed below for phase 4 of frontend readme
+// export default LoginFormPage;
 export default LoginFormModal;
+// 
+// 
