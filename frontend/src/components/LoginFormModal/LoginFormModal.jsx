@@ -160,11 +160,14 @@ const LoginFormModal = ({ isOpen, onClose, onLogin }) => {
       return;
     }
 
+    // Handle login logic (validation, API call, etc.)
     onLogin(email, password)
       .then(() => {
+        // Close the modal after successful login
         onClose();
       })
       .catch(() => {
+        // Display error message if login fails
         setError('The provided credentials were invalid');
       });
   };

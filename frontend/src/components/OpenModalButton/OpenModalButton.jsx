@@ -38,14 +38,13 @@
 // // 
 // OpenModalButton.jsx
 // import { useContext } from 'react';
-// frontend/src/components/OpenModalButton/OpenModalButton.jsx
-import { useModal } from '../../context/Modal'; // Correct path to the modal context
+import { useModal } from '../../context/Modal';  // Importing the context hook
 
 function OpenModalButton({ modalContent, onCloseCallback }) {
-  const { openModal } = useModal(); // Using the openModal function from context
+  const { openModal } = useModal();  // Using the openModal function from the context
 
   const handleClick = () => {
-    openModal(modalContent, onCloseCallback); // Trigger the modal opening with content and close callback
+    openModal(modalContent, onCloseCallback);  // Trigger the modal to open with content and callback
   };
 
   return (

@@ -163,20 +163,17 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
-// import OpenModalMenuItem from './OpenModalMenuItem';
-import { useModal } from '../../context/Modal'; // Add this import for useModal
+import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import '../../styles/profileButton.css';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
-  const { openModal } = useModal(); // Use the openModal function from the context
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); // Prevent click from bubbling up
+    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
   };
 
@@ -184,14 +181,14 @@ function ProfileButton({ user }) {
     if (!showMenu) return;
 
     const closeMenu = (e) => {
-      if (ulRef.current && !ulRef.current.contains(e.target)) {
+      if (!ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
     };
 
     document.addEventListener('click', closeMenu);
 
-    return () => document.removeEventListener('click', closeMenu);
+    return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
@@ -221,26 +218,16 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            <li>
-              <button
-                onClick={() => {
-                  openModal(<LoginFormModal />); // Open LoginFormModal when clicked
-                  closeMenu(); // Close the menu after the button is clicked
-                }}
-              >
-                Log In
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  openModal(<SignupFormModal />); // Open SignupFormModal when clicked
-                  closeMenu(); // Close the menu after the button is clicked
-                }}
-              >
-                Sign Up
-              </button>
-            </li>
+          <OpenModalMenuItem
+              itemText="Sign Up"
+              onItemClick={closeMenu}
+              modalComponent={<SignupFormModal />}
+            />
+            <OpenModalMenuItem
+              itemText="Log In"
+              onItemClick={closeMenu}
+              modalComponent={<LoginFormModal />}
+            />
           </>
         )}
       </ul>
