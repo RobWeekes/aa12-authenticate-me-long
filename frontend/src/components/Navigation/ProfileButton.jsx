@@ -158,11 +158,13 @@
 
 // export default ProfileButton;
 // // 
+// frontend/src/components/Navigation/ProfileButton.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
-import OpenModalButton from '../OpenModalButton';
+// import OpenModalMenuItem from './OpenModalMenuItem';
+import { useModal } from '../../context/Modal'; // Add this import for useModal
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import '../../styles/profileButton.css';
@@ -171,6 +173,7 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const { openModal } = useModal(); // Use the openModal function from the context
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Prevent click from bubbling up
@@ -219,18 +222,24 @@ function ProfileButton({ user }) {
         ) : (
           <>
             <li>
-              <OpenModalButton
-                buttonText="Log In"
-                onButtonClick={closeMenu}
-                modalComponent={<LoginFormModal />}
-              />
+              <button
+                onClick={() => {
+                  openModal(<LoginFormModal />); // Open LoginFormModal when clicked
+                  closeMenu(); // Close the menu after the button is clicked
+                }}
+              >
+                Log In
+              </button>
             </li>
             <li>
-              <OpenModalButton
-                buttonText="Sign Up"
-                onButtonClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
+              <button
+                onClick={() => {
+                  openModal(<SignupFormModal />); // Open SignupFormModal when clicked
+                  closeMenu(); // Close the menu after the button is clicked
+                }}
+              >
+                Sign Up
+              </button>
             </li>
           </>
         )}

@@ -165,13 +165,21 @@ const SignupFormModal = ({ isOpen, onClose, onSignup }) => {
   });
   const [error, setError] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
-    onSignup(formData);
-    onClose();
+
+    onSignup(formData)
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        setError(err.message || 'Something went wrong.');
+      });
   };
 
   if (!isOpen) return null;
@@ -179,50 +187,58 @@ const SignupFormModal = ({ isOpen, onClose, onSignup }) => {
   return (
     <div className="modal">
       <h2>Sign Up</h2>
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First Name"
-        value={formData.firstName}
-        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-      />
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last Name"
-        value={formData.lastName}
-        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-      />
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={formData.username}
-        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-      />
-      <input
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm Password"
-        value={formData.confirmPassword}
-        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-      />
-      {error && <p className="error">{error}</p>}
-      <button onClick={handleSubmit}>Sign Up</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
+          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+        />
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
+          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          value={formData.confirmPassword}
+          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+        />
+
+        {error && <p className="error">{error}</p>}
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <button className="close-button" onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 };
