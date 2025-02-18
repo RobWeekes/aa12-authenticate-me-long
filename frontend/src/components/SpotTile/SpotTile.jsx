@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
 
 const SpotTile = ({ spot }) => {
+  if (!spot) return null; // Ensure spot data exists
+
+  const { previewImage, name, city, state, price, id } = spot;
+
   return (
-    <Link to={`/spots/${spot.id}`} className="spot-tile">
-      <img src={spot.previewImage} alt={spot.name} />
+    <Link to={`/spots/${id}`} className="spot-tile">
+      <img src={previewImage} alt={name} />
       <div className="spot-info">
-        <p>{spot.city}, {spot.state}</p>
-        <p>${spot.price} night</p>
+        <p>{city}, {state}</p>
+        <p>${price} per night</p>
       </div>
     </Link>
   );
