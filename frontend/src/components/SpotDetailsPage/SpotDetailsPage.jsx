@@ -1,40 +1,52 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSpotById } from '../../store/spots';
+import { fetchSpotReviews } from '../../store/reviews';
 
 function SpotDetailsPage() {
-  const { id } = useParams(); // Get the spot ID from the URL
-  const spot = useSelector(state => state.spots.find(spot => spot.id === Number(id))); // Ensure id is compared as a number
-  const reviews = useSelector(state => state.reviews.filter(review => review.spotId === Number(id))); // Filter reviews for the current spot
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const spot = useSelector(state => state.spots.spots.find(spot => spot.id === Number(id)));
+  const reviews = useSelector(state => state.reviews.reviews);
 
-  const handleReserve = () => {
-    alert("Feature coming soon");
-  };
+  useEffect(() => {
+    dispatch(fetchSpotById(id));
+    dispatch(fetchSpotReviews(id));
+  }, [dispatch, id]);
 
-  if (!spot) return <div>Spot not found</div>; // Handle when spot is not found
-
-  const { name, city, state, country, largeImage, images, hostFirstName, hostLastName, avgRating } = spot;
+  if (!spot) return <div>Loading...</div>;
 
   return (
     <div className="spot-details">
-      <h1><strong>{name}</strong></h1>
-      <p>{city}, {state}, {country}</p>
-      <img src={largeImage} alt={name} />
-      <div className="small-images">
-        {images.map((image, index) => (
-          <img key={index} src={image} alt={`${name} ${index + 1}`} />
+      <h1><strong>{spot.name}</strong></h1>
+      <p>{spot.city}, {spot.state}, {spot.country}</p>
+      
+      <div className="spot-images">
+        <img src={spot.previewImage} alt={spot.name} className="main-image" />
+        {spot.images?.map((image, index) => (
+          <img key={index} src={image} alt={`${spot.name} ${index + 1}`} />
         ))}
       </div>
-      <p>Hosted by {hostFirstName} {hostLastName}</p>
-      <div className="spot-reviews">
-        <div>
-          <span>★</span> {avgRating || 'New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
+
+      <div className="spot-info">
+        <h2>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h2>
+        <p>{spot.description}</p>
+        
+        <div className="price-rating">
+          <span>${spot.price} night</span>
+          <span>★ {spot.avgRating || 'New'}</span>
         </div>
-        <button onClick={handleReserve}>Reserve</button>
-        <div className="reviews-list">
+
+        <button onClick={() => alert("Feature coming soon")}>Reserve</button>
+
+        <div className="reviews-section">
+          <h3>Reviews ({reviews.length})</h3>
           {reviews.map(review => (
-            <div key={review.id}>
-              <p>{review.firstName} - {review.date}</p>
-              <p>{review.comment}</p>
+            <div key={review.id} className="review">
+              <p>{review.User?.firstName}</p>
+              <p>{new Date(review.createdAt).toLocaleDateString()}</p>
+              <p>{review.review}</p>
             </div>
           ))}
         </div>

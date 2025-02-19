@@ -6,6 +6,17 @@ const SET_LOADING = 'SET_LOADING';
 const SET_ERROR = 'SET_ERROR';
 
 // Action Creators
+export const fetchSpotReviews = (spotId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/spots/${spotId}/reviews`);
+    const data = await response.json();
+    dispatch(setReviews(data));
+    return data;
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+
 export const setReviews = (reviews) => ({
   type: SET_REVIEWS,
   payload: reviews,

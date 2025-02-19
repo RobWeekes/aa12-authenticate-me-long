@@ -44,15 +44,14 @@ export const setError = (error) => ({
 });
 
 // Thunk Action Creator
-export const fetchSpots = () => async (dispatch) => {
-  dispatch({ type: 'FETCH_SPOTS_START' });
-
+export const fetchSpotById = (id) => async (dispatch) => {
   try {
-  const response = await fetch('/api/spots');
-  const data = await response.json();
-    dispatch({ type: 'FETCH_SPOTS_SUCCESS', spots: data });
+    const response = await fetch(`/api/spots/${id}`);
+    const data = await response.json();
+    dispatch(setSpots([data]));
+    return data;
   } catch (error) {
-    dispatch({ type: 'FETCH_SPOTS_FAILURE' });
+    dispatch(setError(error.message));
   }
 };
 

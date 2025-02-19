@@ -1,48 +1,42 @@
 /* spotDetails.css */
 
 .spot-details {
-    padding: 20px;
-  }
-  
-  .spot-details .spot-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .spot-details .spot-header h1 {
-    font-size: 2.5rem;
-  }
-  
-  .spot-details .spot-images {
-    display: flex;
-    gap: 20px;
-    margin: 20px 0;
-  }
-  
-  .spot-details .spot-images img {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .spot-details .spot-description {
-    margin: 20px 0;
-    font-size: 1.1rem;
-  }
-  
-  .spot-details .booking-info {
-    margin-top: 20px;
-  }
-  
-  .booking-info button {
-    width: 100%;
-    padding: 15px;
-    background-color: #FF5A5F;
-    color: white;
-    font-size: 18px;
-    border-radius: 8px;
-    border: none;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.spot-images {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.main-image {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.spot-info {
+  margin-top: 20px;
+}
+
+.price-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.reviews-section {
+  margin-top: 30px;
+}
+
+.review {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}

@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchSpots, deleteSpot } from "../../store/spots";  // Correct import
+import { fetchSpotById, deleteSpot } from "../../store/spots";  // Correct import
 
 const ManageSpotsPage = () => {
   const dispatch = useDispatch();
   const spots = useSelector((state) => state.spots.spots);
 
   useEffect(() => {
-    dispatch(fetchSpots());
+    dispatch(fetchSpotById());
   }, [dispatch]);
 
   const handleDelete = (id) => {
