@@ -40,6 +40,12 @@ export const login = (user) => async (dispatch) => {
   }
 };
 
+// Ex. for a login thunk action test in the browser console, run:
+// store.dispatch(sessionActions.login({
+//   credential: "Demo-lition",
+//   password: "password"
+// }))
+
 const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
@@ -51,7 +57,7 @@ const sessionReducer = (state = initialState, action) => {
     console.error('Received undefined or invalid action in session reducer:', action);
     return state;  // Return current state if action is invalid
   }
-  
+
     switch (action.type) {
       case SET_USER:
         return { ...state, user: action.payload };
@@ -62,13 +68,18 @@ const sessionReducer = (state = initialState, action) => {
     }
   };
 
-// Restore user session from backend
+// Restore user session from backend - prevents the need to log in again after refreshing browser
 export const restoreUser = () => async (dispatch) => {
   const response = await csrfFetch("/api/session");
   const data = await response.json();
   dispatch(setUser(data.user));
   return response;
 };
+// When the page loads, restoreUser runs automatically in App.jsx Layout component.
+// isLoaded state starts at false and sets to true after restoreUser returns.
+// When 'isLoaded' is true, <Outlet /> is rendered & all 'children' components render.
+// Ex. of how to test the restoreUser thunk action in the DevTools console:
+// store.dispatch(sessionActions.restoreUser());
 
 // Signup functionality
 export const signup = (user) => async (dispatch) => {
