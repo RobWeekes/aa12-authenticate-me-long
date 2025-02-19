@@ -1,4 +1,7 @@
 // frontend/src/store/csrf.js
+
+// QUESTION - DO WE NEED TO IMPORT FILES FROM REDUX HERE ??
+
 import Cookies from 'js-cookie';
 
 // const csrfFetch = (url, options={}) {
