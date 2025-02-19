@@ -1,3 +1,6 @@
+// frontend/src/store/session.js
+// This file will contain all the actions specific to the session user's information and the session user's Redux reducer.
+
 import { csrfFetch } from './csrf';
 
 const SET_USER = "session/setUser";
@@ -16,6 +19,7 @@ export const removeUser = () => {
   };
 };
 
+// Call your backend API to log in, and then set the session user from the response. Create a thunk action for making a request to POST /api/session
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
   try {
@@ -40,12 +44,6 @@ export const login = (user) => async (dispatch) => {
   }
 };
 
-// Ex. for a login thunk action test in the browser console, run:
-// store.dispatch(sessionActions.login({
-//   credential: "Demo-lition",
-//   password: "password"
-// }))
-
 const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
@@ -58,6 +56,7 @@ const sessionReducer = (state = initialState, action) => {
     return state;  // Return current state if action is invalid
   }
 
+  // SESSION REDUCER
     switch (action.type) {
       case SET_USER:
         return { ...state, user: action.payload };
@@ -68,18 +67,13 @@ const sessionReducer = (state = initialState, action) => {
     }
   };
 
-// Restore user session from backend - prevents the need to log in again after refreshing browser
+// Restore user session from backend
 export const restoreUser = () => async (dispatch) => {
   const response = await csrfFetch("/api/session");
   const data = await response.json();
   dispatch(setUser(data.user));
   return response;
 };
-// When the page loads, restoreUser runs automatically in App.jsx Layout component.
-// isLoaded state starts at false and sets to true after restoreUser returns.
-// When 'isLoaded' is true, <Outlet /> is rendered & all 'children' components render.
-// Ex. of how to test the restoreUser thunk action in the DevTools console:
-// store.dispatch(sessionActions.restoreUser());
 
 // Signup functionality
 export const signup = (user) => async (dispatch) => {
