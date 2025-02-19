@@ -156,10 +156,15 @@ function Navigation({ isLoaded }) {
       <li>
         <NavLink to="/">airBnB</NavLink>
       </li>
-      {isLoaded && (
+      {isLoaded && sessionUser && (
+        <>
         <li>
           <ProfileButton user={sessionUser} />
         </li>
+        <li>
+          <NavLink to="/spots/new">Create a New Spot</NavLink>
+        </li>
+      </>
       )}
     </ul>
   );
