@@ -9,6 +9,7 @@ function SpotDetailsPage() {
   const { id } = useParams();
   const spot = useSelector(state => state.spots.spots.find(spot => spot.id === Number(id)));
   const reviews = useSelector(state => state.reviews.reviews);
+  const sessionUser = useSelector(state => state.session.user);
 
   useEffect(() => {
     dispatch(fetchSpotById(id));
@@ -16,6 +17,10 @@ function SpotDetailsPage() {
   }, [dispatch, id]);
 
   if (!spot) return <div>Loading...</div>;
+
+  // Check if the logged-in user has already posted a review for this spot
+  const hasReviewed = reviews.some(review => review.userId === sessionUser?.id);
+  const isOwner = sessionUser?.id === spot.ownerId; // Assuming spot has ownerId
 
   return (
     <div className="spot-details">
@@ -50,6 +55,11 @@ function SpotDetailsPage() {
             </div>
           ))}
         </div>
+
+        {/* Show "Post Your Review" button only if the user is logged in, hasn't reviewed, and is not the owner */}
+        {sessionUser && !hasReviewed && !isOwner && (
+          <button onClick={() => alert("Feature coming soon")}>Post Your Review</button>
+        )}
       </div>
     </div>
   );
