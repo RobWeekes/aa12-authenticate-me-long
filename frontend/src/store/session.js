@@ -36,6 +36,7 @@ export const login = (user) => async (dispatch) => {
     }
 
     const data = await response.json();
+    // dispatch the action for setting the session user to the user in the response's body
     dispatch(setUser(data.user));
     return response;
   } catch (error) {
@@ -44,8 +45,19 @@ export const login = (user) => async (dispatch) => {
   }
 };
 
+// Ex. to test login thunk action in browser console:
+/*
+store.dispatch(
+  sessionActions.login({
+    credential: "Demo-lition",
+    password: "password"
+  })
+)
+*/
+
 const initialState = { user: null };
 
+// SESSION REDUCER
 const sessionReducer = (state = initialState, action) => {
     // Log the action for debugging
   console.log("Received action in sessionReducer:", action);
@@ -56,16 +68,15 @@ const sessionReducer = (state = initialState, action) => {
     return state;  // Return current state if action is invalid
   }
 
-  // SESSION REDUCER
-    switch (action.type) {
-      case SET_USER:
-        return { ...state, user: action.payload };
-      case REMOVE_USER:
-        return { ...state, user: null };
-      default:
-        return state;
-    }
-  };
+  switch (action.type) {
+    case SET_USER:
+      return { ...state, user: action.payload };
+    case REMOVE_USER:
+      return { ...state, user: null };
+    default:
+      return state;
+  }
+};
 
 // Restore user session from backend
 export const restoreUser = () => async (dispatch) => {
@@ -101,5 +112,13 @@ export const logout = () => async (dispatch) => {
   dispatch(removeUser());
   return response;
 };
+
+// Ex. to test logout thunk action in browser console:
+/*
+store.dispatch(
+  sessionActions.logout()
+)
+*/
+
 
 export default sessionReducer;
