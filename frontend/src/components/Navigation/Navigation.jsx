@@ -7,23 +7,23 @@
 // import ProfileButton from './ProfileButton';
 // // removed below to remove the logout logic for phase 3 of frontend readme
 // // import * as sessionActions from '../../store/session';
-// // 
+// //
 // // added below for phase 4 of frontend readme
 // // removed below for phase 5 of frontend readme
 // // import OpenModalButton from '../OpenModalButton';
 // // import LoginFormModal from '../LoginFormModal';
-// // 
-// // 
+// //
+// //
 // // added below for phase 4 of frontend readme
 // // removed below for phase 5 of frontend readme
 // // import SignupFormModal from '../SignupFormModal';
-// // 
-// // 
+// //
+// //
 // // added below for phase 3 of frontend readme */
 // // ...
 // import './Navigation.css';
 // // ...
-// // 
+// //
 
 // function Navigation({ isLoaded }) {
 //   // changed below for phase 4 of frontend readme
@@ -31,8 +31,8 @@
 //   // changed below for phase 5 of frontend readme
 //   // const sessionUser = useSelector((state) => state.session.user);
 //   const sessionUser = useSelector(state => state.session.user);
-//   // 
-//   // 
+//   //
+//   //
 //   // removed below to remove the logout logic for phase 3 of frontend readme
 //   //   const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@
 //   //     e.preventDefault();
 //   //     dispatch(sessionActions.logout());
 //   //   };
-//   // 
+//   //
 
 //   // changed below for phase 4 of frontend readme
 //   // const sessionLinks = sessionUser ? (
@@ -48,10 +48,10 @@
 //   // let sessionLinks;
 //   // if (sessionUser) {
 //   //   sessionLinks = (
-//   //     // 
+//   //     //
 //   //     // removed below for phase 4 of frontend readme
 //   //     // <>
-//   //     // 
+//   //     //
 //   //     <li>
 //   //       <ProfileButton user={sessionUser} />
 //   //     </li>
@@ -59,18 +59,18 @@
 //   //   );
 //   // } else {
 //   //   sessionLinks = (
-//   //     // 
+//   //     //
 //   //     // removed below to remove the logout logic for phase 3 of frontend readme */}
 //   //     //  <li>
 //   //     // <button onClick={logout}>Log Out</button>
 //   //     // </li> */}
-//   //     // 
+//   //     //
 //   //     //  removed below for phase 4 of frontend readme */}
 //   //     //  </> */}
-//   //     // 
+//   //     //
 //   //     // removed below for phase 4 of frontend readme
 //   //     // ) : (
-//   //     // 
+//   //     //
 //   //     <>
 //   //       <li>
 //   //         {/* added below for phase 4 of frontend readme */}
@@ -97,8 +97,8 @@
 //   //   );
 //   //   // added below for phase 4 of frontend readme
 //   // }
-//   // // 
-//   // 
+//   // //
+//   //
 
 //   return (
 //     <ul>
@@ -108,7 +108,7 @@
 //       {/* changed below for phase 5 of frontend readme */}
 //       {/* {isLoaded && sessionLinks} */}
 //       {isLoaded && (
-//         // 
+//         //
 //         // added below for phase 5 of frontend readme
 //         <li>
 //           <ProfileButton user={sessionUser} />
@@ -143,29 +143,81 @@
 // export default Navigation;
 // frontend/src/components/Navigation/Navigation.jsx
 
+
+////////////////////////////////////////
+// COMMENTED OUT BELOW TO TEST PHASE 3:
+
+// import { NavLink } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
+// import ProfileButton from './ProfileButton';
+// import './Navigation.css';
+
+// function Navigation({ isLoaded }) {
+//   const sessionUser = useSelector(state => state.session.user);
+
+//   return (
+//     <ul>
+//       <li>
+//         <NavLink to="/">airBnB</NavLink>
+//       </li>
+//       {isLoaded && sessionUser && (
+//         <>
+//         <li>
+//           <ProfileButton user={sessionUser} />
+//         </li>
+//         <li>
+//           <NavLink to="/spots/new">Create a New Spot</NavLink>
+//         </li>
+//       </>
+//       )}
+//     </ul>
+//   );
+// }
+// export default Navigation;
+
+////////////////////////////////////////
+
+
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import './Navigation.css';
+import * as sessionActions from '../../store/session';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
+  const dispatch = useDispatch();
+
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(sessionActions.logout());
+  };
+
+  const sessionLinks = sessionUser ? (
+    <>
+      <li>
+        <ProfileButton user={sessionUser} />
+      </li>
+      {/* <li>
+        <button onClick={logout}>Log Out</button>
+      </li> */}
+    </>
+  ) : (
+    <>
+      <li>
+        <NavLink to="/login">Log In</NavLink>
+      </li>
+      <li>
+        <NavLink to="/signup">Sign Up</NavLink>
+      </li>
+    </>
+  );
 
   return (
     <ul>
       <li>
-        <NavLink to="/">airBnB</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
-      {isLoaded && sessionUser && (
-        <>
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-        <li>
-          <NavLink to="/spots/new">Create a New Spot</NavLink>
-        </li>
-      </>
-      )}
+      {isLoaded && sessionLinks}
     </ul>
   );
 }
