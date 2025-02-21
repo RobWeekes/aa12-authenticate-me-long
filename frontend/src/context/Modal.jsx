@@ -108,6 +108,7 @@ const closeModal = () => {
     // If callback function is truthy, call the callback function and reset it
     // to null:
     if (typeof onModalClose === "function") {
+      // QUESTION -- SHOULDN'T "onModalClose" be called before it is reset??
       setOnModalClose(null);
       onModalClose();
     }
