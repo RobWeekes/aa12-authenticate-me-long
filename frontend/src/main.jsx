@@ -81,6 +81,17 @@ if (import.meta.env.MODE !== 'production') {
   window.sessionActions = sessionActions;  // Expose session actions in dev mode
 }
 
+// // testing OpenModelButton component - Greeting button renders at bottom
+// import OpenModalButton from './components/OpenModalButton';
+// const Greeting = () => {
+//   return (
+//     <OpenModalButton
+//       buttonText="Greeting"
+//       modalComponent={<h2>Hello World!</h2>}
+//     />
+//   );
+// };
+
 // Render the root component
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -89,6 +100,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <App />
         <Modal />
+        {/* {Greeting()} */}
       </Provider>
     </ModalProvider>
   </React.StrictMode>
