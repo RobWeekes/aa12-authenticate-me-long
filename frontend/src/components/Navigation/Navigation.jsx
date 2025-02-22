@@ -7,23 +7,23 @@
 // import ProfileButton from './ProfileButton';
 // // removed below to remove the logout logic for phase 3 of frontend readme
 // // import * as sessionActions from '../../store/session';
-// // 
+// //
 // // added below for phase 4 of frontend readme
 // // removed below for phase 5 of frontend readme
 // // import OpenModalButton from '../OpenModalButton';
 // // import LoginFormModal from '../LoginFormModal';
-// // 
-// // 
+// //
+// //
 // // added below for phase 4 of frontend readme
 // // removed below for phase 5 of frontend readme
 // // import SignupFormModal from '../SignupFormModal';
-// // 
-// // 
+// //
+// //
 // // added below for phase 3 of frontend readme */
 // // ...
 // import './Navigation.css';
 // // ...
-// // 
+// //
 
 // function Navigation({ isLoaded }) {
 //   // changed below for phase 4 of frontend readme
@@ -31,8 +31,8 @@
 //   // changed below for phase 5 of frontend readme
 //   // const sessionUser = useSelector((state) => state.session.user);
 //   const sessionUser = useSelector(state => state.session.user);
-//   // 
-//   // 
+//   //
+//   //
 //   // removed below to remove the logout logic for phase 3 of frontend readme
 //   //   const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@
 //   //     e.preventDefault();
 //   //     dispatch(sessionActions.logout());
 //   //   };
-//   // 
+//   //
 
 //   // changed below for phase 4 of frontend readme
 //   // const sessionLinks = sessionUser ? (
@@ -48,10 +48,10 @@
 //   // let sessionLinks;
 //   // if (sessionUser) {
 //   //   sessionLinks = (
-//   //     // 
+//   //     //
 //   //     // removed below for phase 4 of frontend readme
 //   //     // <>
-//   //     // 
+//   //     //
 //   //     <li>
 //   //       <ProfileButton user={sessionUser} />
 //   //     </li>
@@ -59,18 +59,18 @@
 //   //   );
 //   // } else {
 //   //   sessionLinks = (
-//   //     // 
+//   //     //
 //   //     // removed below to remove the logout logic for phase 3 of frontend readme */}
 //   //     //  <li>
 //   //     // <button onClick={logout}>Log Out</button>
 //   //     // </li> */}
-//   //     // 
+//   //     //
 //   //     //  removed below for phase 4 of frontend readme */}
 //   //     //  </> */}
-//   //     // 
+//   //     //
 //   //     // removed below for phase 4 of frontend readme
 //   //     // ) : (
-//   //     // 
+//   //     //
 //   //     <>
 //   //       <li>
 //   //         {/* added below for phase 4 of frontend readme */}
@@ -97,8 +97,8 @@
 //   //   );
 //   //   // added below for phase 4 of frontend readme
 //   // }
-//   // // 
-//   // 
+//   // //
+//   //
 
 //   return (
 //     <ul>
@@ -108,7 +108,7 @@
 //       {/* changed below for phase 5 of frontend readme */}
 //       {/* {isLoaded && sessionLinks} */}
 //       {isLoaded && (
-//         // 
+//         //
 //         // added below for phase 5 of frontend readme
 //         <li>
 //           <ProfileButton user={sessionUser} />
@@ -158,13 +158,13 @@ function Navigation({ isLoaded }) {
       </li>
       {isLoaded && sessionUser && (
         <>
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-        <li>
-          <NavLink to="/spots/new">Create a New Spot</NavLink>
-        </li>
-      </>
+          <li>
+            <ProfileButton user={sessionUser} />
+          </li>
+          <li>
+            <NavLink to="/spots/new">Create a New Spot</NavLink>
+          </li>
+        </>
       )}
     </ul>
   );
