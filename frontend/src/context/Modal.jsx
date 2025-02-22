@@ -111,6 +111,7 @@ const closeModal = () => {
       // QUESTION -- SHOULDN'T "onModalClose" be called before it is reset??
       setOnModalClose(null);
       onModalClose();
+      // maybe it doesn't matter because setOnModalClose(null) is batch rendered after onModalClose executes
     }
   };
 //
