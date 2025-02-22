@@ -108,10 +108,12 @@ const closeModal = () => {
     // If callback function is truthy, call the callback function and reset it
     // to null:
     if (typeof onModalClose === "function") {
-      // QUESTION -- SHOULDN'T "onModalClose" be called before it is reset??
-      setOnModalClose(null);
       onModalClose();
-      // maybe it doesn't matter because setOnModalClose(null) is batch rendered after onModalClose executes
+      setOnModalClose(null);
+      // QUESTION -- SHOULDN'T "onModalClose" be called before it is reset??
+      // setOnModalClose(null);
+      // onModalClose();
+      // The current implementation in the code has setOnModalClose(null) running before onModalClose(), but it should be reversed. The onModalClose callback should be called first, and then cleaned up by setting it to null. This ensures the callback function has access to any state or props it needs before the cleanup occurs.
     }
   };
 //
