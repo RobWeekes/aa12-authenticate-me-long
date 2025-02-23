@@ -31,11 +31,11 @@
 // //       />
 // //     );
 // //   };
-//   // 
-// // 
+//   //
+// //
 
 // export default OpenModalButton;
-// // 
+// //
 // OpenModalButton.jsx
 // import { useContext } from 'react';
 // frontend/src/components/OpenModalButton/OpenModalButton.jsx
@@ -46,16 +46,24 @@ function OpenModalButton({
   modalComponent, // component to render inside the modal
   buttonText, // text of the button that opens the modal
   onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
-  onModalClose // optional: callback function that will be called once the modal is closed
+  onModalClose // optional: callback function that will be called when the modal is closing
 }) {
   const { setModalContent, setOnModalClose } = useModal();
 
   const onClick = () => {
+    if (typeof onButtonClick === "function") onButtonClick();
     if (onModalClose) setOnModalClose(onModalClose);
     setModalContent(modalComponent);
-    if (typeof onButtonClick === "function") onButtonClick();
   };
-
+// The order of operations should be adjusted. The logical order should be:
+// 1. Handle the button click first (onButtonClick)
+// 2. Set up the modal close handler (setOnModalClose)
+// 3. Display the modal content (setModalContent)
+// const onClick = () => {
+//   if (onModalClose) setOnModalClose(onModalClose);
+//   setModalContent(modalComponent);
+//   if (typeof onButtonClick === "function") onButtonClick();
+// };
   return <button onClick={onClick}>{buttonText}</button>;
 }
 
@@ -71,8 +79,8 @@ function OpenModalButton({
 //       />
 //     );
 //   };
-  // 
-// 
+  //
+//
 
 export default OpenModalButton;
-// 
+//

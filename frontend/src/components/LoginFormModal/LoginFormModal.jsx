@@ -3,39 +3,39 @@
 // // import { useState } from 'react';
 // // import * as sessionActions from '../../store/session';
 // // // changed below for phase 4 of frontend readme
-// // // import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 // // import { useDispatch } from 'react-redux';
-// // // 
+// // //
 // // // added below for phase 4 of frontend readme
 // // import { useModal } from '../../context/Modal';
-// // // 
+// // //
 // // // removed below for phase 4 of frontend readme
 // // // import { Navigate } from 'react-router-dom';
-// // // 
+// // //
 // // // added below for phase 1 of frontend readme
 // // // ...
 // // import './LoginForm.css';
 // // // ...
-// // // 
+// // //
 
 // // // changed below for phase 4 of frontend readme
 // // // function LoginFormPage() {
 // // function LoginFormModal() {
-// //   // 
+// //   //
 // //   const dispatch = useDispatch();
 // //   // removed below for phase 4 of frontend readme
 // //   // const sessionUser = useSelector((state) => state.session.user);
-// //   // 
+// //   //
 // //   const [credential, setCredential] = useState("");
 // //   const [password, setPassword] = useState("");
 // //   const [errors, setErrors] = useState({});
 // //   // added below for phase 4 of frontend readme
 // //   const { closeModal } = useModal();
-// //   // 
+// //   //
 
 // //   // removed below for phase 4 of frontend readme
 // //   // if (sessionUser) return <Navigate to="/" replace={true} />;
-// //   // 
+// //   //
 
 // //   const handleSubmit = (e) => {
 // //     e.preventDefault();
@@ -43,20 +43,20 @@
 // //     return dispatch(sessionActions.login({ credential, password }))
 // //       // added below for phase 4 of frontend readme
 // //       .then(closeModal)
-// //       // 
+// //       //
 // //       .catch(
 // //         async (res) => {
 // //           const data = await res.json();
 // //           // changed below for phase 4 of frontend readme
-// //           // if (data?.errors) 
+// //           // if (data?.errors)
 // //           if (data && data.errors) {
-// //             // 
+// //             //
 // //             setErrors(data.errors);
 // //           }
 // //           // changed below for phase 4 of frontend readme
 // //           // );
 // //         });
-// //     // 
+// //     //
 // //   };
 
 // //   return (
@@ -84,7 +84,7 @@
 // //         {/* // changed below for phase 4 of frontend readme */}
 // //         {/* {errors.credential &&  */}
 // //         {errors.credential && (
-// //           // 
+// //           //
 // //           // {/* // changed below for phase 4 of frontend readme */}
 // //           <p>{errors.credential}</p>
 // //           // }
@@ -99,8 +99,8 @@
 // // // changed below for phase 4 of frontend readme
 // // // export default LoginFormPage;
 // // export default LoginFormModal;
-// // // 
-// // // 
+// // //
+// // //
 // import { useState } from 'react';
 // import { useDispatch } from 'react-redux';
 // import { login } from '../redux/actions/authActions';
@@ -151,38 +151,39 @@ import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 // changed below for phase 4 of frontend readme
 // import { useDispatch, useSelector } from 'react-redux';
+// removed useSelector import for phase 4 of frontend readme
 import { useDispatch } from 'react-redux';
-// 
+//
 // added below for phase 4 of frontend readme
 import { useModal } from '../../context/Modal';
-// 
+//
 // removed below for phase 4 of frontend readme
 // import { Navigate } from 'react-router-dom';
-// 
+//
 // added below for phase 1 of frontend readme
 // ...
 import './LoginForm.css';
 // ...
-// 
+//
 
 // changed below for phase 4 of frontend readme
 // function LoginFormPage() {
 function LoginFormModal() {
-  // 
+  //
   const dispatch = useDispatch();
-  // removed below for phase 4 of frontend readme
+  // removed sessionUser for phase 4 of frontend readme
   // const sessionUser = useSelector((state) => state.session.user);
-  // 
+  //
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   // added below for phase 4 of frontend readme
   const { closeModal } = useModal();
-  // 
+  //
 
   // removed below for phase 4 of frontend readme
   // if (sessionUser) return <Navigate to="/" replace={true} />;
-  // 
+  //
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -190,20 +191,20 @@ function LoginFormModal() {
     return dispatch(sessionActions.login({ credential, password }))
       // added below for phase 4 of frontend readme
       .then(closeModal)
-      // 
+      //
       .catch(
         async (res) => {
           const data = await res.json();
           // changed below for phase 4 of frontend readme
-          // if (data?.errors) 
+          // if (data?.errors)
           if (data && data.errors) {
-            // 
+            //
             setErrors(data.errors);
           }
           // changed below for phase 4 of frontend readme
           // );
         });
-    // 
+    //
   };
 
   return (
@@ -231,7 +232,7 @@ function LoginFormModal() {
         {/* // changed below for phase 4 of frontend readme */}
         {/* {errors.credential &&  */}
         {errors.credential && (
-          // 
+          //
           // {/* // changed below for phase 4 of frontend readme */}
           <p>{errors.credential}</p>
           // }
@@ -246,5 +247,5 @@ function LoginFormModal() {
 // changed below for phase 4 of frontend readme
 // export default LoginFormPage;
 export default LoginFormModal;
-// 
-// 
+//
+//

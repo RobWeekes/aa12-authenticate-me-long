@@ -143,9 +143,51 @@
 // export default Navigation;
 // frontend/src/components/Navigation/Navigation.jsx
 
+
+////////////////////////////////////////
+// COMMENTED OUT BELOW TO TEST PHASE 3:
+
+// import { NavLink } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
+// import ProfileButton from './ProfileButton';
+// import './Navigation.css';
+
+// function Navigation({ isLoaded }) {
+//   const sessionUser = useSelector(state => state.session.user);
+
+//   return (
+//     <ul>
+//       <li>
+//         <NavLink to="/">airBnB</NavLink>
+//       </li>
+//       {isLoaded && sessionUser && (
+//         <>
+//         <li>
+//           <ProfileButton user={sessionUser} />
+//         </li>
+//         <li>
+//           <NavLink to="/spots/new">Create a New Spot</NavLink>
+//         </li>
+//       </>
+//       )}
+//     </ul>
+//   );
+// }
+// export default Navigation;
+
+////////////////////////////////////////
+
+
 import { NavLink } from 'react-router-dom';
+// import { useSelector, useDispatch } from 'react-redux';
+// removed useDispatch and sessionActions imports for phase4
+// import * as sessionActions from '../../store/session';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
+// removed modal imports in phase 5:
+// import OpenModalButton from '../OpenModalButton';
+// import LoginFormModal from '../LoginFormModal';
+// import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -154,20 +196,75 @@ function Navigation({ isLoaded }) {
   return (
     <ul>
       <li>
-        <NavLink to="/">airBnB</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
-      {isLoaded && sessionUser && (
-        <>
-          <li>
-            <ProfileButton user={sessionUser} />
-          </li>
-          <li>
-            <NavLink to="/spots/new">Create a New Spot</NavLink>
-          </li>
-        </>
+      {isLoaded && (
+        <li>
+          <ProfileButton user={sessionUser} />
+        </li>
       )}
     </ul>
   );
 }
 
 export default Navigation;
+
+
+// // removed below in phase 5 - showing login/signup buttons in profile button
+// function Navigation({ isLoaded }) {
+//   const sessionUser = useSelector(state => state.session.user);
+//   // removed below from phase4
+//   // const dispatch = useDispatch();
+//   // const logout = (e) => {
+//   //   e.preventDefault();
+//   //   dispatch(sessionActions.logout());
+//   // };
+//   const sessionLinks = sessionUser ? (
+//     <>
+//       <li>
+//         <ProfileButton user={sessionUser} />
+//       </li>
+//       {/* <li>
+//         <button onClick={logout}>Log Out</button>
+//       </li> */}
+//     </>
+//   ) : (
+//     <>
+//       {/* added from phase 5 to always render profile button */}
+//       <li>
+//         {/* <ProfileButton /> */}
+//       </li>
+//       {/* Phase 5: remove the OpenModalButtons as you will be adding the triggers for opening the modals in the ProfileButton component instead */}
+//       {/* <li>
+//         <OpenModalButton
+//           buttonText="Log In"
+//           modalComponent={<LoginFormModal />}
+//         />
+//       </li>
+//       <li>
+//         <OpenModalButton
+//           buttonText="Sign Up"
+//           modalComponent={<SignupFormModal />}
+//         />
+//       </li> */}
+//       { /* changed Nav links to modal (popup) buttons in phase 4
+//       <li>
+//         <NavLink to="/login">Log In</NavLink>
+//       </li>
+//       <li>
+//         <NavLink to="/signup">Sign Up</NavLink>
+//       </li> */}
+//     </>
+//   );
+
+//   return (
+//     <ul>
+//       <li>
+//         <NavLink to="/">Home</NavLink>
+//       </li>
+//       {isLoaded && sessionLinks}
+//     </ul>
+//   );
+// }
+
+// export default Navigation;

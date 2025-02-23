@@ -68,7 +68,7 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from './store/session';
 
 // Import Modal context and ModalProvider
-import { ModalProvider } from './context/Modal';
+import { Modal, ModalProvider } from './context/Modal';
 
 // Create the Redux store
 const store = configureStore();
@@ -81,6 +81,19 @@ if (import.meta.env.MODE !== 'production') {
   window.sessionActions = sessionActions;  // Expose session actions in dev mode
 }
 
+// // testing OpenModelButton component - Greeting button renders at bottom
+// import OpenModalButton from './components/OpenModalButton';
+// const Greeting = () => {
+//   return (
+//     <OpenModalButton
+//       buttonText="Greeting"
+//       modalComponent={<h2>Hello World!</h2>}
+//       onButtonClick={() => console.log("Greeting initiated")}
+//       onModalClose={() => console.log("Greeting completed")}
+//     />
+//   );
+// };
+
 // Render the root component
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -88,6 +101,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ModalProvider>
       <Provider store={store}>
         <App />
+        <Modal />
+        {/* <Greeting /> */}
       </Provider>
     </ModalProvider>
   </React.StrictMode>

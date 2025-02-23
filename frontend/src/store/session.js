@@ -103,6 +103,18 @@ export const signup = (user) => async (dispatch) => {
   dispatch(setUser(data.user));
   return response;
 };
+// Ex. to test signup thunk action in broswer console
+                                /*
+store.dispatch(
+  sessionActions.signup({
+    username: "TesterLogin83",
+    firstName: "Testfirst",
+    lastName: "Testlast",
+    email: "testemail@aol.com",
+    password: "password2"
+  })
+)
+                                */
 
 // Logout functionality
 export const logout = () => async (dispatch) => {
