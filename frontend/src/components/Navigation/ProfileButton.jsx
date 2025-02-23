@@ -326,10 +326,15 @@
 // //
 ////////////////////////////////////////
 
+// Reworked to produce modal popup buttons in profile button - phase 5:
+
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -348,42 +353,109 @@ function ProfileButton({ user }) {
     console.log('ulRef:', ulRef);
     // Change showMenu to false only if the target of the click event does NOT contain the HTML element of the dropdown menu.
     const closeMenu = (e) => {
-      if (ulRef.current && !ulRef.current.contains(e.target)) {
+      // if (ulRef.current && !ulRef.current.contains(e.target)) {
+      if (!ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
     };
-    // const closeMenu = (e) => {
-    //   setShowMenu(false);
-    // };
 
     document.addEventListener('click', closeMenu);
 
-    return () => document.removeEventListener('click', closeMenu);
+    return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
+
+  const closeMenu = () => setShowMenu(false);
 
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    closeMenu();
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
     <>
-      {/* <button onClick={() => setShowMenu(!showMenu)}> */}
       <button onClick={toggleMenu}>
         <FaUserCircle />
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
+        {user ? (
+          <>
+            <li>{user.username}</li>
+            <li>{user.firstName} {user.lastName}</li>
+            <li>{user.email}</li>
+            <li>
+              <button onClick={logout}>Log Out</button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <OpenModalButton
+                buttonText="Log In"
+                onButtonClick={closeMenu}
+                modalComponent={<LoginFormModal />}
+              />
+            </li>
+            <li>
+              <OpenModalButton
+                buttonText="Sign Up"
+                onButtonClick={closeMenu}
+                modalComponent={<SignupFormModal />}
+              />
+            </li>
+          </>
+        )}
       </ul>
     </>
   );
 }
 
 export default ProfileButton;
+
+
+  // // no longer using this code from phase 4:
+  // const sessionLinks = sessionUser ? (
+  //   <>
+  //     <li>
+  //       <ProfileButton user={sessionUser} />
+  //     </li>
+  //     {/* <li>
+  //       <button onClick={logout}>Log Out</button>
+  //     </li> */}
+  //   </>
+  // ) :
+  //   <>
+  //     <li>
+  //       <OpenModalButton
+  //         buttonText="Log In"
+  //         modalComponent={<LoginFormModal />} />
+  //     </li>
+  //     <li>
+  //       <OpenModalButton
+  //         buttonText="Sign Up"
+  //         modalComponent={<SignupFormModal />} />
+  //     </li>
+  //   </>
+
+//   return (
+//     <>
+//       {/* <button onClick={() => setShowMenu(!showMenu)}> */}
+//       <button onClick={toggleMenu}>
+//         <FaUserCircle />
+//       </button>
+//       <ul className={ulClassName} ref={ulRef}>
+//         <li>{user.username}</li>
+//         <li>{user.firstName} {user.lastName}</li>
+//         <li>{user.email}</li>
+//         <li>
+//           <button onClick={logout}>Log Out</button>
+//         </li>
+//       </ul>
+//     </>
+//   );
+
+// }
+
+// export default ProfileButton;
