@@ -61,8 +61,8 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         // note: not instructed to change below for phase 4 of frontend readme
-        element: <SignupFormPage />
-        // element: <SignupFormModal />
+        // element: <SignupFormPage />
+        element: <SignupFormModal />
         //
       },
       {
