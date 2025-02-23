@@ -51,11 +51,19 @@ function OpenModalButton({
   const { setModalContent, setOnModalClose } = useModal();
 
   const onClick = () => {
+    if (typeof onButtonClick === "function") onButtonClick();
     if (onModalClose) setOnModalClose(onModalClose);
     setModalContent(modalComponent);
-    if (typeof onButtonClick === "function") onButtonClick();
   };
-
+// The order of operations should be adjusted. The logical order should be:
+// 1. Handle the button click first (onButtonClick)
+// 2. Set up the modal close handler (setOnModalClose)
+// 3. Display the modal content (setModalContent)
+// const onClick = () => {
+//   if (onModalClose) setOnModalClose(onModalClose);
+//   setModalContent(modalComponent);
+//   if (typeof onButtonClick === "function") onButtonClick();
+// };
   return <button onClick={onClick}>{buttonText}</button>;
 }
 

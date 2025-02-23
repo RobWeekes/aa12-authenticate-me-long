@@ -96,7 +96,7 @@ const ModalContext = createContext();
 
 export function ModalProvider({ children }) {
   const modalRef = useRef();
-  console.log('modalRef from ModalProvider:', modalRef)
+  // console.log('modalRef from ModalProvider:', modalRef)
   // added below for phase 4 of frontend readme
   const [modalContent, setModalContent] = useState(null);
   const [onModalClose, setOnModalClose] = useState(null);   // callback function that will be called when modal is closing
@@ -108,8 +108,8 @@ const closeModal = () => {
     // If callback function is truthy, call the callback function and reset it
     // to null:
     if (typeof onModalClose === "function") {
-      onModalClose();
-      setOnModalClose(null);
+      onModalClose();           // Call the callback first
+      setOnModalClose(null);    // Then clear it
       // QUESTION -- SHOULDN'T "onModalClose" be called before it is reset??
       // setOnModalClose(null);
       // onModalClose();
@@ -137,9 +137,8 @@ const closeModal = () => {
     {/* changed below for phase 4 of frontend readme */}
       {/* <ModalContext.Provider> */}
       <ModalContext.Provider value={contextValue}>
-      {/*  */}
         {children}
-        </ModalContext.Provider>
+      </ModalContext.Provider>
       <div ref={modalRef} />
     </>
   );

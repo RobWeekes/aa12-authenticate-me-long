@@ -88,6 +88,8 @@ if (import.meta.env.MODE !== 'production') {
 //     <OpenModalButton
 //       buttonText="Greeting"
 //       modalComponent={<h2>Hello World!</h2>}
+//       onButtonClick={() => console.log("Greeting initiated")}
+//       onModalClose={() => console.log("Greeting completed")}
 //     />
 //   );
 // };
@@ -100,7 +102,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <App />
         <Modal />
-        {/* {Greeting()} */}
+        {/* <Greeting /> */}
       </Provider>
     </ModalProvider>
   </React.StrictMode>

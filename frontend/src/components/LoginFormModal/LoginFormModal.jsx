@@ -150,14 +150,15 @@
 import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 // changed below for phase 4 of frontend readme
-import { useDispatch, useSelector } from 'react-redux';
-// import { useDispatch } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+// removed useSelector import for phase 4 of frontend readme
+import { useDispatch } from 'react-redux';
 //
 // added below for phase 4 of frontend readme
 import { useModal } from '../../context/Modal';
 //
 // removed below for phase 4 of frontend readme
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 //
 // added below for phase 1 of frontend readme
 // ...
@@ -170,8 +171,8 @@ import './LoginForm.css';
 function LoginFormModal() {
   //
   const dispatch = useDispatch();
-  // removed below for phase 4 of frontend readme
-  const sessionUser = useSelector((state) => state.session.user);
+  // removed sessionUser for phase 4 of frontend readme
+  // const sessionUser = useSelector((state) => state.session.user);
   //
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
@@ -181,7 +182,7 @@ function LoginFormModal() {
   //
 
   // removed below for phase 4 of frontend readme
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  // if (sessionUser) return <Navigate to="/" replace={true} />;
   //
 
   const handleSubmit = (e) => {

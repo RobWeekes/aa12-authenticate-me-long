@@ -179,19 +179,23 @@
 
 
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
+// removed useDispatch import for phase4
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import * as sessionActions from '../../store/session';
+// import * as sessionActions from '../../store/session';
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import './Navigation.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
-  const dispatch = useDispatch();
-
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch(sessionActions.logout());
-  };
-
+  // removed below from phase4
+  // const dispatch = useDispatch();
+  // const logout = (e) => {
+  //   e.preventDefault();
+  //   dispatch(sessionActions.logout());
+  // };
   const sessionLinks = sessionUser ? (
     <>
       <li>
@@ -204,11 +208,18 @@ function Navigation({ isLoaded }) {
   ) : (
     <>
       <li>
-        <NavLink to="/login">Log In</NavLink>
+        <OpenModalButton
+          buttonText="Log In"
+          modalComponent={<LoginFormModal />}
+        />
       </li>
       <li>
         <NavLink to="/signup">Sign Up</NavLink>
       </li>
+      {/* changed Nav links to modal popups in phase 4
+      <li>
+        <NavLink to="/login">Log In</NavLink>
+      </li> */}
     </>
   );
 
