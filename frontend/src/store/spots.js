@@ -1,5 +1,5 @@
 // Action Types
-const SET_SPOTS = 'SET_SPOTS';
+const SET_SPOTS = 'SET_SPOTS';    // use "SET_SPOTS" to set the store data to the spots data that is fetched from backend server (GET spots)
 const ADD_SPOT = 'ADD_SPOT';
 const UPDATE_SPOT = 'UPDATE_SPOT';
 const DELETE_SPOT = 'DELETE_SPOT';
@@ -44,6 +44,19 @@ export const setError = (error) => ({
 });
 
 // Thunk Action Creator
+export const fetchAllSpots = () => async (dispatch) => {
+  const response = await fetch('/api/spots');
+  if (response.ok) {
+    console.log('response:', response)
+    const spots = await response.json();
+    console.log('spots:', spots)
+    dispatch(setSpots(spots));
+    return spots;
+  } else {
+    throw new Error('Bad response from fetchAllSpots')
+  }
+};
+
 export const fetchSpotById = (id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/spots/${id}`);
@@ -71,6 +84,8 @@ const spotsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SET_SPOTS:
+    // I think we need to spread in all the spots
+      return { ...state, spots: action.payload }
     case LOAD_SPOTS:
       return { ...state, spots: action.payload };
     case ADD_SPOT:

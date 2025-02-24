@@ -3,7 +3,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // import thunk from redux-thunk;
 // import thunk from 'redux-thunk';
-import { thunk } from 'redux-thunk';
+import thunk from 'redux-thunk';
 // import { default as thunk } from 'redux-thunk';
 // added below for phase 1 of frontend readme
 
