@@ -21,9 +21,12 @@
   object-fit: cover;
 }
 
-.spot-info {
+.spot-card {
   margin-top: 20px;
 }
+/* .spot-info {     // changed style name to "spot-card"
+  margin-top: 20px;
+} */
 
 .price-rating {
   display: flex;

@@ -3,7 +3,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // import thunk from redux-thunk;
 // import thunk from 'redux-thunk';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 // import { default as thunk } from 'redux-thunk';
 // added below for phase 1 of frontend readme
 
@@ -19,7 +19,8 @@ const rootReducer = combineReducers({
 });
 
 let enhancer;
-if (import.meta.env.MODE === 'production') {
+// if (import.meta.env.MODE === 'production') {
+  if (process.env.NODE_ENV === 'production') {
   enhancer = applyMiddleware(thunk);
 } else {
   const logger = (await import("redux-logger")).default;
@@ -31,6 +32,9 @@ if (import.meta.env.MODE === 'production') {
 const configureStore = (preloadedState) => {
   return createStore(rootReducer, preloadedState, enhancer);
 };
+
+// We can test the data flow between the reducer & component - run in browser:
+// window.store.getState()
 
 // export default store;
 // The configureStore function will be used by main.jsx to attach the Redux store to the React application.

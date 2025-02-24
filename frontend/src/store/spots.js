@@ -57,6 +57,10 @@ export const fetchAllSpots = () => async (dispatch) => {
   }
 };
 
+// Verify the spots data flow by:
+// Check the Redux state structure: window.store.getState()
+// Test your fetchAllSpots action: window.store.dispatch(fetchAllSpots())
+
 export const fetchSpotById = (id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/spots/${id}`);
@@ -85,7 +89,7 @@ const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_SPOTS:
     // I think we need to spread in all the spots
-      return { ...state, spots: action.payload }
+      return { ...state, spots: action.payload.Spots }
     case LOAD_SPOTS:
       return { ...state, spots: action.payload };
     case ADD_SPOT:

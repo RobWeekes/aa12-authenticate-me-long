@@ -8,7 +8,7 @@ const SpotTile = ({ spot }) => {
   return (
     <Link to={`/spots/${id}`} className="spot-tile">
       <img src={previewImage} alt={name} />
-      <div className="spot-info">
+      <div className="spot-card">
         <p>{name}</p>
         <p>{city}, {state}</p>
         <p>${price} per night</p>

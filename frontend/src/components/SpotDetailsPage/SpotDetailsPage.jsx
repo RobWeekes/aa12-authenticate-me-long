@@ -26,7 +26,7 @@ function SpotDetailsPage() {
     <div className="spot-details">
       <h1><strong>{spot.name}</strong></h1>
       <p>{spot.city}, {spot.state}, {spot.country}</p>
-      
+
       <div className="spot-images">
         <img src={spot.previewImage} alt={spot.name} className="main-image" />
         {spot.images?.map((image, index) => (
@@ -34,10 +34,10 @@ function SpotDetailsPage() {
         ))}
       </div>
 
-      <div className="spot-info">
+      <div className="spot-card">
         <h2>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h2>
         <p>{spot.description}</p>
-        
+
         <div className="price-rating">
           <span>${spot.price} night</span>
           <span>★ {spot.avgRating || 'New'}</span>
