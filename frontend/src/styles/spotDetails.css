@@ -23,6 +23,7 @@
 
 .spot-card {
   margin-top: 20px;
+  background-color: aqua;
 }
 /* .spot-info {     // changed style name to "spot-card"
   margin-top: 20px;

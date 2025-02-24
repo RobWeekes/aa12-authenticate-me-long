@@ -45,15 +45,17 @@ export const setError = (error) => ({
 
 // Thunk Action Creator
 export const fetchAllSpots = () => async (dispatch) => {
-  const response = await fetch('/api/spots');
-  if (response.ok) {
+  try  {
+    const response = await fetch('/api/spots');
     console.log('response:', response)
-    const spots = await response.json();
-    console.log('spots:', spots)
-    dispatch(setSpots(spots));
-    return spots;
-  } else {
-    throw new Error('Bad response from fetchAllSpots')
+    if (response.ok) {
+      const spots = await response.json();
+      console.log('spots:', spots)
+      dispatch(setSpots(spots));
+      return spots;
+    }
+  } catch (error) {
+    console.error('Error fetching spots:', error);
   }
 };
 
