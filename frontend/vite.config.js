@@ -17,7 +17,23 @@ export default defineConfig(({ mode }) => ({
     // uncomment the following line:
     // open: true,
     proxy: {
-      '/api': 'http://localhost:8000'
+      '/api': mode === "production"
+      ? 'https://auth-me-z6z9.onrender.com'
+      : 'http://localhost:8000'
     },
   }
 }));
+
+// original proxy from README:
+// proxy: {
+//   '/api': 'http://localhost:8000'
+// },
+
+// This configuration is already handling the API proxy in development mode, redirecting all '/api' requests to http://localhost:8000. For production, we need to add a similar configuration that points to your production backend URL.
+
+// Let's modify the config to handle both environments:
+// proxy: {
+//   '/api': mode === 'production'
+//     ? 'https://your-backend-url.onrender.com'
+//     : 'http://localhost:8000'
+// },
