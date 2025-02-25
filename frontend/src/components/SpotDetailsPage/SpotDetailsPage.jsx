@@ -7,6 +7,7 @@ import { fetchSpotReviews } from '../../store/reviews';
 function SpotDetailsPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  console.log('SpotDetailsPage ID from params:', id);
   const spot = useSelector(state => state.spots.spots.find(spot => spot.id === Number(id)));
   const reviews = useSelector(state => state.reviews.reviews);
   const sessionUser = useSelector(state => state.session.user);
