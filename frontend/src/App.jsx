@@ -70,6 +70,11 @@ const router = createBrowserRouter([
       // },
       // Let's modify the route to be more specific. This regex pattern ensures the route only matches when spotId is a number, preventing undefined ID requests:
       {
+        path: '/spots/current',
+        element: <ManageSpotsPage />
+      },
+      // The /spots/:spotId route might be catching the 'current' path. Let's reorder the routes to put more specific routes first: '/spots/current' before '/spots/:spotId(\\d+)'
+      {
         path: '/spots/:spotId(\\d+)',  // Only match numeric IDs
         element: <SpotDetailsPage />
       },
@@ -77,10 +82,6 @@ const router = createBrowserRouter([
         path: '/spots/:spotId/edit',
         element: <UpdateSpotForm />
       },
-      {
-        path: '/spots/current',
-        element: <ManageSpotsPage />
-      }
     ]
   }
 ]);
