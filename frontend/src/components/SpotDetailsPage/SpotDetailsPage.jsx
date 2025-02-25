@@ -11,6 +11,9 @@ function SpotDetailsPage() {
   const reviews = useSelector(state => state.reviews.reviews);
   const sessionUser = useSelector(state => state.session.user);
 
+  // Early return if no valid ID - avoids API call errors
+  if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
+
   useEffect(() => {
     dispatch(fetchSpotById(id));
     dispatch(fetchSpotReviews(id));
