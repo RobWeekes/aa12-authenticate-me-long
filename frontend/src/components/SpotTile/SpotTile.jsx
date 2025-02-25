@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
 const SpotTile = ({ spot }) => {
-  if (!spot) return null; // Ensure spot data exists
+  if (!spot || !spot.id) return null; // Ensure spot data exists,
+  // Ensure all SpotTile links have valid IDs
 
   const { previewImage, name, city, state, price, id } = spot;
 
