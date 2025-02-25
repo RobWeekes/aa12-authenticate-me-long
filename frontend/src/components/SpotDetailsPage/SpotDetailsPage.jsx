@@ -10,15 +10,18 @@ function SpotDetailsPage() {
   const spot = useSelector(state => state.spots.spots.find(spot => spot.id === Number(id)));
   const reviews = useSelector(state => state.reviews.reviews);
   const sessionUser = useSelector(state => state.session.user);
-
   // Early return if no valid ID - avoids API call errors
-  if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
-
+  // The useEffect hook is being called after a conditional return
+  // Let's move the validation inside useEffect to maintain proper hook order:
+  // if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
   useEffect(() => {
-    dispatch(fetchSpotById(id));
-    dispatch(fetchSpotReviews(id));
+    if (id && !isNaN(id)) {
+      dispatch(fetchSpotById(id));
+      dispatch(fetchSpotReviews(id));
+    }
   }, [dispatch, id]);
 
+  if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
   if (!spot) return <div>Loading...</div>;
 
   // Check if the logged-in user has already posted a review for this spot
