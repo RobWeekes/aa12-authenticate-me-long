@@ -64,6 +64,7 @@ export const fetchAllSpots = () => async (dispatch) => {
 // Test your fetchAllSpots action: window.store.dispatch(fetchAllSpots())
 
 export const fetchSpotById = (id) => async (dispatch) => {
+  if (!id) return;  // validate the ID before making the request
   try {
     const response = await fetch(`/api/spots/${id}`);
     const data = await response.json();

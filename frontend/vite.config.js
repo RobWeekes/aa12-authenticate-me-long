@@ -16,10 +16,13 @@ export default defineConfig(({ mode }) => ({
     // To automatically open the app in the browser whenever the server starts,
     // uncomment the following line:
     // open: true,
+    // proxy: {
+    //   '/api': mode === "production"
+    //     ? 'https://auth-me-z6z9.onrender.com'
+    //     : 'http://localhost:8000'
+    // },
     proxy: {
-      '/api': mode === "production"
-      ? 'https://auth-me-z6z9.onrender.com'
-      : 'http://localhost:8000'
+      '/api': 'http://localhost:8000'
     },
   }
 }));
