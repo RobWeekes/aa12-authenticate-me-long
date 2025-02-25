@@ -12,7 +12,7 @@ import SpotDetailsPage from './components/SpotDetailsPage';
 import UpdateSpotForm from './components/UpdateSpotForm';
 // import LoginFormPage from './components/LoginFormModal';
 import LoginFormModal from './components/LoginFormModal';
-import SignupFormPage from './components/SignupFormModal';
+// import SignupFormPage from './components/SignupFormModal';
 import SignupFormModal from './components/SignupFormModal';
 
 import './styles/global.css';
@@ -51,19 +51,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        // note: not instructed to change below for phase 4 of frontend readme
         // element: <LoginFormPage />
         element: <LoginFormModal />
-        //
-        // added below for phase 2 of frontend readme
-        // }
       },
       {
         path: "/signup",
-        // note: not instructed to change below for phase 4 of frontend readme
         // element: <SignupFormPage />
         element: <SignupFormModal />
-        //
       },
       {
         path: '/spots/new',

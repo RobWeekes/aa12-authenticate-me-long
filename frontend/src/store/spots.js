@@ -91,7 +91,6 @@ const spotsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SET_SPOTS:
-    // I think we need to spread in all the spots
       return { ...state, spots: action.payload.Spots }
     case LOAD_SPOTS:
       return { ...state, spots: action.payload };

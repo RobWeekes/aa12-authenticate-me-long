@@ -7,7 +7,7 @@ import { fetchAllSpots } from '../../store/spots';
 function LandingPage() {
   const dispatch = useDispatch();
   const spots = useSelector(state => {
-    console.log('Current state:', state);
+    console.log('Current state on LandingPage:', state);
     return state.spots.spots || [];
   });
   console.log('spots from landing page:', spots);
@@ -18,7 +18,7 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-      <h1>Welcome to Our Spot Listings</h1>
+      {/* <h1>Welcome to Our Spot Listings</h1> */}
       <div className="spots-grid">
       {
       spots && spots.length > 0 && spots.map(spot => (
