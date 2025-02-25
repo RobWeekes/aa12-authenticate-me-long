@@ -21,7 +21,12 @@ const rootReducer = combineReducers({
 // Add custom logging middleware:
 const loggerMiddleware = store => next => action => {
   console.log('Dispatching:', action);
-  return next(action);
+  console.log('Action Type:', action.type);
+  console.log('Action Payload:', action.payload);
+  console.log('Current State:', store.getState());
+  const result = next(action);
+  console.log('New State:', store.getState());
+  return result;
 };
 
 let enhancer;
