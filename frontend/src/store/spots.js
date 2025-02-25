@@ -91,6 +91,10 @@ const spotsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SET_SPOTS:
+      // Updating the spots reducer to handle an error state correctly. This will ensure proper state management when API requests fail/ return errors.
+      if (action.payload.message) {
+        return { ...state, error: action.payload.message }
+      }
       return { ...state, spots: action.payload.Spots }
     case LOAD_SPOTS:
       return { ...state, spots: action.payload };
