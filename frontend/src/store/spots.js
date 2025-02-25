@@ -64,6 +64,10 @@ export const fetchAllSpots = () => async (dispatch) => {
 // Test your fetchAllSpots action: window.store.dispatch(fetchAllSpots())
 
 export const fetchSpotById = (id) => async (dispatch) => {
+  // Adding logs to track where the undefined ID request is coming from:
+  console.log('fetchSpotById called with id:', id);
+  console.log('Call stack:', new Error().stack);
+  
   if (!id) return;  // validate the ID before making the request
   try {
     const response = await fetch(`/api/spots/${id}`);
