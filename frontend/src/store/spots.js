@@ -44,18 +44,20 @@ export const setError = (error) => ({
 });
 
 // Thunk Action Creator
+// Something is triggering a request to /api/spots/undefined before the normal spot data flow occurs. Let's add logs to track all spot-related actions:
 export const fetchAllSpots = () => async (dispatch) => {
+  console.log('fetchAllSpots called');
   try  {
     const response = await fetch('/api/spots');
-    console.log('response:', response)
+    console.log('fetchAllSpots response:', response);
     if (response.ok) {
       const spots = await response.json();
-      console.log('spots:', spots)
+      console.log('fetchAllSpots data:', spots);
       dispatch(setSpots(spots));
       return spots;
     }
   } catch (error) {
-    console.error('Error fetching spots:', error);
+    console.error('Error in fetchAllSpots:', error);
   }
 };
 
@@ -67,7 +69,7 @@ export const fetchSpotById = (id) => async (dispatch) => {
   // Adding logs to track where the undefined ID request is coming from:
   console.log('fetchSpotById called with id:', id);
   console.log('Call stack:', new Error().stack);
-  
+
   if (!id) return;  // validate the ID before making the request
   try {
     const response = await fetch(`/api/spots/${id}`);
