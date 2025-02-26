@@ -52,7 +52,9 @@ if (process.env.NODE_ENV === 'production') {
   router.use(express.static(path.resolve("../frontend/dist")));
 
   // Serve the frontend's index.html file at all other routes NOT starting with /api
+  // Since we can access the API endpoint at /api/spots/1 but not /spots/1, we'll verify the static route handler in backend/routes/index.js is being reached. Add a log in your catch-all route to track when it's being hit:
   router.get(/^(?!\/?api).*/, (req, res) => {
+    console.log('Catching non-API route:', req.path);
     res.cookie('XSRF-TOKEN', req.csrfToken());
     // changed below for phase 1 of frontend deploy readme
     // return res.sendFile(
