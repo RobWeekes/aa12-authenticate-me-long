@@ -75,17 +75,16 @@ const router = createBrowserRouter([
         path: '/spots/new',
         element: <CreateSpotForm />
       },
-      // The /spots/:spotId route might be matching incorrectly during initial load or route transitions. When the spotId parameter is undefined, it still tries to render SpotDetailsPage.
-      // {
-      //   path: '/spots/:spotId',
-      //   element: <SpotDetailsPage />
-      // },
-      // Let's modify the route to be more specific. This regex pattern ensures the route only matches when spotId is a number, preventing undefined ID requests:
       {
         path: '/spots/current',
         element: <ManageSpotsPage />
       },
-      // The /spots/:spotId route might be catching the 'current' path. Let's reorder the routes to put more specific routes first: '/spots/current' before '/spots/:spotId(\\d+)'
+      // {
+      //   path: '/spots/:spotId',
+      //   element: <SpotDetailsPage />
+      // },
+      // The /spots/:spotId route might be matching incorrectly during initial load or route transitions. When the spotId parameter is undefined, it still tries to render SpotDetailsPage.
+      // This regex pattern ensures the route only matches when spotId is a number, preventing undefined ID requests:
       {
         path: '/spots/:spotId(\\d+)',  // Only match numeric IDs
         element: <SpotDetailsPage />
