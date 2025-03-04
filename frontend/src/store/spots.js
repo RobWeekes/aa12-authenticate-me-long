@@ -248,13 +248,20 @@ const initialState = {
 
 // Reducer with improved error handling
 const spotsReducer = (state = initialState, action) => {
+  let spotsData;  // Declare variable outside case block to avoid ESLint error
   switch (action.type) {
+
     case SET_SPOTS:
+      console.log('SET_SPOTS action received with payload:', action.payload);
+      console.log('Payload type:', typeof action.payload);
+      console.log('Is Array?', Array.isArray(action.payload));
       // Ensure we only update spots if we receive a valid array
-      if (!Array.isArray(action.payload)) {
-        return { ...state, error: 'Invalid data received for spots' };
-      }
-      return { ...state, spots: action.payload, error: null };
+      // When fetchSpotById returns a single spot object, the reducer is expecting an array but receiving an object, causing validation to fail.
+      // Handle both array of spots & single spot object scenarios:
+      spotsData = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+      return { ...state, spots: spotsData, error: null };
 
     case ADD_SPOT:
       return { ...state, spots: [...state.spots, action.payload] };
