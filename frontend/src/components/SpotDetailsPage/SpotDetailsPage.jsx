@@ -220,32 +220,43 @@
 
 // export default SpotDetailsPage;
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { fetchSpotById } from '../../store/spots';
 
 function SpotDetailsPage() {
+  // First, set up your hooks and get the spotId:
+  const dispatch = useDispatch();
   const { spotId } = useParams();
-  const [spot, setSpot] = useState(null);
+  const spot = useSelector(state => state.spots.spots.find(s => s.id === Number(spotId)));
+  // const [spot, setSpot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  // Then use useEffect to fetch the data when the component mounts:
   useEffect(() => {
-    const fetchSpotDetails = async () => {
-      try {
-        const response = await fetch(`/api/spots/${spotId}`);
-        if (!response.ok) {
-          throw new Error('Spot not found');
-        }
-        const data = await response.json();
-        setSpot(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (spotId && !isNaN(spotId)) {
+      dispatch(fetchSpotById(spotId));
+    }
+  }, [dispatch, spotId])
 
-    fetchSpotDetails();
-  }, [spotId]);
+  // useEffect(() => {
+  //   const fetchSpotDetails = async () => {
+  //     try {
+  //       const response = await fetch(`/api/spots/${spotId}`);
+  //       if (!response.ok) {
+  //         throw new Error('Spot not found');
+  //       }
+  //       const data = await response.json();
+  //       setSpot(data);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchSpotDetails();
+  // }, [spotId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -267,7 +278,7 @@ function SpotDetailsPage() {
       <p>{description}</p>
       <p>Price: ${price} per night</p>
       <p>Location: {city}, {state}</p>
-      
+
       {/* Spot images */}
       <div className="spot-images">
         <img src={previewImage} alt={name} className="main-image" />

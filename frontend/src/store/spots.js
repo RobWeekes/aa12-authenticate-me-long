@@ -86,7 +86,7 @@
 //   console.log('fetchSpotById called with id:', id);
 //   console.log('Call stack:', new Error().stack);
 //   console.log('Current route:', window.location.pathname);
-  
+
 //   if (!id) return;  // validate the ID before making the request
 //   try {
 //     const response = await fetch(`/api/spots/${id}`);
@@ -190,22 +190,7 @@ export const setError = (error) => ({
 });
 
 // Thunk Action Creators
-// export const fetchAllSpots = () => async (dispatch) => {
-//   dispatch(setLoading(true)); // Set loading to true before API call
-//   try {
-//     const response = await fetch('/api/spots');
-//     if (response.ok) {
-//       const spots = await response.json();
-//       dispatch(setSpots(spots)); // Dispatch spots to store
-//     } else {
-//       dispatch(setError('Failed to fetch spots')); // Handle fetch failure
-//     }
-//   } catch (error) {
-//     dispatch(setError('Error fetching spots')); // Handle fetch error
-//   } finally {
-//     dispatch(setLoading(false)); // Set loading to false after the API call finishes
-//   }
-// };
+
 export const fetchAllSpots = () => async (dispatch) => {
   dispatch(setLoading(true)); // Set loading state to true before API call
   try {
@@ -213,17 +198,17 @@ export const fetchAllSpots = () => async (dispatch) => {
     if (!response.ok) {
       throw new Error('Failed to fetch spots');
     }
-    const spots = await response.json();
+    const spotsdata = await response.json();
 
     // Log the response to check the structure
-    console.log("Fetched spots:", spots);
+    console.log("Fetched spots:", spotsdata);
 
     // Validate the response format (should be an array inside 'Spots' key)
-    if (!Array.isArray(spots.Spots)) {
+    if (!Array.isArray(spotsdata.Spots)) {
       throw new Error('Invalid data received for spots');
     }
 
-    dispatch(setSpots(spots.Spots)); // Dispatch the action to set spots in the Redux state
+    dispatch(setSpots(spotsdata.Spots)); // Dispatch action to set spots in store
   } catch (error) {
     console.error(error);
     dispatch(setError(error.message)); // Dispatch an error if fetching fails
@@ -236,14 +221,14 @@ export const fetchAllSpots = () => async (dispatch) => {
 export const fetchSpotById = (id) => async (dispatch) => {
   console.log('fetchSpotById called with id:', id);
   console.log('Call stack:', new Error().stack);
-  
+
   if (!id) return;  // Validate the ID before making the request
   dispatch(setLoading(true));  // Optional: Set loading state for this specific fetch
   try {
     const response = await fetch(`/api/spots/${id}`);
     if (response.ok) {
-      const data = await response.json();
-      dispatch(setSpots([data])); // Dispatch single spot to store
+      const spotdata = await response.json();
+      dispatch(setSpots([spotdata])); // Dispatch single spot to store
     } else {
       dispatch(setError('Spot not found')); // Handle specific spot fetch error
     }

@@ -116,7 +116,6 @@ const closeModal = () => {
       // The current implementation in the code has setOnModalClose(null) running before onModalClose(), but it should be reversed. The onModalClose callback should be called first, and then cleaned up by setting it to null. This ensures the callback function has access to any state or props it needs before the cleanup occurs.
     }
   };
-//
 
   // added below for phase 4 of frontend readme
   const contextValue = {
@@ -125,17 +124,12 @@ const closeModal = () => {
     modalContent, // React component to render inside modal
     setModalContent, // function to set the React component to render inside modal
     setOnModalClose, // function to set the callback function to be called when modal is closing
-    //
     // added below for phase 4 of frontend readme
     closeModal // function to close the modal
-    //
   };
-//
 
   return (
     <>
-    {/* changed below for phase 4 of frontend readme */}
-      {/* <ModalContext.Provider> */}
       <ModalContext.Provider value={contextValue}>
         {children}
       </ModalContext.Provider>
@@ -143,7 +137,6 @@ const closeModal = () => {
     </>
   );
 }
-//
 
 // added below for phase 4 of frontend readme
 export function Modal() {
@@ -162,8 +155,6 @@ export function Modal() {
       modalRef.current  // Where to render it
     );
   }
-//
 
 // added below for phase 4 of frontend readme
 export const useModal = () => useContext(ModalContext);
-//

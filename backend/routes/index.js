@@ -58,7 +58,7 @@ if (process.env.NODE_ENV === 'production') {
     res.cookie('XSRF-TOKEN', req.csrfToken());
     // changed below for phase 1 of frontend deploy readme
     // return res.sendFile(
-      res.sendFile(
+    res.sendFile(
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
     );
   });

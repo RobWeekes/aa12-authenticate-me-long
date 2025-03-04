@@ -24,6 +24,9 @@ export default defineConfig(({ mode }) => ({
     // proxy: {
     //   '/api': 'http://localhost:8000'
     // },
+    // add historyApiFallback to enable client-side routing during development:
+    // This will tell Vite to forward all non-API routes to your React application, allowing React Router to handle them correctly
+    historyApiFallback: true
   }
 }));
 
