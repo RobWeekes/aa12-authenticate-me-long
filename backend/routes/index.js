@@ -51,10 +51,11 @@ if (process.env.NODE_ENV === 'production') {
   // Serve the static assets in the frontend's build folder at all other routes NOT starting with /api
   router.use(express.static(path.resolve("../frontend/dist")));
 
-  // Serve the frontend's index.html file at all other routes NOT starting with /api
+  // Serve the frontend's index.html file at all other routes NOT starting with /api *** see note below ***
   // Since we can access the API endpoint at /api/spots/1 but not /spots/1, we'll verify the static route handler in backend/routes/index.js is being reached. Add a log in your catch-all route to track when it's being hit:
   router.get(/^(?!\/?api).*/, (req, res) => {
     console.log('Catching non-API route:', req.path);
+    // ** this console log not showing in dev, see note below **
     res.cookie('XSRF-TOKEN', req.csrfToken());
     // changed below for phase 1 of frontend deploy readme
     // return res.sendFile(
@@ -62,7 +63,8 @@ if (process.env.NODE_ENV === 'production') {
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
     );
   });
-}
+} // ** The console.log isn't showing up because in development mode (localhost:5173), Vite's development server is handling the routes directly rather than going through your Express backend. The catch-all route in your backend's index.js only gets hit in production mode when the frontend and backend are served from the same origin. **
+// ***  The router.use(express.static(path.resolve("../frontend/dist"))) handles serving static assets from your frontend build directory. However, the catch-all route router.get(/^(?!\/?api).*/,...) serves a different but complementary purpose - it ensures that when users directly visit or refresh URLs like /spots/2, they still get the React application's index.html file, allowing React Router to take over client-side routing. Both routes work together to properly serve your frontend application in production. ***
 
 // In development, you need another way to get the XSRF-TOKEN cookie on your frontend app
 // because the React frontend is on a different server than the Express backend \/
