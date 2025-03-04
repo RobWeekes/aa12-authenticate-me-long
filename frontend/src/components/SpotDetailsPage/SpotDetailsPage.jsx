@@ -230,8 +230,11 @@ function SpotDetailsPage() {
   const { spotId } = useParams();
   const spot = useSelector(state => state.spots.spots.find(s => s.id === Number(spotId)));
   // const [spot, setSpot] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  // The build process was stopped by ESLint errors: 'setLoading' / 'setError' is assigned a value but never used
+  const [loading] = useState(true);
+  const [error] = useState(null);
   // Then use useEffect to fetch the data when the component mounts:
   useEffect(() => {
     if (spotId && !isNaN(spotId)) {
@@ -297,7 +300,7 @@ function SpotDetailsPage() {
       {/* Ratings and Reviews */}
       <div className="price-rating">
         <span>${price} per night</span>
-        <span>★ {avgRating || 'New'}</span>
+        <span>★ {avgRating || "New"}</span>
       </div>
 
       {/* Show Reviews */}

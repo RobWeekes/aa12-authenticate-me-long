@@ -44,7 +44,7 @@ function SpotErrorBoundary() {
   return (
     <div className="error-container">
       <h2>Spot Details Not Found</h2>
-      <p>The spot you're looking for couldn't be loaded.</p>
+      <p>The spot you&apos;re looking for couldn&apos;t be loaded.</p>
       <Link to="/">Return to Home</Link>
     </div>
   );
