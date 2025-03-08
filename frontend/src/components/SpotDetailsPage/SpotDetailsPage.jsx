@@ -283,7 +283,8 @@ function SpotDetailsPage() {
 
   return (
     <>
-      {spot && (
+      {/* ensure the component waits for the spot data and SpotImages to be available before attempting to render them */}
+      {spot && spot.SpotImages && (
         <div className="spot-details">
 
           <h1><strong>{spot.name}</strong></h1>
