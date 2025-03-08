@@ -229,7 +229,7 @@ function SpotDetailsPage() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const spot = useSelector(state => state.spots.spots?.[0]?.spotdata);
-  const spotImage = useSelector(state => state.spots.spots?.[0]?.spotdata.SpotImages?.[0])
+  const spotImage = useSelector(state => state.spots.spots?.[0]?.spotdata?.SpotImages?.[0])
   console.log('IMAGE FROM SPOT DETAILS:', spotImage);
   // const [spot, setSpot] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -293,9 +293,9 @@ function SpotDetailsPage() {
 
           {/* Spot images */}
           <div className="spot-images">
-            <img src={spot.SpotImages?.[0].url} alt={spot.name} className="main-image" />
+            <img src={spot?.SpotImages?.[0]?.url} alt={spot.name} className="main-image" />
             {spotImage && (
-              <img src={spotImage.url} alt={spot.name} />
+              <img src={spotImage?.url} alt={spot.name} />
             )}
           </div>
 
