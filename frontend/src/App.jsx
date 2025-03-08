@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Navigation from './components/Navigation';
 import LandingPage from './components/LandingPage';
@@ -40,21 +40,21 @@ function Layout() {
   );
 }
 
-function SpotErrorBoundary() {
-  return (
-    <div className="error-container">
-      <h2>Spot Details Not Found</h2>
-      <p>The spot you&apos;re looking for couldn&apos;t be loaded.</p>
-      <Link to="/">Return to Home</Link>
-    </div>
-  );
-}
+// function SpotErrorBoundary() {
+//   return (
+//     <div className="error-container">
+//       <h2>Spot Details Not Found</h2>
+//       <p>The spot you&apos;re looking for couldn&apos;t be loaded.</p>
+//       <Link to="/">Return to Home</Link>
+//     </div>
+//   );
+// }
 
 // add the ErrorBoundary to the root route:
 const router = createBrowserRouter([
   {
     element: <Layout />,
-    errorElement: <SpotErrorBoundary />,
+    // errorElement: <SpotErrorBoundary />,
     children: [
       {
         path: '/',
@@ -79,16 +79,16 @@ const router = createBrowserRouter([
         path: '/spots/current',
         element: <ManageSpotsPage />
       },
-      // {
-      //   path: '/spots/:spotId',
-      //   element: <SpotDetailsPage />
-      // },
-      // The /spots/:spotId route might be matching incorrectly during initial load or route transitions. When the spotId parameter is undefined, it still tries to render SpotDetailsPage.
-      // This regex pattern ensures the route only matches when spotId is a number, preventing undefined ID requests:
       {
-        path: '/spots/:spotId(\\d+)',  // Only match numeric IDs
+        path: '/spots/:spotId',
         element: <SpotDetailsPage />
       },
+      // The /spots/:spotId route might be matching incorrectly during initial load or route transitions. When the spotId parameter is undefined, it still tries to render SpotDetailsPage.
+      // This regex pattern ensures the route only matches when spotId is a number, preventing undefined ID requests:
+      // {
+      //   path: '/spots/:spotId(\\d+)',  // Only match numeric IDs
+      //   element: <SpotDetailsPage />
+      // },
       // The 404 error is happening because we need to add an error boundary to handle route transitions gracefully.
       {
         path: '/spots/:spotId/edit',

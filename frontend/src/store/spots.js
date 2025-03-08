@@ -228,7 +228,8 @@ export const fetchSpotById = (id) => async (dispatch) => {
     const response = await fetch(`/api/spots/${id}`);
     if (response.ok) {
       const spotdata = await response.json();
-      dispatch(setSpots([spotdata])); // Dispatch single spot to store
+      console.log('SPOT DATA:', spotdata);
+      dispatch(setSpots({spotdata})); // Dispatch single spot to store
     } else {
       dispatch(setError('Spot not found')); // Handle specific spot fetch error
     }

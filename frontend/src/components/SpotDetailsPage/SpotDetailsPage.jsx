@@ -228,19 +228,25 @@ function SpotDetailsPage() {
   // First, set up your hooks and get the spotId:
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  const spot = useSelector(state => state.spots.spots.find(s => s.id === Number(spotId)));
+  const spot = useSelector(state => state.spots.spots?.[0]?.spotdata);
+  const spotImage = useSelector(state => state.spots.spots?.[0]?.spotdata.SpotImages?.[0])
+  console.log('IMAGE FROM SPOT DETAILS:', spotImage);
   // const [spot, setSpot] = useState(null);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // The build process was stopped by ESLint errors: 'setLoading' / 'setError' is assigned a value but never used
-  const [loading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error] = useState(null);
+  // The build process was stopped by ESLint errors: 'setLoading' / 'setError' is assigned a value but never used
+  // const [loading] = useState(true);
+  // const [error] = useState(null);
   // Then use useEffect to fetch the data when the component mounts:
   useEffect(() => {
-    if (spotId && !isNaN(spotId)) {
+    if (spotId) {
+      // const detail = dispatch(fetchSpotById(spotId));
       dispatch(fetchSpotById(spotId));
+      setLoading(false);
+      // console.log("DISPATCH DETAILS FROM SPOT DETAILS PAGE:", detail)
     }
   }, [dispatch, spotId])
+  // }, [detail, spotId])
 
   // useEffect(() => {
   //   const fetchSpotDetails = async () => {
@@ -273,38 +279,43 @@ function SpotDetailsPage() {
     return <div>No spot found</div>;
   }
 
-  const { name, description, price, city, state, previewImage, images, avgRating, Owner } = spot;
+  // const { name, description, price, city, state, previewImage, images, avgRating, Owner } = spot;
 
   return (
-    <div className="spot-details">
-      <h1><strong>{name}</strong></h1>
-      <p>{description}</p>
-      <p>Price: ${price} per night</p>
-      <p>Location: {city}, {state}</p>
+    <>
+      {spot && (
+        <div className="spot-details">
 
-      {/* Spot images */}
-      <div className="spot-images">
-        <img src={previewImage} alt={name} className="main-image" />
-        {images && images.length > 0 && images.map((image, index) => (
-          <img key={index} src={image} alt={`${name} ${index + 1}`} />
-        ))}
-      </div>
+          <h1><strong>{spot.name}</strong></h1>
+          <p>{spot.description}</p>
+          <p>Price: ${spot.price} per night</p>
+          <p>Location: {spot.city}, {spot.state}</p>
 
-      {/* Host information */}
-      {Owner && (
-        <div className="host-info">
-          <h2>Hosted by {Owner.firstName} {Owner.lastName}</h2>
-        </div>
-      )}
+          {/* Spot images */}
+          <div className="spot-images">
+            <img src={spot.SpotImages?.[0].url} alt={spot.name} className="main-image" />
+            {spotImage && (
+              <img src={spotImage.url} alt={spot.name} />
+            )}
+          </div>
 
-      {/* Ratings and Reviews */}
-      <div className="price-rating">
+          {/* Host information */}
+          {/* {Owner && ( */}
+          <div className="host-info">
+            <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
+          </div>
+          {/* )} */}
+
+          {/* Restore this later \/ */}
+
+          {/* Ratings and Reviews */}
+          {/* <div className="price-rating">
         <span>${price} per night</span>
         <span>★ {avgRating || "New"}</span>
-      </div>
+      </div> */}
 
-      {/* Show Reviews */}
-      <div className="reviews-section">
+          {/* Show Reviews */}
+          {/* <div className="reviews-section">
         <h3>Reviews</h3>
         {spot.reviews && spot.reviews.length > 0 ? (
           spot.reviews.map(review => (
@@ -317,14 +328,16 @@ function SpotDetailsPage() {
         ) : (
           <p>No reviews yet.</p>
         )}
-      </div>
+      </div> */}
 
-      {/* Action buttons (e.g., "Post Your Review", "Reserve") */}
-      <div className="action-buttons">
-        <button onClick={() => alert("Feature coming soon")}>Reserve</button>
-        <button onClick={() => alert("Feature coming soon")}>Post Your Review</button>
-      </div>
-    </div>
+          {/* Action buttons (e.g., "Post Your Review", "Reserve") */}
+          <div className="action-buttons">
+            <button onClick={() => alert("Feature coming soon")}>Reserve</button>
+            <button onClick={() => alert("Feature coming soon")}>Post Your Review</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

@@ -15,7 +15,7 @@ const generateDates = (endDate) => {
   return { start, end };
 }
 
-/** @type {import('sequelize-cli').Migration} */
+// /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     const dates1 = generateDates('2025-03-15');

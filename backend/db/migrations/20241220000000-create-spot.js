@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // run this cmd to get current timestamp for migration & seeder files:
 // node -e "console.log(new Date().toISOString().replace(/\D/g, '').slice(0,14))"
-
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = "Spots";
