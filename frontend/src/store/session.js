@@ -1,11 +1,13 @@
 // // frontend/src/store/session.js
-// // This file will contain all the actions specific to the session user's information and the session user's Redux reducer.
-
+// frontend/src/store/session.js
 // import { csrfFetch } from './csrf';
+// import { resetSpotsState } from './spots';
 
+// // Action Types
 // const SET_USER = "session/setUser";
 // const REMOVE_USER = "session/removeUser";
 
+// // Action Creators
 // export const setUser = (user) => {
 //   return {
 //     type: SET_USER,
@@ -19,11 +21,12 @@
 //   };
 // };
 
-// // Call your backend API to log in, and then set the session user from the response. Create a thunk action for making a request to POST /api/session
+// // Login thunk action
 // export const login = (user) => async (dispatch) => {
 //   const { credential, password } = user;
 //   try {
-//     const response = await csrfFetch("/api/session", {
+//     // Perform the login request
+//     const response = await csrfFetch("/session", {
 //       method: "POST",
 //       body: JSON.stringify({
 //         credential,
@@ -31,167 +34,180 @@
 //       })
 //     });
 
-//     if (!response.ok) {
-//       throw new Error("Login failed");
+//     if (response.ok) {
+//       const data = await response.json();
+//       dispatch(setUser(data.user)); // Set the user on successful login
+//       return data;
+//     } else {
+//       const errorData = await response.json();
+//       throw new Error(errorData.errors?.credential || 'An error occurred during login');
 //     }
-
-//     const data = await response.json();
-//     // dispatch the action for setting the session user to the user in the response's body
-//     dispatch(setUser(data.user));
-//     return response;
 //   } catch (error) {
-//     console.error(error);
-//     return { error: error.message };
+//     console.error('Login error:', error);
+//     let errorMessage = 'An error occurred during login';
+//     if (error.message) {
+//       errorMessage = error.message;
+//     }
+//     return Promise.reject({ errors: { credential: errorMessage } });
 //   }
 // };
 
-// // Ex. to test login thunk action in browser console:
-// /*
-// store.dispatch(
-//   sessionActions.login({
-//     credential: "Demo-lition",
-//     password: "password"
-//   })
-// )
-// */
+// // Restore user thunk action (on app load to restore session)
+// export const restoreUser = () => async (dispatch) => {
+//   try {
+//     const response = await csrfFetch('/session'); // Check if user is logged in
+//     if (response.ok) {
+//       const data = await response.json();
+//       dispatch(setUser(data.user)); // Restore user session
+//       return data;
+//     }
+//   } catch (error) {
+//     console.error('Error restoring user session:', error);
+//     return null;
+//   }
+// };
 
+// // Signup thunk action
+// export const signup = (user) => async (dispatch) => {
+//   const { username, firstName, lastName, email, password } = user;
+//   try {
+//     const response = await csrfFetch("/users", {
+//       method: "POST",
+//       body: JSON.stringify({
+//         username,
+//         firstName,
+//         lastName,
+//         email,
+//         password
+//       })
+//     });
+
+//     if (response.ok) {
+//       const data = await response.json();
+//       dispatch(setUser(data.user)); // Set user after signup
+//       return data;
+//     } else {
+//       const errorData = await response.json();
+//       throw new Error(errorData.errors?.email || 'An error occurred during signup');
+//     }
+//   } catch (error) {
+//     console.error('Signup error:', error);
+//     let errorMessage = 'An error occurred during signup';
+//     if (error.message) {
+//       errorMessage = error.message;
+//     }
+//     return Promise.reject({ errors: { email: errorMessage } });
+//   }
+// };
+
+// // Logout thunk action
+// export const logout = () => async (dispatch) => {
+//   try {
+//     const response = await csrfFetch('/session', {
+//       method: 'DELETE' // Perform the logout request
+//     });
+
+//     if (response.ok) {
+//       dispatch(resetSpotsState()); // Reset spots state on logout
+//       dispatch(removeUser()); // Remove user from the store
+//       return response;
+//     }
+//   } catch (error) {
+//     console.error('Logout error:', error);
+//     return null;
+//   }
+// };
+
+// // Initial state
 // const initialState = { user: null };
 
 // // SESSION REDUCER
 // const sessionReducer = (state = initialState, action) => {
-//     // Log the action for debugging
-//   console.log("Received action in sessionReducer:", action);
-
-//   // Check if the action is undefined or a special Redux action
-//   if (!action || !action.type || action.type.startsWith('@@redux/')) {
-//     console.error('Received undefined or invalid action in session reducer:', action);
-//     return state;  // Return current state if action is invalid
-//   }
-
 //   switch (action.type) {
 //     case SET_USER:
-//       return { ...state, user: action.payload };
+//       return { ...state, user: action.payload }; // Set the logged-in user
 //     case REMOVE_USER:
-//       return { ...state, user: null };
+//       return { ...state, user: null }; // Clear the user on logout
 //     default:
 //       return state;
 //   }
 // };
 
-// // Restore user session from backend
-// export const restoreUser = () => async (dispatch) => {
-//   const response = await csrfFetch("/api/session");
-//   const data = await response.json();
-//   dispatch(setUser(data.user));
-//   return response;
-// };
-
-// // Signup functionality
-// export const signup = (user) => async (dispatch) => {
-//   const { username, firstName, lastName, email, password } = user;
-//   const response = await csrfFetch("/api/users", {
-//     method: "POST",
-//     body: JSON.stringify({
-//       username,
-//       firstName,
-//       lastName,
-//       email,
-//       password
-//     })
-//   });
-//   const data = await response.json();
-//   dispatch(setUser(data.user));
-//   return response;
-// };
-// // Ex. to test signup thunk action in broswer console
-//                                 /*
-// store.dispatch(
-//   sessionActions.signup({
-//     username: "TesterLogin83",
-//     firstName: "Testfirst",
-//     lastName: "Testlast",
-//     email: "testemail@aol.com",
-//     password: "password2"
-//   })
-// )
-//                                 */
-
-// // Logout functionality
-// export const logout = () => async (dispatch) => {
-//   const response = await csrfFetch('/api/session', {
-//     method: 'DELETE'
-//   });
-//   dispatch(removeUser());
-//   return response;
-// };
-
-// // Ex. to test logout thunk action in browser console:
-// /*
-// store.dispatch(
-//   sessionActions.logout()
-// )
-// */
-
-
 // export default sessionReducer;
-import { csrfFetch } from './csrf';
 
+// frontend/src/store/session.js
+import { csrfFetch } from './csrf';
+import { resetSpotsState } from './spots';
+
+// Action Types
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
 
 // Action Creators
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: user
-});
+export const setUser = (user) => {
+  return {
+    type: SET_USER,
+    payload: user
+  };
+};
 
-export const removeUser = () => ({
-  type: REMOVE_USER
-});
+export const removeUser = () => {
+  return {
+    type: REMOVE_USER
+  };
+};
 
-// Thunk Action Creators
-
-// Login Functionality
+// Login thunk action
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
   try {
-    const response = await csrfFetch("/api/session", {
+    // Perform the login request
+    const response = await csrfFetch("/api/session", {  // Fixed: added /api prefix
       method: "POST",
-      body: JSON.stringify({ credential, password })
+      body: JSON.stringify({
+        credential,
+        password
+      })
     });
 
-    if (!response.ok) {
-      throw new Error("Login failed");
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setUser(data.user)); // Set the user on successful login
+      return data;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.errors?.credential || 'An error occurred during login');
     }
-
-    const data = await response.json();
-    dispatch(setUser(data.user));
-    return response;
   } catch (error) {
     console.error('Login error:', error);
-    return { error: error.message }; // Return error for frontend usage
+    let errorMessage = 'An error occurred during login';
+    if (error.message) {
+      errorMessage = error.message;
+    }
+    return Promise.reject({ errors: { credential: errorMessage } });
   }
 };
 
-// Restore User Session from Backend
+// Restore user thunk action (on app load to restore session)
 export const restoreUser = () => async (dispatch) => {
   try {
-    const response = await csrfFetch("/api/session");
-    if (!response.ok) throw new Error('Failed to restore user session');
-    const data = await response.json();
-    dispatch(setUser(data.user));
-    return response;
+    const response = await csrfFetch('/api/session'); // Fixed: added /api prefix
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setUser(data.user)); // Restore user session
+      return data;
+    }
   } catch (error) {
-    console.error('Restore user session error:', error);
-    return { error: error.message };  // Return error for frontend usage
+    console.error('Error restoring user session:', error);
+    return null;
   }
 };
 
-// Signup Functionality
+// Signup thunk action
 export const signup = (user) => async (dispatch) => {
   const { username, firstName, lastName, email, password } = user;
   try {
-    const response = await csrfFetch("/api/users", {
+    const response = await csrfFetch("/api/users", {  // Fixed: added /api prefix
       method: "POST",
       body: JSON.stringify({
         username,
@@ -202,51 +218,52 @@ export const signup = (user) => async (dispatch) => {
       })
     });
 
-    if (!response.ok) throw new Error('Signup failed');
-    const data = await response.json();
-    dispatch(setUser(data.user));
-    return response;
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setUser(data.user)); // Set user after signup
+      return data;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.errors?.email || 'An error occurred during signup');
+    }
   } catch (error) {
     console.error('Signup error:', error);
-    return { error: error.message };  // Return error for frontend usage
+    let errorMessage = 'An error occurred during signup';
+    if (error.message) {
+      errorMessage = error.message;
+    }
+    return Promise.reject({ errors: { email: errorMessage } });
   }
 };
 
-// Logout Functionality
+// Logout thunk action
 export const logout = () => async (dispatch) => {
   try {
-    const response = await csrfFetch('/api/session', {
-      method: 'DELETE'
+    const response = await csrfFetch('/api/session', {  // Fixed: added /api prefix
+      method: 'DELETE' // Perform the logout request
     });
 
-    if (!response.ok) throw new Error('Logout failed');
-    dispatch(removeUser());
-    return response;
+    if (response.ok) {
+      dispatch(resetSpotsState()); // Reset spots state on logout
+      dispatch(removeUser()); // Remove user from the store
+      return response;
+    }
   } catch (error) {
     console.error('Logout error:', error);
-    return { error: error.message };  // Return error for frontend usage
+    return null;
   }
 };
 
-// Initial State
+// Initial state
 const initialState = { user: null };
 
 // SESSION REDUCER
 const sessionReducer = (state = initialState, action) => {
-  // Log the action for debugging
-  console.log("Received action in sessionReducer:", action);
-
-  // Check if the action is undefined or a special Redux action
-  if (!action || !action.type || action.type.startsWith('@@redux/')) {
-    console.error('Received undefined or invalid action in session reducer:', action);
-    return state;  // Return current state if action is invalid
-  }
-
   switch (action.type) {
     case SET_USER:
-      return { ...state, user: action.payload };
+      return { ...state, user: action.payload }; // Set the logged-in user
     case REMOVE_USER:
-      return { ...state, user: null };
+      return { ...state, user: null }; // Clear the user on logout
     default:
       return state;
   }

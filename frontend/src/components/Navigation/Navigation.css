@@ -1,63 +1,102 @@
-/* /* // added below for phase 3 of frontend readme */
+/* // frontend/src/components/Navigation/Navigation.css */
+/* /* /* frontend/src/components/Navigation/Navigation.css */
+
+/* Base navigation styles */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+  padding: 10px 20px;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Home link styles */
+.home-link {
+  margin-right: auto; /* Push to the left */
+}
+
+/* Right side navigation container */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between Create link and Profile button */
+}
+
+/* Create a New Spot link styles */
+.create-spot-link a {
+  text-decoration: none;
+  color: #FF5A5F; /* Airbnb-like color */
+  font-weight: bold;
+}
+
+.create-spot-link a:hover {
+  text-decoration: underline;
+}
+
+/* Profile button container */
+.profile-button {
+  position: relative;
+}
+
+/* Existing styles from your CSS */
 div {
-    width: 50vw;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 10px;
-  }
+  width: 50vw;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 10px;
+}
 
-  a {
-    color: rgb(77, 74, 74);
-    text-decoration: none;
-    font-size: 1.1em;
-  }
+a {
+  color: rgb(77, 74, 74);
+  text-decoration: none;
+  font-size: 1.1em;
+}
 
-  .active {
-    color: rgb(51, 51, 51);
-    font-weight: bold;
-    font-size: 1.2em;
-    background: rgb(240, 240, 179);
-    padding: 1px;
-  }
+.active {
+  color: rgb(51, 51, 51);
+  font-weight: bold;
+  font-size: 1.2em;
+  background: rgb(240, 240, 179);
+  padding: 1px;
+}
 
-  li {
-    color: rgb(77, 74, 74);
-  }
+li {
+  color: rgb(77, 74, 74);
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
 
-  input {
-    width: 100%;
-    padding: 0.5rem;
-  }
+input {
+  width: 100%;
+  padding: 0.5rem;
+}
 
-  /* // added below for phase 3 of frontend readme */
-  .hidden {
-    display: none;
-  }
+/* Profile dropdown styles */
+.profile-dropdown {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 10px;
+  border-radius: 5px;
+  right: 0; /* Align dropdown to the right */
+  top: 40px; /* Position below the profile button */
+  min-width: 150px; /* Minimum width for the dropdown */
+  z-index: 1000; /* Ensure dropdown appears above other content */
+}
 
-  .profile-dropdown {
-    position: absolute;
-    background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    list-style: none;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  .hidden {
-    display: none;
-  }
-  /*  */
-
-/*  */
+.hidden {
+  display: none;
+}

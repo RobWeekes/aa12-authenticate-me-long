@@ -18,12 +18,18 @@ const apiRouter = require('./api');
 // In development: allow any developer to re-set the CSRF token cookie XSRF-TOKEN.
 // if (process.env.NODE_ENV !== 'production') {
 router.get("/api/csrf/restore", (req, res) => {
+  try {
   const csrfToken = req.csrfToken();
   // console.log("XSRF-TOKEN", csrfToken);
+  console.log('Generated CSRF token:', csrfToken);
   res.cookie("XSRF-TOKEN", csrfToken);
   res.status(200).json({
     'XSRF-Token': csrfToken
   });
+} catch (error) {
+  console.error('Error generating CSRF token:', error);
+  res.status(500).json({ error: 'Failed to generate CSRF token' });
+}
 });
 // }
 

@@ -1,0 +1,127 @@
+/* frontend/src/components/HowWasYourStayModal/HowWasYourStayModal.css */
+/* frontend/src/components/HowWasYourStayModal/HowWasYourStayModal.css */
+.how-was-your-stay-modal {
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+  
+  .how-was-your-stay-modal h2 {
+    margin-bottom: 10px;
+    text-align: center;
+    color: #222;
+    font-size: 24px;
+  }
+  
+  .how-was-your-stay-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .how-was-your-stay-modal textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+  }
+  
+  .how-was-your-stay-modal textarea:focus {
+    outline: none;
+    border-color: #ff385c;
+    box-shadow: 0 0 0 2px rgba(255, 56, 92, 0.2);
+  }
+  
+  .stars-rating-container {
+    margin: 10px 0;
+    width: 100%;
+  }
+  
+  .stars-container {
+    display: flex; /* Ensure horizontal alignment of stars */
+    justify-content: flex-start; /* Align the stars to the left */
+    align-items: center; /* Vertically align the stars */
+    gap: 10px; /* Space between the stars */
+  }
+  
+  .star-wrapper {
+    cursor: pointer;
+    display: inline-block; /* This ensures stars stay inline */
+  }
+  
+  .star-wrapper i {
+    font-size: 28px;
+    transition: transform 0.1s ease;
+  }
+  
+  .star-wrapper:hover i {
+    transform: scale(1.1);
+  }
+  
+  .filled-star {
+    color: #FFD700 !important; /* Gold color for filled stars */
+  }
+  
+  .empty-star {
+    color: #ccc !important; /* Light gray for empty stars */
+  }
+  
+  .stars-text {
+    margin-left: 5px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .review-error {
+    color: #ff385c;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+    background-color: rgba(255, 56, 92, 0.1);
+    padding: 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  .submit-review-button {
+    background-color: #ff385c;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    width: 100%;
+  }
+  
+  .submit-review-button:disabled {
+    background-color: #cccccc !important;
+    cursor: not-allowed;
+  }
+  
+  .submit-review-button:hover:not(:disabled) {
+    background-color: #e31c5f !important;
+  }
+  
+  .submit-review-button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  
+  
+  

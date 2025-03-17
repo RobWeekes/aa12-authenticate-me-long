@@ -1,0 +1,66 @@
+.delete-spot-modal {
+    padding: 20px;
+    width: 400px;
+    max-width: 90vw;
+  }
+  
+  .delete-spot-modal h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #FF5A5F;
+    text-align: center;
+  }
+  
+  .delete-spot-modal p {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .delete-error {
+    color: #FF5A5F;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .delete-spot-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .delete-confirm-button,
+  .delete-cancel-button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-confirm-button {
+    background-color: #FF5A5F;
+    color: white;
+  }
+  
+  .delete-confirm-button:hover {
+    background-color: #e74c51;
+  }
+  
+  .delete-cancel-button {
+    background-color: #999;
+    color: white;
+  }
+  
+  .delete-cancel-button:hover {
+    background-color: #777;
+  }
+  
+  .delete-confirm-button:disabled,
+  .delete-cancel-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  

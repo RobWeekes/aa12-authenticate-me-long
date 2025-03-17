@@ -1,18 +1,11 @@
 // frontend/src/store/store.js
-// import { createStore, combineReducers, applyMiddleware, compose } from redux;
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-// import thunk from redux-thunk;
-// import thunk from 'redux-thunk';
 import { thunk } from 'redux-thunk';
-// import { default as thunk } from 'redux-thunk';
-// added below for phase 1 of frontend readme
-
 import sessionReducer from './session';
 import spotsReducer from './spots';
 import reviewsReducer from './reviews';
 
 const rootReducer = combineReducers({
-  // added below for phase 1 of frontend readme
   session: sessionReducer,
   spots: spotsReducer,
   reviews: reviewsReducer,
@@ -30,23 +23,30 @@ const loggerMiddleware = store => next => action => {
 };
 
 let enhancer;
-// if (import.meta.env.MODE === 'production') {
-  if (process.env.NODE_ENV === 'production') {
+
+if (import.meta.env.MODE === 'production') {
   enhancer = applyMiddleware(thunk, loggerMiddleware);
 } else {
-  const logger = (await import("redux-logger")).default;
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  enhancer = composeEnhancers(applyMiddleware(thunk, logger, loggerMiddleware));
-}   // "loggerMiddleware" will log every action that flows through Redux, helping us track the undefined ID issue.
+  const configureEnhancers = async () => {
+    const logger = (await import("redux-logger")).default;
+    const composeEnhancers =
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    return composeEnhancers(applyMiddleware(thunk, logger, loggerMiddleware));
+  };
+  
+  // For now, initialize with thunk and loggerMiddleware
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  enhancer = composeEnhancers(applyMiddleware(thunk, loggerMiddleware));
+  
+  // Then update it when logger is loaded
+  configureEnhancers().then(newEnhancer => {
+    enhancer = newEnhancer;
+  });
+}
 
 const configureStore = (preloadedState) => {
   return createStore(rootReducer, preloadedState, enhancer);
 };
 
-// We can test the data flow between the reducer & component - run in browser:
-// window.store.getState()
-
-// export default store;
-// The configureStore function will be used by main.jsx to attach the Redux store to the React application.
 export default configureStore;
+

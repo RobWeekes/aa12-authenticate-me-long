@@ -1,3 +1,4 @@
+// frontend/src/App.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -27,10 +28,18 @@ function Layout() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => {
-      setIsLoaded(true);
-    });
+    console.log("Attempting to restore user session");
+    dispatch(sessionActions.restoreUser())
+      .then(() => {
+        console.log("User session restored");
+        setIsLoaded(true);
+      })
+      .catch(err => {
+        console.error("Error restoring user:", err);
+        setIsLoaded(true);
+      });
   }, [dispatch]);
+  
 
   return (
     <>

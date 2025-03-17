@@ -1,59 +1,103 @@
-// import { useEffect } from 'react';
+// frontend/src/components/LandingPage/LandingPage.jsx
+// frontend/src/components/LandingPage/LandingPage.jsx
+// import { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import SpotTile from '../SpotTile';
 // import { fetchAllSpots } from '../../store/spots';
-// // import { fetchSpotById } from '../../store/spots';
 
 // function LandingPage() {
 //   const dispatch = useDispatch();
-//   const spots = useSelector(state => {
-//     console.log('Current state on LandingPage:', state);
-//     return state.spots.spots || [];
-//   });
-//   console.log('spots from landing page:', spots);
+//   const [isLoaded, setIsLoaded] = useState(false);
 
+//   // Get authentication state
+//   const sessionUser = useSelector(state => state.session.user);
+
+//   // Get spots from the Redux store
+//   const spotsFromAllSpots = useSelector(state => Object.values(state.spots.allSpots || {}));
+//   const spotsFromSpotsArray = useSelector(state => state.spots.spots || []);
+
+//   // Determine which spots array to use
+//   const spots = spotsFromAllSpots.length > 0 ? spotsFromAllSpots : spotsFromSpotsArray;
+
+//   const loading = useSelector(state => state.spots.loading);
+//   const error = useSelector(state => state.spots.error);
+
+//   // Fetch spots when the component mounts or when auth state changes
 //   useEffect(() => {
-//     dispatch(fetchAllSpots());
-//   }, [dispatch]);
+//     const loadSpots = async () => {
+//       await dispatch(fetchAllSpots());
+//       setIsLoaded(true);
+//     };
+
+//     loadSpots();
+//   }, [dispatch, sessionUser]); // Ensure spots are re-fetched when sessionUser changes
+
+//   // Conditional rendering based on loading and error states
+//   if (loading && !isLoaded) {
+//     return <div>Loading spots...</div>;
+//   }
+
+//   if (error) {
+//     return <div>Error fetching spots: {error}</div>;
+//   }
 
 //   return (
 //     <div className="landing-page">
-//       {/* <h1>Welcome to Our Spot Listings</h1> */}
 //       <div className="spots-grid">
-//       {
-//       spots && spots.length > 0 && spots.map(spot => (
-//           <SpotTile key={spot.id} spot={spot} />
+//         {spots.length > 0 ? (
+//           spots.map(spot => (
+//             <SpotTile key={spot.id} spot={spot} />
 //           ))
-//         }
+//         ) : (
+//           <div>No spots available at the moment.</div>
+//         )}
 //       </div>
 //     </div>
 //   );
 // }
 
 // export default LandingPage;
-import { useEffect } from 'react';
+
+// frontend/src/components/LandingPage/LandingPage.jsx
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SpotTile from '../SpotTile';
 import { fetchAllSpots } from '../../store/spots';
 
 function LandingPage() {
   const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Get authentication state
+  // const sessionUser = useSelector(state => state.session.user);
 
   // Get spots from the Redux store
-  const spots = useSelector(state => state.spots.spots || []);
-  const loading = useSelector(state => state.spots.loading); // Assuming you have loading state
-  const error = useSelector(state => state.spots.error); // Assuming you handle error state
+  const spotsFromAllSpots = useSelector(state => Object.values(state.spots.allSpots || {}));
+  const spotsFromSpotsArray = useSelector(state => state.spots.spots || []);
 
-  // Log the current state for debugging
-  console.log('Current state on LandingPage:', spots);
+  // Determine which spots array to use
+  const spots = spotsFromAllSpots.length > 0 ? spotsFromAllSpots : spotsFromSpotsArray;
 
-  // Fetch spots when the component mounts
+  const loading = useSelector(state => state.spots.loading);
+  const error = useSelector(state => state.spots.error);
+
+  // Fetch spots when the component mounts or when auth state changes
   useEffect(() => {
-    dispatch(fetchAllSpots());
-  }, [dispatch]);
+    const loadSpots = async () => {
+      try {
+        await dispatch(fetchAllSpots());
+      } catch (err) {
+        console.error("Error loading spots:", err);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+
+    loadSpots();
+  }, [dispatch]); // Removed sessionUser dependency to prevent unnecessary refetching
 
   // Conditional rendering based on loading and error states
-  if (loading) {
+  if (loading && !isLoaded) {
     return <div>Loading spots...</div>;
   }
 
@@ -62,8 +106,8 @@ function LandingPage() {
   }
 
   return (
-    <div className="landing-page">
-      {/* <h1>Welcome to Our Spot Listings</h1> */}
+    // <div className="landing-page">
+    <div className="landing-page-container">
       <div className="spots-grid">
         {spots.length > 0 ? (
           spots.map(spot => (
@@ -78,3 +122,4 @@ function LandingPage() {
 }
 
 export default LandingPage;
+

@@ -1,271 +1,45 @@
-// import { useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchSpotById } from '../../store/spots';
-// import { fetchSpotReviews } from '../../store/reviews';
-
-// function SpotDetailsPage() {
-//   const dispatch = useDispatch();
-//   const { id } = useParams();
-//   console.log('SpotDetailsPage ID from params:', id);
-//   const spot = useSelector(state => state.spots.spots.find(spot => spot.id === Number(id)));
-//   const reviews = useSelector(state => state.reviews.reviews);
-//   const sessionUser = useSelector(state => state.session.user);
-//   // Early return if no valid ID - avoids API call errors
-//   // The useEffect hook is being called after a conditional return
-//   // Let's move the validation inside useEffect to maintain proper hook order:
-//   // if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
-//   useEffect(() => {
-//     if (id && !isNaN(id)) {
-//       dispatch(fetchSpotById(id));
-//       dispatch(fetchSpotReviews(id));
-//     }
-//   }, [dispatch, id]);
-
-//   if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
-//   if (!spot) return <div>Loading...</div>;
-
-//   // Check if the logged-in user has already posted a review for this spot
-//   const hasReviewed = reviews.some(review => review.userId === sessionUser?.id);
-//   const isOwner = sessionUser?.id === spot.ownerId; // Assuming spot has ownerId
-
-//   return (
-//     <div className="spot-details">
-//       <h1><strong>{spot.name}</strong></h1>
-//       <p>{spot.city}, {spot.state}, {spot.country}</p>
-
-//       <div className="spot-images">
-//         <img src={spot.previewImage} alt={spot.name} className="main-image" />
-//         {spot.images?.map((image, index) => (
-//           <img key={index} src={image} alt={`${spot.name} ${index + 1}`} />
-//         ))}
-//       </div>
-
-//       <div className="spot-card">
-//         <h2>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h2>
-//         <p>{spot.description}</p>
-
-//         <div className="price-rating">
-//           <span>${spot.price} night</span>
-//           <span>★ {spot.avgRating || 'New'}</span>
-//         </div>
-
-//         <button onClick={() => alert("Feature coming soon")}>Reserve</button>
-
-//         <div className="reviews-section">
-//           <h3>Reviews ({reviews.length})</h3>
-//           {reviews.map(review => (
-//             <div key={review.id} className="review">
-//               <p>{review.User?.firstName}</p>
-//               <p>{new Date(review.createdAt).toLocaleDateString()}</p>
-//               <p>{review.review}</p>
-//             </div>
-//           ))}
-//         </div>
-
-//         {/* Show "Post Your Review" button only if the user is logged in, hasn't reviewed, and is not the owner */}
-//         {sessionUser && !hasReviewed && !isOwner && (
-//           <button onClick={() => alert("Feature coming soon")}>Post Your Review</button>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default SpotDetailsPage;
-
-
-
-
-
-// import { useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchSpotById } from '../../store/spots';
-// import { fetchSpotReviews } from '../../store/reviews';
-
-// function SpotDetailsPage() {
-//   const dispatch = useDispatch();
-//   const { id } = useParams();
-//   console.log('SpotDetailsPage ID from params:', id);
-//   const spot = useSelector(state => state.spots.spots.find(spot => spot.id === Number(id)));
-//   const reviews = useSelector(state => state.reviews.reviews);
-//   const sessionUser = useSelector(state => state.session.user);
-
-//   // UseEffect for fetching spot and reviews
-//   useEffect(() => {
-//     if (id && !isNaN(id)) {
-//       dispatch(fetchSpotById(id));
-//       dispatch(fetchSpotReviews(id));
-//     }
-//   }, [dispatch, id]);
-
-//   if (!id || isNaN(id)) return <div>Invalid Spot ID</div>;
-//   if (!spot) return <div>Loading...</div>;
-
-//   // Check if the logged-in user has already posted a review for this spot
-//   const hasReviewed = reviews.some(review => review.userId === sessionUser?.id);
-//   const isOwner = sessionUser?.id === spot.ownerId; // Assuming spot has ownerId
-
-//   return (
-//     <div className="spot-details">
-//       <h1><strong>{spot.name}</strong></h1>
-//       <p>{spot.city}, {spot.state}, {spot.country}</p>
-
-//       <div className="spot-images">
-//         <img src={spot.previewImage} alt={spot.name} className="main-image" />
-//         {spot.images?.map((image, index) => (
-//           <img key={index} src={image} alt={`${spot.name} ${index + 1}`} />
-//         ))}
-//       </div>
-
-//       <div className="spot-card">
-//         <h2>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h2>
-//         <p>{spot.description}</p>
-
-//         <div className="price-rating">
-//           <span>${spot.price} night</span>
-//           <span>★ {spot.avgRating || 'New'}</span>
-//         </div>
-
-//         <button onClick={() => alert("Feature coming soon")}>Reserve</button>
-
-//         <div className="reviews-section">
-//           <h3>Reviews ({reviews.length})</h3>
-//           {reviews.length > 0 ? (
-//             reviews.map(review => (
-//               <div key={review.id} className="review">
-//                 <p>{review.User?.firstName}</p>
-//                 <p>{new Date(review.createdAt).toLocaleDateString()}</p>
-//                 <p>{review.review}</p>
-//               </div>
-//             ))
-//           ) : (
-//             <p>No reviews yet.</p>
-//           )}
-//         </div>
-
-//         {/* Show "Post Your Review" button only if the user is logged in, hasn't reviewed, and is not the owner */}
-//         {sessionUser && !hasReviewed && !isOwner && (
-//           <button onClick={() => alert("Feature coming soon")}>Post Your Review</button>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default SpotDetailsPage;
-
-
-
-
-
-
-
-
-
-
-
-
-// import { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
-
-// function SpotDetailsPage() {
-//   const { spotId } = useParams();
-//   const [spot, setSpot] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchSpotDetails = async () => {
-//       try {
-//         const response = await fetch(`/api/spots/${spotId}`);
-//         if (!response.ok) {
-//           throw new Error('Spot not found');
-//         }
-//         const data = await response.json();
-//         setSpot(data);
-//       } catch (error) {
-//         setError(error.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchSpotDetails();
-//   }, [spotId]);
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (error) {
-//     return <div>Error: {error}</div>;
-//   }
-
-//   if (!spot) {
-//     return <div>No spot found</div>;
-//   }
-
-//   return (
-//     <div>
-//       <h1>{spot.name}</h1>
-//       <p>{spot.description}</p>
-//       <p>Price: ${spot.price}</p>
-//       <p>Location: {spot.city}, {spot.state}</p>
-//       {/* Render other spot details here */}
-//     </div>
-//   );
-// }
-
-// export default SpotDetailsPage;
-import { useEffect, useState } from 'react';
+// frontend/src/components/SpotDetailsPage/SpotDetailsPage.jsx
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchSpotById } from '../../store/spots';
+import { fetchSpotReviews } from '../../store/reviews';
+import OpenModalButton from '../OpenModalButton';
+import HowWasYourStayModal from '../HowWasYourStayModal/HowWasYourStayModal';
+import '../../styles/spotDetails.css';
 
 function SpotDetailsPage() {
-  // First, set up your hooks and get the spotId:
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  const spot = useSelector(state => state.spots.spots?.[0]?.spotdata);
-  const spotImage = useSelector(state => state.spots.spots?.[0]?.spotdata?.SpotImages?.[0])
-  console.log('IMAGE FROM SPOT DETAILS:', spotImage);
-  // const [spot, setSpot] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error] = useState(null);
-  // The build process was stopped by ESLint errors: 'setLoading' / 'setError' is assigned a value but never used
-  // const [loading] = useState(true);
-  // const [error] = useState(null);
-  // Then use useEffect to fetch the data when the component mounts:
+  
+  // Get the spot from Redux store
+  const spot = useSelector(state => state.spots.singleSpot);
+  const loading = useSelector(state => state.spots.loading);
+  const error = useSelector(state => state.spots.error);
+  
+  // Get reviews from Redux store
+  const reviewsObj = useSelector(state => state.reviews.reviews || {});
+  // Convert reviews object to array if needed
+  const reviews = Array.isArray(reviewsObj) ? reviewsObj : Object.values(reviewsObj);
+  
+  // Get current user
+  const sessionUser = useSelector(state => state.session.user);
+
+  // Fetch spot and reviews when component mounts
   useEffect(() => {
     if (spotId) {
-      // const detail = dispatch(fetchSpotById(spotId));
       dispatch(fetchSpotById(spotId));
-      setLoading(false);
-      // console.log("DISPATCH DETAILS FROM SPOT DETAILS PAGE:", detail)
+      dispatch(fetchSpotReviews(spotId));
     }
-  }, [dispatch, spotId])
-  // }, [detail, spotId])
+  }, [dispatch, spotId]);
 
-  // useEffect(() => {
-  //   const fetchSpotDetails = async () => {
-  //     try {
-  //       const response = await fetch(`/api/spots/${spotId}`);
-  //       if (!response.ok) {
-  //         throw new Error('Spot not found');
-  //       }
-  //       const data = await response.json();
-  //       setSpot(data);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchSpotDetails();
-  // }, [spotId]);
+  // Handle successful review submission
+  const handleReviewSubmit = () => {
+    // Refresh reviews after submission
+    dispatch(fetchSpotReviews(spotId));
+    // Refresh spot to update ratings
+    dispatch(fetchSpotById(spotId));
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -279,66 +53,104 @@ function SpotDetailsPage() {
     return <div>No spot found</div>;
   }
 
-  // const { name, description, price, city, state, previewImage, images, avgRating, Owner } = spot;
+  // Check if the logged-in user has already posted a review for this spot
+  const hasReviewed = sessionUser ? reviews.some(review => 
+    review.userId === sessionUser.id || review.User?.id === sessionUser.id
+  ) : false;
+  
+  // Check if the logged-in user is the owner of the spot
+  const isOwner = sessionUser && sessionUser.id === spot.ownerId;
+
+  // Determine if we should show the "Post Your Review" button
+  const showPostReviewButton = sessionUser && !hasReviewed && !isOwner;
+
+  // Format reviews to show newest first
+  const sortedReviews = [...reviews].sort((a, b) => 
+    new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
   return (
-    <>
-      {/* ensure the component waits for the spot data and SpotImages to be available before attempting to render them */}
-      {spot && spot.SpotImages && (
-        <div className="spot-details">
+    <div className="spot-details-container">
+      <h1>{spot.name}</h1>
+      <p>{spot.city}, {spot.state}, {spot.country}</p>
 
-          <h1><strong>{spot.name}</strong></h1>
-          <p>{spot.description}</p>
-          <p>Price: ${spot.price} per night</p>
-          <p>Location: {spot.city}, {spot.state}</p>
-
-          {/* Spot images */}
-          <div className="spot-images">
-            <img src={spot?.SpotImages?.[0]?.url} alt={spot.name} className="main-image" />
-            {spotImage && (
-              <img src={spotImage?.url} alt={spot.name} />
-            )}
-          </div>
-
-          {/* Host information */}
-          {/* {Owner && ( */}
-          <div className="host-info">
-            <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
-          </div>
-          {/* )} */}
-
-          {/* Restore this later \/ */}
-
-          {/* Ratings and Reviews */}
-          {/* <div className="price-rating">
-        <span>${price} per night</span>
-        <span>★ {avgRating || "New"}</span>
-      </div> */}
-
-          {/* Show Reviews */}
-          {/* <div className="reviews-section">
-        <h3>Reviews</h3>
-        {spot.reviews && spot.reviews.length > 0 ? (
-          spot.reviews.map(review => (
-            <div key={review.id} className="review">
-              <p>{review.User.firstName} {review.User.lastName}</p>
-              <p>{new Date(review.createdAt).toLocaleDateString()}</p>
-              <p>{review.review}</p>
-            </div>
+      <div className="spot-images">
+        {spot.SpotImages && spot.SpotImages.length > 0 ? (
+          spot.SpotImages.map((image, index) => (
+            <img 
+              key={index} 
+              src={image.url} 
+              alt={`${spot.name} ${index + 1}`} 
+              className={index === 0 ? 'main-image' : 'secondary-image'}
+            />
           ))
         ) : (
-          <p>No reviews yet.</p>
+          <img 
+            src="https://via.placeholder.com/400x300?text=No+Image" 
+            alt="No image available" 
+            className="main-image"
+          />
         )}
-      </div> */}
+      </div>
 
-          {/* Action buttons (e.g., "Post Your Review", "Reserve") */}
-          <div className="action-buttons">
-            <button onClick={() => alert("Feature coming soon")}>Reserve</button>
-            <button onClick={() => alert("Feature coming soon")}>Post Your Review</button>
-          </div>
+      <div className="spot-info">
+        <div className="host-info">
+          <h2>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h2>
+          <p>{spot.description}</p>
         </div>
-      )}
-    </>
+
+        <div className="booking-info">
+          <div className="price-rating">
+            <span className="price">${spot.price} night</span>
+            <span className="rating">
+              ★ {spot.avgStarRating ? Number(spot.avgStarRating).toFixed(1) : 'New'} 
+              {spot.numReviews > 0 && ` · ${spot.numReviews} ${spot.numReviews === 1 ? 'review' : 'reviews'}`}
+            </span>
+          </div>
+          <button className="reserve-button" onClick={() => alert("Feature coming soon")}>
+            Reserve
+          </button>
+        </div>
+      </div>
+
+      <div className="reviews-section">
+        <h3>
+          ★ {spot.avgStarRating ? Number(spot.avgStarRating).toFixed(1) : 'New'} 
+          {spot.numReviews > 0 && ` · ${spot.numReviews} ${spot.numReviews === 1 ? 'review' : 'reviews'}`}
+        </h3>
+        
+        {/* Show "Post Your Review" button only if the user is logged in, hasn't reviewed, and is not the owner */}
+        {showPostReviewButton && (
+          <div className="post-review-button">
+            <OpenModalButton
+              buttonText="Post Your Review"
+              modalComponent={<HowWasYourStayModal spotId={spotId} onReviewSubmit={handleReviewSubmit} />}
+            />
+          </div>
+        )}
+        
+        {/* Show "Be the first to post a review!" message if there are no reviews and user is logged in but not the owner */}
+        {reviews.length === 0 && sessionUser && !isOwner && (
+          <p>Be the first to post a review!</p>
+        )}
+        
+        {/* Display reviews */}
+        <div className="reviews-list">
+          {sortedReviews.map(review => (
+            <div key={review.id} className="review">
+              <h4>{review.User?.firstName}</h4>
+              <p className="review-date">
+                {new Date(review.createdAt).toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  year: 'numeric'
+                })}
+              </p>
+              <p className="review-text">{review.review}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 

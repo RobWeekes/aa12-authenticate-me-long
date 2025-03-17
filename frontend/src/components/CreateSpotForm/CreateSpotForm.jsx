@@ -1,3 +1,4 @@
+// frontend/src/components/CreateSpotForm/CreateSpotForm.jsx
 import { useState } from 'react';
 
 function CreateSpotForm() {
@@ -23,12 +24,12 @@ function CreateSpotForm() {
       <h1>Create a New Spot</h1>
       <h3>Where&apos;s your place located?</h3>
       <input type="text" placeholder="Country" value={formData.country} onChange={(e) => setFormData({...formData, country: e.target.value})} required />
-      <input type="text" placeholder="Street Address" value={formData.streetAddress} onChange={(e) => setFormData({...formData, streetAddress: e.target.value})} required />
+      <input type="text" placeholder="Address" value={formData.streetAddress} onChange={(e) => setFormData({...formData, streetAddress: e.target.value})} required />
       <input type="text" placeholder="City" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} required />
-      <input type="text" placeholder="State" value={formData.state} onChange={(e) => setFormData({...formData, state: e.target.value})} required />
+      <input type="text" placeholder="STATE" value={formData.state} onChange={(e) => setFormData({...formData, state: e.target.value})} required />
       
       <h3>Describe your place to guests</h3>
-      <textarea placeholder="Please write at least 30 characters" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} required />
+      <textarea placeholder="Description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} required />
 
       <h3>Create a title for your spot</h3>
       <input type="text" placeholder="Name of your spot" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />

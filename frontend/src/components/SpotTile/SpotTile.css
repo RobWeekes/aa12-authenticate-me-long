@@ -1,0 +1,8 @@
+.spot-card {
+    position: relative;
+    z-index: 1; /* Lower z-index than the profile dropdown */
+  }
+  
+  .spot-card img {
+    z-index: 1; /* Ensure images also have the lower z-index */
+  }
