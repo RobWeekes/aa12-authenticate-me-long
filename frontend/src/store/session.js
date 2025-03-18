@@ -221,6 +221,7 @@ export const signup = (user) => async (dispatch) => {
     if (response.ok) {
       const data = await response.json();
       dispatch(setUser(data.user)); // Set user after signup
+      console.log('User set in Redux store after signup:', data.user);
       return data;
     } else {
       const errorData = await response.json();
@@ -261,6 +262,7 @@ const initialState = { user: null };
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER:
+      console.log('Setting user in reducer:', action.payload);
       return { ...state, user: action.payload }; // Set the logged-in user
     case REMOVE_USER:
       return { ...state, user: null }; // Clear the user on logout
