@@ -1,92 +1,92 @@
 /* frontend/src/components/UpdateSpotForm/UpdateSpotForm.css */
 .edit-spot-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .edit-spot-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .form-section {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
-  }
-  
-  .form-section h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .form-section p {
-    color: #666;
-    margin-bottom: 15px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .form-group input.error,
-  .form-group textarea.error {
-    border-color: #ff385c;
-  }
-  
-  .form-row {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .form-row .form-group {
-    flex: 1;
-  }
-  
-  .price-group {
-    position: relative;
-  }
-  
-  .price-group label {
-    display: inline-block;
-    margin-right: 5px;
-  }
-  
-  .price-group input {
-    width: calc(100% - 20px);
-  }
-  
-  .error-message {
-    color: #ff385c;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
-  }
-  
-  /* .submit-button {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.edit-spot-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-section {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+
+.form-section h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.form-section p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #ff385c;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.price-group {
+  position: relative;
+}
+
+.price-group label {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.price-group input {
+  width: calc(100% - 20px);
+}
+
+.error-message {
+  color: #ff385c;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* .submit-button {
     background-color: #ff385c;
     color: white;
     border: none;
@@ -100,58 +100,57 @@
   .submit-button:hover {
     background-color: #e31c5f;
   } */
-  .create-spot-button {
-    background-color: #FF5A5F;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .create-spot-button:hover {
-    background-color: #d32f2f;
-  }
-  
-  
-  .cancel-button {
-    background-color: #767676;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .cancel-button:hover {
-    background-color: #555555;
-  }
-  
-  .loading {
-    text-align: center;
-    padding: 40px;
-    font-size: 18px;
-    color: #666;
-  }
-  
-  .error {
-    text-align: center;
-    padding: 40px;
-    color: #ff385c;
-  }
-  
-  .error button {
-    background-color: #ff385c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin-top: 15px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
+.create-spot-button {
+  background-color: #FF5A5F;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-spot-button:hover {
+  background-color: #d32f2f;
+}
+
+
+.cancel-button {
+  background-color: #767676;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #555555;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  color: #ff385c;
+}
+
+.error button {
+  background-color: #ff385c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 16px;
+  cursor: pointer;
+}

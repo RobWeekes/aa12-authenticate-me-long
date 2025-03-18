@@ -42,7 +42,7 @@
   color: rgb(51, 51, 51);
   font-weight: bold;
   font-size: 1.2em;
-  background: rgb(240, 240, 179);
+  /* background: rgb(240, 240, 179); */
   padding: 1px;
 }
 
@@ -63,14 +63,6 @@
 
 .navigation li a:hover {
   background-color: #f7f7f7;
-}
-
-.navigation li:not(:first-child) a.active {
-  color: rgb(51, 51, 51);
-  font-weight: bold;
-  font-size: 1.2em;
-  background: rgb(240, 240, 179);
-  padding: 1px;
 }
 
 /* Home link styles */
@@ -128,9 +120,9 @@ a {
 }
 
 .create-link-active {
-  color: #FF5A5F !important;
-  font-weight: bold !important;
-  background: none !important;
+  color: #FF5A5F;
+  font-weight: bold;
+  background: none;
 }
 
 li {
