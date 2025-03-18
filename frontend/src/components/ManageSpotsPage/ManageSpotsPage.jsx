@@ -257,16 +257,6 @@ const ManageSpotsPage = () => {
         >
           Create a New Spot
         </button>
-        {/* Add a refresh button for debugging */}
-        <button onClick={refreshSpots} className="refresh-button">
-          Refresh Spots
-        </button>
-      </div>
-      
-      {/* Debug info */}
-      <div className="debug-info">
-        <p>Number of spots: {spots.length}</p>
-        <p>isLoaded: {isLoaded.toString()}</p>
       </div>
       
       <div className="spots-grid">
