@@ -1,77 +1,112 @@
 /* landingPage.css */
 
 .landing-page {
-    height: 100vh;
-    background: url('https://a0.muscache.com/im/pictures/2f88b245-e10c-4c8f-b473-2fdbb62316b5.jpg?im_w=960') center/cover no-repeat;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    text-align: center;
-    padding: 0 20px;
+  height: 100vh;
+  background: url('https://a0.muscache.com/im/pictures/2f88b245-e10c-4c8f-b473-2fdbb62316b5.jpg?im_w=960') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.landing-page h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.landing-page .search-bar {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.search-bar input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.search-bar button {
+  background-color: #FF5A5F;
+  border-radius: 8px;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+  background-color: #f08488;
+}
+
+/* NOT BEING USED YET */
+/* .wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: blue
+} */
+
+.spots-grid {
+  /* max-width: 50%; */
+  margin: 0 auto;
+  background-color: blue;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+/* Make it responsive for different screen sizes */
+@media (max-width: 1200px) {
+  .spots-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
   }
-  
-  .landing-page h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .spots-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
   }
-  
-  .landing-page .search-bar {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    padding: 20px;
-    width: 80%;
-    max-width: 500px;
+}
+
+@media (max-width: 600px) {
+  .spots-grid {
+    grid-template-columns: 1fr; /* 1 column on mobile */
   }
-  
-  .search-bar input {
-    width: 100%;
-    margin: 8px 0;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-  }
-  
-  .search-bar button {
-    background-color: #FF5A5F;
-    border-radius: 8px;
-    border: none;
-    padding: 15px;
-    width: 100%;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .search-bar button:hover {
-    background-color: #f08488;
-  }
-  
-  .sections {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 40px 20px;
-  }
-  
-  .section-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-  
-  .section-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .section-card h3 {
-    padding: 10px;
-    font-size: 1.5rem;
-  }
-  
+}
+
+.sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.section-card {
+  background: rgb(15, 0, 128);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.section-card img {
+  width: 10%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.section-card h3 {
+  padding: 10px;
+  font-size: 1.5rem;
+}
