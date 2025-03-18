@@ -1,5 +1,4 @@
 // frontend/src/components/LandingPage/LandingPage.jsx
-// frontend/src/components/LandingPage/LandingPage.jsx
 // import { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import SpotTile from '../SpotTile';
@@ -57,6 +56,11 @@
 // }
 
 // export default LandingPage;
+
+
+
+
+
 
 // frontend/src/components/LandingPage/LandingPage.jsx
 import { useEffect, useState } from 'react';

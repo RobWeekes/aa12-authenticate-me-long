@@ -404,7 +404,7 @@ function SpotDetailsPage() {
   // Check if the logged-in user is the owner of the spot
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
 
-  // Determine if we should show the "Post Your Review" button
+  // Determine if it's necessary to show the "Post Your Review" button
   const showPostReviewButton = sessionUser && !hasReviewed && !isOwner;
 
   // Format reviews to show newest first

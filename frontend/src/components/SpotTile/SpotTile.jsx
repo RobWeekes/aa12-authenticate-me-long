@@ -1,3 +1,4 @@
+// frontend/src/components/SpotTile/SpotTile.jsx
 import { Link } from 'react-router-dom';
 import './SpotTile.css';
 

@@ -15,7 +15,7 @@
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     setErrors({});
-    
+
 //     try {
 //       // Call the login action and wait for it to complete
 //       await dispatch(sessionActions.login({ credential, password }));
@@ -65,6 +65,10 @@
 
 // export default LoginFormModal;
 
+
+
+
+
 // frontend/src/components/LoginFormModal/LoginFormModal.jsx
 import { useState } from 'react';
 import * as sessionActions from '../../store/session';
@@ -82,7 +86,7 @@ function LoginFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    
+
     try {
       // Call the login action and wait for it to complete
       await dispatch(sessionActions.login({ credential, password }));
@@ -102,30 +106,33 @@ function LoginFormModal() {
   return (
     <>
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.credential && (
-          <p className="error">{errors.credential}</p>
-        )}
-        <button type="submit">Log In</button>
-      </form>
+      {/* <form onSubmit={handleSubmit}> */}
+      <div className="login-form-container">
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label>
+            Username or Email
+            <input
+              type="text"
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          {errors.credential && (
+            <p className="error">{errors.credential}</p>
+          )}
+          <button type="submit">Log In</button>
+        </form>
+      </div>
     </>
   );
 }

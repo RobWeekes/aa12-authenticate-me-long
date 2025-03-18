@@ -1,3 +1,4 @@
+// frontend/src/store/index.js
 import { combineReducers } from 'redux';
 import spotsReducer from './spots';
 import reviewsReducer from './reviews';

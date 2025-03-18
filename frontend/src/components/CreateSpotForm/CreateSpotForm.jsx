@@ -58,7 +58,7 @@
 
 
 
-// // frontend/src/components/CreateSpotForm/CreateSpotForm.jsx
+// frontend/src/components/CreateSpotForm/CreateSpotForm.jsx
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -71,7 +71,7 @@ function CreateSpotForm() {
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     country: '',
-    address: '', // Note: this should match the API field name
+    address: '',
     city: '',
     state: '',
     description: '',
@@ -119,8 +119,8 @@ function CreateSpotForm() {
       city: formData.city,
       state: formData.state,
       country: formData.country,
-      lat: 37.7645358, // Using default values since we don't collect these
-      lng: -122.4730327, // Using default values since we don't collect these
+      lat: 37.7645358,
+      lng: -122.4730327,
       name: formData.name,
       description: formData.description,
       price: parseFloat(formData.price)

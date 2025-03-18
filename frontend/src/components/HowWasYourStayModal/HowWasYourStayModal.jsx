@@ -1,6 +1,4 @@
 // frontend/src/components/HowWasYourStayModal/HowWasYourStayModal.jsx
-// frontend/src/components/HowWasYourStayModal/HowWasYourStayModal.jsx
-
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';

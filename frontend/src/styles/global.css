@@ -1,5 +1,4 @@
 /* frontend/src/styles/global.css */
-
 /* Reset some basic browser defaults */
 * {
     margin: 0;
@@ -51,19 +50,27 @@
   }
   
   /* Buttons */
-  button {
+  /* button {
     background-color: #FF5A5F;  /* Airbnb Red */
-    color: white;
+    /* color: white;
     border: none;
     padding: 12px 24px;
     font-size: 16px;
     border-radius: 8px;
     transition: background-color 0.3s;
+  } */
+
+  button.plain-button {
+    background-color: #f08488;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
   
-  button:hover {
+  /* button:hover {
     background-color: #f08488;
-  }
+  } */
   
   input, select, textarea {
     padding: 12px;

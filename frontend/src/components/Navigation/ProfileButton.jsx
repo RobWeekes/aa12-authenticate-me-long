@@ -180,7 +180,7 @@
 // frontend/src/components/Navigation/ProfileButton.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom'; // Add useNavigate import
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
@@ -244,9 +244,16 @@ function ProfileButton({ user }) {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/reviews/current" onClick={closeMenu}>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  closeMenu();
+                  alert("Feature coming soon");
+                }}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline', color: 'inherit' }}
+              >
                 Manage Reviews
-              </NavLink>
+              </button>
             </li>
             <li>
               <button onClick={logout}>Log Out</button>

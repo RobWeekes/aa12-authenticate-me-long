@@ -135,6 +135,10 @@
 
 // export default sessionReducer;
 
+
+
+
+
 // frontend/src/store/session.js
 import { csrfFetch } from './csrf';
 import { resetSpotsState } from './spots';

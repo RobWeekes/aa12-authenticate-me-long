@@ -1,6 +1,4 @@
 // frontend/src/components/ManageSpotsPage/ManageSpotsPage.jsx
-// // frontend/src/components/ManageSpotsPage/ManageSpotsPage.jsx
-
 // import { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { NavLink, useNavigate } from 'react-router-dom';
@@ -289,6 +287,7 @@ const ManageSpotsPage = () => {
                 >
                   Update
                 </button>
+                <br></br>
                 <OpenModalButton
                   buttonText="Delete"
                   className="delete-button"
@@ -300,7 +299,6 @@ const ManageSpotsPage = () => {
         ) : (
           <div className="no-spots-container">
             <p className="no-spots-message">You don&apos;t have any spots yet.</p>
-            <p className="debug-info">Debug info: isLoaded={isLoaded.toString()}, spotsLength={spots ? spots.length : 'undefined'}</p>
           </div>
         )}
       </div>

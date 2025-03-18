@@ -1,6 +1,4 @@
 // frontend/src/components/UpdateSpotForm/UpdateSpotForm.jsx
-// // frontend/src/components/UpdateSpotForm/UpdateSpotForm.jsx
-
 // import { useState, useEffect } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -520,7 +518,8 @@ function UpdateSpotForm() {
         </section>
         
         <div className="form-actions">
-          <button type="submit" className="submit-button">Update Spot</button>
+          {/* <button type="submit" className="submit-button">Update Spot</button> */}
+          <button type="submit" className="create-spot-button">Update Spot</button>
           <button 
             type="button" 
             className="cancel-button"

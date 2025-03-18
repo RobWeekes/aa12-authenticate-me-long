@@ -1,8 +1,6 @@
-/* // frontend/src/components/Navigation/Navigation.css */
-/* /* /* frontend/src/components/Navigation/Navigation.css */
-
+/* frontend/src/components/Navigation/Navigation.css */
 /* Base navigation styles */
-.navigation {
+/* .navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,6 +8,69 @@
   padding: 10px 20px;
   margin: 0;
   border-bottom: 1px solid #ccc;
+} */
+ /* Style for the navigation bar */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: white;
+  border-bottom: 1px solid #ebebeb;
+  list-style-type: none;
+}
+
+/* Style for the airbnb logo and text */
+.navigation li:first-child a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #FF5A5F; /* Airbnb red color */
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Override the .active class styling for the logo link */
+.navigation li:first-child a.active {
+  background: none; /* Remove the yellow background */
+  color: #FF5A5F; /* Keep the Airbnb red color */
+  font-weight: bold;
+}
+
+/* Update this rule to exclude both the logo and the Create a New Spot link */
+.navigation li:not(:first-child):not(.create-spot-link) a.active {
+  color: rgb(51, 51, 51);
+  font-weight: bold;
+  font-size: 1.2em;
+  background: rgb(240, 240, 179);
+  padding: 1px;
+}
+
+/* Add a specific style for the Create a New Spot link when active */
+.navigation li.create-spot-link a.active {
+  color: #FF5A5F;
+  font-weight: bold;
+  background: none;
+}
+
+/* Style for other navigation links */
+.navigation li a {
+  text-decoration: none;
+  color: #222;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.navigation li a:hover {
+  background-color: #f7f7f7;
+}
+
+.navigation li:not(:first-child) a.active {
+  color: rgb(51, 51, 51);
+  font-weight: bold;
+  font-size: 1.2em;
+  background: rgb(240, 240, 179);
+  padding: 1px;
 }
 
 /* Home link styles */
@@ -22,6 +83,10 @@
   display: flex;
   align-items: center;
   gap: 15px; /* Space between Create link and Profile button */
+}
+
+.airbnb-logo {
+  color: #FF5A5F;
 }
 
 /* Create a New Spot link styles */
@@ -40,7 +105,6 @@
   position: relative;
 }
 
-/* Existing styles from your CSS */
 div {
   width: 50vw;
   display: flex;
@@ -59,8 +123,14 @@ a {
   color: rgb(51, 51, 51);
   font-weight: bold;
   font-size: 1.2em;
-  background: rgb(240, 240, 179);
+  /* background: rgb(240, 240, 179); */
   padding: 1px;
+}
+
+.create-link-active {
+  color: #FF5A5F !important;
+  font-weight: bold !important;
+  background: none !important;
 }
 
 li {

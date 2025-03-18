@@ -1,4 +1,4 @@
-/* // frontend/src/styles/spotDetails.css */
+/* frontend/src/styles/spotDetails.css */
 
 /* .spot-details {
   max-width: 1200px;
@@ -49,8 +49,8 @@
 
 
 
-/* // frontend/src/styles/spotDetails.css
-.reviews-list {
+/* frontend/src/styles/spotDetails.css */
+/* .reviews-list {
   margin-top: 20px;
 }
 
@@ -101,7 +101,135 @@
   background-color: #e31c5f;
 } */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* frontend/src/styles/spotDetails.css */
+/* Spot Details Page Styles */
+.spot-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.spot-details-container h1 {
+  margin-bottom: 10px;
+}
+
+.spot-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  margin: 20px 0;
+}
+
+.main-image {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.secondary-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.spot-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.host-info {
+  flex: 2;
+  padding-right: 20px;
+}
+
+.booking-info {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.price-rating {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+/* Fix for invisible Reserve button */
+.reserve-button {
+  background-color: #FF5A5F;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  display: block; /* Ensure button is displayed */
+  margin-top: 10px;
+}
+
+.reserve-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Reviews Section */
+.reviews-section {
+  margin-top: 30px;
+}
+
+.reviews-section h3 {
+  margin-bottom: 20px;
+}
+
+.post-review-button {
+  margin-bottom: 20px;
+}
+
+/* Fix for invisible Post Your Review button */
+.post-review-button button {
+  background-color: #FF5A5F;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block; /* Ensure button is displayed */
+}
+
+.post-review-button button:hover {
+  background-color: #e74c51;
+}
+
 .reviews-list {
   margin-top: 20px;
 }
@@ -139,16 +267,18 @@
   justify-content: flex-end;
 }
 
+/* Fix for invisible Delete button in reviews */
 .review-actions button {
-  background-color: #ff385c;
+  background-color: #FF5A5F;
   color: white;
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
+  display: inline-block; /* Ensure button is displayed */
 }
 
 .review-actions button:hover {
-  background-color: #e31c5f;
+  background-color: #d32f2f;
 }

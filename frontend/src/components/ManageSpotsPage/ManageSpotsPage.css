@@ -1,4 +1,5 @@
-.manage-spots-container {
+/* frontend/src/components/ManageSpotsPage/ManageSpotsPage.css */
+/* .manage-spots-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -124,5 +125,181 @@
   
   .error {
     color: #f44336;
+  } */
+
+
+
+
+
+
+/* frontend/src/components/ManageSpotsPage/ManageSpotsPage.css */
+  .manage-spots-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
   }
+  
+  .manage-spots-container h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+
+  .manage-spots-container .spot-actions .delete-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 48%;
+    background-color: #FF5A5F;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    line-height: normal;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+  }
+  
+  .manage-spots-container .spot-actions .delete-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .manage-spots-container .spot-actions .update-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 48%;
+    background-color: #FF5A5F;
+    color: white;
+    text-align: center;
+    display: inline-block;
+  }
+  
+  .manage-spots-container .spot-actions .update-button:hover {
+    background-color: #d32f2f;
+  }  
+  
+  .create-spot-button {
+    background-color: #FF5A5F;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .create-spot-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .spots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .spot-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    background-color: white;
+  }
+  
+  .spot-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .spot-image-container {
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .spot-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .spot-info {
+    padding: 15px;
+  }
+  
+  .spot-location-rating {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .spot-location {
+    font-weight: bold;
+  }
+  
+  .spot-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .spot-price {
+    font-weight: bold;
+  }
+  
+  .spot-price span {
+    font-weight: normal;
+  }
+  
+  .spot-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px 15px;
+  }
+  
+  /* Fix for invisible buttons */
+  .update-button, .delete-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 48%;
+    display: inline-block; /* Ensure buttons are displayed */
+  }
+  
+  .update-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .update-button:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .loading, .error, .no-spots-message {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+  }
+  
+  .error {
+    color: #f44336;
+  }
+  
   

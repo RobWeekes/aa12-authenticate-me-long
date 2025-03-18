@@ -86,7 +86,7 @@
     margin-top: 30px;
   }
   
-  .submit-button {
+  /* .submit-button {
     background-color: #ff385c;
     color: white;
     border: none;
@@ -99,7 +99,22 @@
   
   .submit-button:hover {
     background-color: #e31c5f;
+  } */
+  .create-spot-button {
+    background-color: #FF5A5F;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
   }
+  
+  .create-spot-button:hover {
+    background-color: #d32f2f;
+  }
+  
   
   .cancel-button {
     background-color: #767676;

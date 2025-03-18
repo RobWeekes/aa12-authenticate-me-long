@@ -1,5 +1,4 @@
 // // frontend/src/context/Modal.jsx
-// // frontend/src/context/Modal.jsx
 import { createContext, useRef, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.css';

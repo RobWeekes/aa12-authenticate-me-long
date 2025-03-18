@@ -117,6 +117,7 @@
 
 
 
+// frontend/src/App.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -128,10 +129,11 @@ import ManageSpotsPage from './components/ManageSpotsPage';
 import SpotDetailsPage from './components/SpotDetailsPage';
 import UpdateSpotForm from './components/UpdateSpotForm';
 
+import './styles/forms.css';
 import './styles/global.css';
 import './styles/landingPage.css';
+import './styles/profileButton.css'
 import './styles/spotDetails.css';
-import './styles/forms.css';
 
 import * as sessionActions from './store/session';
 
